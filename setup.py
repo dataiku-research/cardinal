@@ -14,7 +14,7 @@ def load_version():
     # load all vars into globals, otherwise
     #   the later function call using global vars doesn't work.
     globals_dict = {}
-    with open(os.path.join('cardinal', 'version.py')) as fp:
+    with open(os.path.join('cardinAL', 'version.py')) as fp:
         exec(fp.read(), globals_dict)
 
     return globals_dict
