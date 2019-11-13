@@ -101,9 +101,7 @@ class UncertaintySampler(BaseQuerySampler):
         Pipeline used to predict the class probability.
     """
 
-    def __init__(self, pipeline, batch_size, shuffle=True,
-                 verbose=0, random_state=None,
-                 n_iter_no_change=5, class_weight=None):
+    def __init__(self, pipeline, batch_size, verbose=0):
         super().__init__()
         # TODO: can we check that the pipeline has a predict_proba?
         self.pipeline_ = pipeline
@@ -142,7 +140,143 @@ class UncertaintySampler(BaseQuerySampler):
         self : returns an instance of self.
         """
         selected_samples = np.zeros(X.shape[0])
-        index, confidence = uncertainty_sampling(self.pipeline_, X)
+        index, confidence = uncertainty_sampling(self.pipeline_, X, n_instances=X.shape[0])
+        
+        self.confidence_ = confidence
+        index = index[:self.batch_size]
+        
+        selected_samples[index] = 1
+        self.labels_ = selected_samples
+
+        return selected_samples
+
+
+class MarginSampler(BaseQuerySampler):
+    """Selects samples with the lowest margin between the first and second classes.
+
+    Parameters
+    ----------
+    pipeline : sklearn.Pipeline
+        Pipeline used to determine the prediction confidence. For this method
+        it must be a classifier with a predict_proba method.
+    batch_size : int
+        Number of samples to draw when predicting.
+    verbose : integer, optional
+        The verbosity level
+    Attributes
+    ----------
+    pipeline_ : sklearn.pipeline
+        Pipeline used to predict the class probability.
+    """
+
+    def __init__(self, pipeline, batch_size, verbose=0):
+        super().__init__()
+        # TODO: can we check that the pipeline has a predict_proba?
+        self.pipeline_ = pipeline
+        self.batch_size = batch_size
+        self.verbose = verbose
+
+    def fit(self, X, y):
+        """Fit the estimator on labeled samples.
+        Parameters
+        ----------
+        X : {array-like, sparse matrix}, shape (n_samples, n_features)
+            Training data
+        y : numpy array, shape (n_samples,)
+            Target values
+        Returns
+        -------
+        self : returns an instance of self.
+        """
+        self._classes = [0, 1]
+        
+        # We delegate pretty much everything to the estimator
+        self.pipeline_.fit(X, y)
+        
+        return self
+
+    def predict(self, X):
+        """Selects the samples to annotate from unlabelled data.
+        Parameters
+        ----------
+        X : {array-like, sparse matrix}, shape (n_samples, n_features)
+            Training data
+        y : numpy array, shape (n_samples,)
+            Target values
+        Returns
+        -------
+        self : returns an instance of self.
+        """
+        selected_samples = np.zeros(X.shape[0])
+        index, confidence = margin_sampling(self.pipeline_, X)
+        
+        self.confidence_ = confidence
+        index = index[:self.batch_size]
+        
+        selected_samples[index] = 1
+        self.labels_ = selected_samples
+
+        return selected_samples
+
+
+class EntropySampler(BaseQuerySampler):
+    """Selects samples with highest entropy.
+
+    Parameters
+    ----------
+    pipeline : sklearn.Pipeline
+        Pipeline used to determine the prediction confidence. For this method
+        it must be a classifier with a predict_proba method.
+    batch_size : int
+        Number of samples to draw when predicting.
+    verbose : integer, optional
+        The verbosity level
+    Attributes
+    ----------
+    pipeline_ : sklearn.pipeline
+        Pipeline used to predict the class probability.
+    """
+
+    def __init__(self, pipeline, batch_size, verbose=0):
+        super().__init__()
+        # TODO: can we check that the pipeline has a predict_proba?
+        self.pipeline_ = pipeline
+        self.batch_size = batch_size
+        self.verbose = verbose
+
+    def fit(self, X, y):
+        """Fit the estimator on labeled samples.
+        Parameters
+        ----------
+        X : {array-like, sparse matrix}, shape (n_samples, n_features)
+            Training data
+        y : numpy array, shape (n_samples,)
+            Target values
+        Returns
+        -------
+        self : returns an instance of self.
+        """
+        self._classes = [0, 1]
+        
+        # We delegate pretty much everything to the estimator
+        self.pipeline_.fit(X, y)
+        
+        return self
+
+    def predict(self, X):
+        """Selects the samples to annotate from unlabelled data.
+        Parameters
+        ----------
+        X : {array-like, sparse matrix}, shape (n_samples, n_features)
+            Training data
+        y : numpy array, shape (n_samples,)
+            Target values
+        Returns
+        -------
+        self : returns an instance of self.
+        """
+        selected_samples = np.zeros(X.shape[0])
+        index, confidence = entropy_sampling(self.pipeline_, X)
         
         self.confidence_ = confidence
         index = index[:self.batch_size]
