@@ -1,5 +1,6 @@
 import numpy as np
 from .base import BaseQuerySampler
+from sklearn.utils import check_random_state
 
 
 def random_sampling(X: np.ndarray,
@@ -40,9 +41,6 @@ class RandomSampler(BaseQuerySampler):
         If batch_size < 1., it is interpreted as fraction of the training
         set to select for labeling. If batch_size >= 1., it is interpreted
         as the number of samples to draw.
-    shuffle : bool, optional
-        Whether or not the training data should be shuffled after each epoch.
-        Defaults to True.
     verbose : integer, optional
         The verbosity level
     random_state : int, RandomState instance or None, optional (default=None)
@@ -51,15 +49,7 @@ class RandomSampler(BaseQuerySampler):
         generator; If RandomState instance, random_state is the random number
         generator; If None, the random number generator is the RandomState
         instance used by `np.random`.
-    n_iter_no_change : int, default=5
-        Number of iterations with no improvement to wait before early stopping.
-    class_weight : dict, {class_label: weight} or "balanced" or None, optional
-        Preset for the class_weight fit parameter.
-        Weights associated with classes. If not given, all classes
-        are supposed to have weight one.
-        The "balanced" mode uses the values of y to automatically adjust
-        weights inversely proportional to class frequencies in the input data
-        as ``n_samples / (n_classes * np.bincount(y))``
+
     Attributes
     ----------
     pipeline_ : sklearn.pipeline

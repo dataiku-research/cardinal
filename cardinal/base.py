@@ -13,16 +13,18 @@ class BaseQuerySampler(ClusterMixin, TransformerMixin, BaseEstimator):
 
     def __init__(self):
         self.labels_ = None
+        self._transformed = False
 
     def predict(self, X):
         raise NotImplementedError
 
     def transform(self, X):
         self.labels_ = self.predict(X).astype(bool)
+        self._transformed = True
         return X[self.labels_]
 
     def inverse_transform(self, X):
-        if self.labels_ is None:
+        if not self._transformed:
             return X
         unmask = self.labels_.copy()
         unmask[unmask == 1] = X
