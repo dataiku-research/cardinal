@@ -12,7 +12,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import check_random_state
-from cardinAL.base import UncertaintySampler, RandomSampler, SubmodularSampler, KMeansSampler, WKMeansSampler
+from cardinAL.uncertainty import UncertaintySampler
+from cardinAL.random import RandomSampler
+from cardinAL.submodularity import SubmodularSampler
+from cardinAL.clustering import KMeansSampler, WKMeansSampler
+from cardinAL.batch import RankedBatchSampler
 from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import Pipeline
 
@@ -28,7 +32,7 @@ class Cache():
 seeds = ['1', '12', '42', '69', '81', '111', '421', '666', '7777', '3']
 datasets = ['mnist_mxnet']
 classifiers = ['mlp_sklearn', 'mlp_keras']
-samplers = ['random', 'uncertainty', 'submodular_10', 'kmeans_10', 'kmeans_50', 'wkmeans50']
+samplers = ['random', 'uncertainty', 'submodular_10', 'kmeans_10', 'kmeans_50', 'wkmeans50', 'rankbatch']
 
 all_results = defaultdict(list)
 
@@ -140,7 +144,8 @@ for seed, dataset, classifier, sampler in itertools.product(seeds, datasets, cla
         'uncertainty': UncertaintySampler(clf, batch_size=batch_size, random_state=42),
         'submodular': SubmodularSampler(batch_size=batch_size, random_state=42),
         'kmeans': KMeansSampler(batch_size=batch_size, random_state=42),
-        'wkmeans50': WKMeansSampler(clf, beta=50, batch_size=batch_size, random_state=42)
+        'wkmeans50': WKMeansSampler(clf, beta=50, batch_size=batch_size, random_state=42),
+        'rankbatch': RankedBatchSampler(UncertaintySampler(clf, batch_size=batch_size, random_state=42), alpha='auto', batch_size=batch_size)
     }
 
     al_model = methods[sampler_elts[0]]
