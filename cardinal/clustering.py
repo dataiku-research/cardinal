@@ -68,9 +68,6 @@ class KMeansSampler(KCentroidSampler):
 
     Parameters
     ----------
-    clustering : sklearn estimator
-        A clustering algorithm that must feature a transform method that
-        returns the distance of samples from centroids.
     batch_size : int
         Number of samples to draw when predicting.
     verbose : integer, optional
@@ -81,34 +78,23 @@ class KMeansSampler(KCentroidSampler):
         The fitted clustering estimator.
     """
 
-    def __init__(self, clustering, batch_size, verbose=0, **kmeans_args):
+    def __init__(self, batch_size, verbose=0, **kmeans_args):
         super().__init__(KMeans(**kmeans_args), batch_size, verbose)
 
 
 class WKMeansSampler(BaseQuerySampler):
 
-    def __init__(self, pipeline, beta=10, batch_size=0.05, shuffle=True,
-                 verbose=0, random_state=None,
-                 n_iter_no_change=5, class_weight=None):
+    def __init__(self, pipeline, beta, batch_size, verbose=0, **kmeans_args):
         super().__init__()
 
         self.uncertainty = UncertaintySampler(
             pipeline,
             beta * batch_size,
-            shuffle,
-            verbose,
-            random_state,
-            n_iter_no_change,
-            class_weight)
+            verbose)
 
         self.kmeans = KMeansSampler(
             batch_size,
-            shuffle,
-            verbose,
-            random_state,
-            n_iter_no_change,
-            class_weight
-        )
+            verbose, **kmeans_args)
 
     def fit(self, X, y):
         self.uncertainty.fit(X, y)
