@@ -17,6 +17,7 @@ from cardinAL.random import RandomSampler
 from cardinAL.submodularity import SubmodularSampler
 from cardinAL.clustering import KMeansSampler, WKMeansSampler
 from cardinAL.batch import RankedBatchSampler
+from cardinAL.experimental import DeltaSampler
 from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import Pipeline
 
@@ -30,9 +31,10 @@ class Cache():
 # samplers = ['random', 'uncertainty', 'submodular_10', 'kmeans_10', 'kmeans_50', 'wkmeans_50']
 
 seeds = ['1', '12', '42', '69', '81', '111', '421', '666', '7777', '3']
-datasets = ['mnist_mxnet']
-classifiers = ['mlp_sklearn', 'mlp_keras']
-samplers = ['random', 'uncertainty', 'submodular_10', 'kmeans_10', 'kmeans_50', 'wkmeans50', 'rankbatch']
+datasets = ['mnist_sklearn', 'mnist_mxnet']
+#classifiers = ['mlp_sklearn', 'mlp_keras']
+classifiers = ['mlp_sklearn']
+samplers = ['random', 'uncertainty', 'submodular_10', 'kmeans_10', 'kmeans_50', 'wkmeans50', 'rankbatch', 'delta']
 
 all_results = defaultdict(list)
 
@@ -141,11 +143,12 @@ for seed, dataset, classifier, sampler in itertools.product(seeds, datasets, cla
 
     methods = {
         'random': RandomSampler(batch_size=batch_size, random_state=42),
-        'uncertainty': UncertaintySampler(clf, batch_size=batch_size, random_state=42),
-        'submodular': SubmodularSampler(batch_size=batch_size, random_state=42),
+        'uncertainty': UncertaintySampler(clf, batch_size=batch_size),
+        'submodular': SubmodularSampler(batch_size=batch_size),
         'kmeans': KMeansSampler(batch_size=batch_size, random_state=42),
         'wkmeans50': WKMeansSampler(clf, beta=50, batch_size=batch_size, random_state=42),
-        'rankbatch': RankedBatchSampler(UncertaintySampler(clf, batch_size=batch_size, random_state=42), alpha='auto', batch_size=batch_size)
+        'rankbatch': RankedBatchSampler(UncertaintySampler(clf, batch_size=batch_size), alpha='auto', batch_size=batch_size),
+        'delta': DeltaSampler(clf, batch_size=batch_size)
     }
 
     al_model = methods[sampler_elts[0]]
