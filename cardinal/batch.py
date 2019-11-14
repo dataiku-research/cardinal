@@ -18,6 +18,7 @@ class RankedBatchSampler(BaseQuerySampler):
         A query sampler which scores will be used to score the batch of samples
     alpha: float, optional
         Weight of the sample similarity in the final score.
+    TODO This is a duplicate of the property in the query_sampler
     batch_size : int
         Number of samples to draw when predicting.
     verbose : integer, optional
