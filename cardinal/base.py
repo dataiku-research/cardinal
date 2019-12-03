@@ -29,3 +29,27 @@ class BaseQuerySampler(ClusterMixin, TransformerMixin, BaseEstimator):
         unmask = self.labels_.copy()
         unmask[unmask == 1] = X
         return unmask
+
+
+class ChainQuerySampler(BaseQuerySampler):
+    """Allows to whain query sampling methods
+    This strategy is usually used to chain a simple query sampler with a
+    more complex one. The first query sampler is used to reduce the
+    dimensionality.
+    """
+
+    def __init__(self, *sampler_list):
+        self.sampler_list = sampler_list
+
+    def fit(self, X, y=None):
+        # Fits only the first one. The other will depend on this one.
+        self.sampler_list[0].fit(X, y)
+    
+    def predict(self, X):
+        selected = self.sampler_list[0].predict(X).astype(bool)
+
+        for sampler in self.sampler_list[1:]:
+            new_selected = sampler.fit_predict(X[selected])
+            selected[selected] = new_selected
+        
+        return selected
