@@ -54,8 +54,8 @@ def margin_sampling(classifier: BaseEstimator, X: np.ndarray,
     """
     classwise_uncertainty = _get_probability_classes(classifier, X)
 
-    part = np.partition(-classwise_uncertainty, 1, axis=1)
-    margin = part[:, 0] - part[:, 1]
+    part = np.partition(classwise_uncertainty, -2, axis=1)
+    margin = 1 - (part[:, -1] - part[:, -2])
     index = np.flip(np.argsort(margin))[:n_instances]
     
     return index, margin[index]
@@ -208,7 +208,7 @@ class MarginSampler(BaseQuerySampler):
         self : returns an instance of self.
         """
         selected_samples = np.zeros(X.shape[0])
-        index, confidence = margin_sampling(self.pipeline_, X)
+        index, confidence = margin_sampling(self.pipeline_, X, n_instances=X.shape[0])
         
         self.confidence_ = confidence
         index = index[:self.batch_size]
@@ -276,7 +276,7 @@ class EntropySampler(BaseQuerySampler):
         self : returns an instance of self.
         """
         selected_samples = np.zeros(X.shape[0])
-        index, confidence = entropy_sampling(self.pipeline_, X)
+        index, confidence = entropy_sampling(self.pipeline_, X, n_instances=X.shape[0])
         
         self.confidence_ = confidence
         index = index[:self.batch_size]
