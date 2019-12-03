@@ -30,7 +30,7 @@ class SubmodularSampler(BaseQuerySampler):
         self.compute_distances = compute_distances
         self.verbose = verbose
 
-    def fit(self, X, y):
+    def fit(self, X, y=None):
         """Fit linear model with Stochastic Gradient Descent.
         Parameters
         ----------
