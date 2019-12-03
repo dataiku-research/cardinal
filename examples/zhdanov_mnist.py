@@ -7,12 +7,12 @@ import itertools
 import json
 import os
 
-from sklearn.datasets import fetch_openml
+# from sklearn.datasets import fetch_openml
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import check_random_state
-from cardinAL.uncertainty import UncertaintySampler
+from cardinAL.uncertainty import MarginSampler
 from cardinAL.random import RandomSampler
 from cardinAL.submodularity import SubmodularSampler
 from cardinAL.clustering import KMeansSampler, WKMeansSampler
@@ -23,7 +23,14 @@ from sklearn.pipeline import Pipeline
 
 
 class Cache():
-    pass
+
+    def __init__(self, dir_):
+        self.dir = dir_
+
+    def fp(self, cache_key):
+        if not os.path.exists(self.dir):
+            os.mkdir(self.dir)
+        return os.path.join(self.dir, cache_key)
 
 # seeds = ['1', '12', '42', '69', '81', '111', '421', '666', '7777', '3']
 # datasets = ['mnist_sklearn', 'mnist_mxnet']
@@ -34,7 +41,7 @@ seeds = ['1', '12', '42', '69', '81', '111', '421', '666', '7777', '3']
 datasets = ['mnist_sklearn', 'mnist_mxnet']
 #classifiers = ['mlp_sklearn', 'mlp_keras']
 classifiers = ['mlp_sklearn']
-samplers = ['random', 'uncertainty', 'submodular_10', 'kmeans_10', 'kmeans_50', 'wkmeans50', 'rankbatch', 'delta']
+samplers = ['random', 'uncertainty', 'wkmeans50']  # , 'submodular_10', 'kmeans_10', 'kmeans_50', 'wkmeans50', 'rankbatch', 'delta']
 
 all_results = defaultdict(list)
 
@@ -43,13 +50,18 @@ batch_size = 100
 start_size = 100
 stop_size = 1000
 
+
+exp_name = 'zhdanov_mnist'
+
+cache = Cache(exp_name)
+
 for seed, dataset, classifier, sampler in itertools.product(seeds, datasets, classifiers, samplers):
 
     cache_key = '_'.join([seed, dataset, classifier, sampler])
     print('Computing {}'.format(cache_key))
 
-    if os.path.exists(cache_key):
-        all_results[(dataset, classifier, sampler)].append(json.load(open(cache_key, 'r')))
+    if os.path.exists(cache.fp(cache_key)):
+        all_results[(dataset, classifier, sampler)].append(json.load(open(cache.fp(cache_key), 'r')))
         continue
 
     random_state = check_random_state(int(seed))
@@ -143,12 +155,12 @@ for seed, dataset, classifier, sampler in itertools.product(seeds, datasets, cla
 
     methods = {
         'random': RandomSampler(batch_size=batch_size, random_state=42),
-        'uncertainty': UncertaintySampler(clf, batch_size=batch_size),
+        'uncertainty': MarginSampler(clf, batch_size=batch_size),
         'submodular': SubmodularSampler(batch_size=batch_size),
         'kmeans': KMeansSampler(batch_size=batch_size, random_state=42),
         'wkmeans50': WKMeansSampler(clf, beta=50, batch_size=batch_size, random_state=42),
         'rankbatch': RankedBatchSampler(UncertaintySampler(clf, batch_size=batch_size), alpha='auto', batch_size=batch_size),
-        'delta': DeltaSampler(clf, batch_size=batch_size)
+        'delta': DeltaSampler(clf, batch_size=batch_size, n_last=1)
     }
 
     al_model = methods[sampler_elts[0]]
@@ -157,7 +169,7 @@ for seed, dataset, classifier, sampler in itertools.product(seeds, datasets, cla
         # This is a preselection step. We take batch_size * beta samples using uncertainty sampling
         # and then use the other sampler on top of it.
         al_model = Pipeline([
-            ('uncertainty', UncertaintySampler(clf, batch_size=batch_size * int(sampler_elts[1]), random_state=42)),
+            ('uncertainty', MarginSampler(clf, batch_size=batch_size * int(sampler_elts[1]))),
             ('al', al_model)])
 
 
@@ -181,7 +193,7 @@ for seed, dataset, classifier, sampler in itertools.product(seeds, datasets, cla
             selected[~selected] = new_selected
 
     all_results[(dataset, classifier, sampler)].append(results)
-    json.dump(results, open(cache_key, 'w'))
+    json.dump(results, open(cache.fp(cache_key), 'w'))
     # plt.plot(results, label=method)
 
 print('Ended. Plotting...')
@@ -208,4 +220,6 @@ for dataset, classifier in itertools.product(datasets, classifiers):
                      color=color, alpha=.3)
         
     plt.legend()
+    plt.xlabel('Training sample count')
+    plt.ylabel('Accuracy')
     plt.savefig(dataset + '_' + classifier + '.png')
