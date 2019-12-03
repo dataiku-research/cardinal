@@ -29,7 +29,7 @@ class KCentroidSampler(BaseQuerySampler):
         self.batch_size = batch_size
         self.verbose = verbose
 
-    def fit(self, X, y):
+    def fit(self, X, y=None):
         """Does nothing.
         Parameters
         ----------
@@ -79,6 +79,9 @@ class KMeansSampler(KCentroidSampler):
     """
 
     def __init__(self, batch_size, verbose=0, **kmeans_args):
+        if 'n_clusters' in kmeans_args:
+            print('Warning, overriding n_clusters')  # TODO better error hanbdling
+        kmeans_args['n_clusters'] = batch_size
         super().__init__(KMeans(**kmeans_args), batch_size, verbose)
 
 
