@@ -1,12 +1,10 @@
 """
-This is a test example
-==========================================
-It generates an image, will it work?
+Hello
+=====
 
-.. contents:: **Contents**
-    :local:
-    :depth: 1
+This is a test
 """
+
 
 from sklearn.datasets.samples_generator import make_blobs
 from matplotlib import pyplot as plt
@@ -103,7 +101,8 @@ def plot_all(i):
     un = plot('uncertainty', i)
     return ra + un
 
-ani = animation.FuncAnimation(fig, plot_all, np.arange(n_iter), fps=10, interval=500, blit=True)
+#ani = animation.FuncAnimation(fig, plot_all, np.arange(n_iter)) #, fps=10, interval=500, blit=True)
 # ani.to_jshtml('test.html')
-# ani.save('svm.gif')
+#ani.save('svm.gif')
+plot(0)
 plt.show()
