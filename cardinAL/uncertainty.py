@@ -1,8 +1,9 @@
 from sklearn.exceptions import NotFittedError
-from sklearn.base import BaseEstimator
 from scipy.stats import entropy
+from sklearn.base import BaseEstimator
 import numpy as np
 from keras.models import Model
+from .base import BaseQuerySampler
 
 
 def _get_probability_classes(classifier, X):
