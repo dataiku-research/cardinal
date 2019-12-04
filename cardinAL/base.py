@@ -1,3 +1,7 @@
+"""
+Base classes
+"""
+
 from sklearn.base import BaseEstimator, ClusterMixin, TransformerMixin
 
 
