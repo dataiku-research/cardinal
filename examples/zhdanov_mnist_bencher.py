@@ -110,21 +110,25 @@ def plot_results(data):
 def run_experiment(data):
 
     random_state = data['random_state']
+    already_split = not 'X' in data
 
-    if 'X' in data:
+    new_data = dict()
+
+    if not already_split:
         # Data is not separated in train and test, we do it
         X = data['X']
         y = data['y']
+        X = X.reshape((X.shape[0], -1))
 
         # Shake the data
-
         permutation = random_state.permutation(X.shape[0])
         X = X[permutation]
         y = y[permutation]
         X = X.reshape((X.shape[0], -1))
+        new_data['permutation'] = permutation
 
         X_train, X_test, y_train, y_test = train_test_split(
-            X, y, train_size=data['stop_size'], test_size=X.shape[0] - data['stop_size'])
+            X, y, train_size=data['stop_size'], test_size=X.shape[0] - data['stop_size'], random_state=random_state)
     else:
         X_train, y_train, X_test, y_test = data['X_train'], data['y_train'], data['X_test'], data['y_test']
 
@@ -142,7 +146,8 @@ def run_experiment(data):
 
     accuracies = []
     selecteds = []
-    probas = []
+    probas_train = []
+    probas_test = []
     clfs = []
 
     selected = np.zeros(X_train.shape[0], dtype=bool)
@@ -155,7 +160,8 @@ def run_experiment(data):
         clf.fit(X_train[selected], y_train[selected])
         score = clf.score(X_test, y_test)
         accuracies.append(score)
-        probas.append(clf.predict_proba(X))
+        probas_train.append(clf.predict_proba(X_train))
+        probas_test.append(clf.predict_proba(X_test))
         clfs.append(deepcopy(clf))
 
         # Select next samples
@@ -164,7 +170,13 @@ def run_experiment(data):
             new_selected = sampler.predict(X_train[~selected])
             selected[~selected] = new_selected
     
-    return dict(accuracies=accuracies,selected=selecteds, probas=probas, clfs=clfs)
+    new_data['accuracies'] = accuracies
+    new_data['selected'] = selecteds
+    new_data['probas_train'] = probas_train
+    new_data['probas_test'] = probas_test
+    new_data['clfs'] = clfs
+
+    return new_data
     
 
 bencher.register_step('run_experiment', 'simple_exp', run_experiment)
