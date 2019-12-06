@@ -327,7 +327,7 @@ sphinx_gallery_conf = {
     'gallery_dirs': gallery_dirs,
     'image_scrapers': ('matplotlib', ),
     # specify the order of examples to be according to filename
-    'within_subsection_order': FileNameSortKey,
+    # 'within_subsection_order': FileNameSortKey,
     'expected_failing_examples': [],
     'min_reported_time': min_reported_time,
     'show_memory': True,

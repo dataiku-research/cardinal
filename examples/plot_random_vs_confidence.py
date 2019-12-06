@@ -19,7 +19,7 @@ from sklearn.datasets.samples_generator import make_blobs
 from sklearn.svm import SVC
 
 from cardinAL.random import RandomSampler
-from cardinAL.uncertainty import UncertaintySampler
+from cardinAL.uncertainty import ConfidenceSampler
 
 
 np.random.seed(8)
@@ -78,7 +78,7 @@ def plot(a, b, score, selected):
 
 samplers = [
     ('Random', RandomSampler(batch_size=batch_size, random_state=0)),
-    ('Lowest confidence', UncertaintySampler(model, batch_size))
+    ('Lowest confidence', ConfidenceSampler(model, batch_size))
 ]
 
 plt.figure(figsize=(10, 4))
