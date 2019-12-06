@@ -1,32 +1,23 @@
 
-.. _sphx_glr_api_reference:
+.. _reference:
 
-Sphinx-Gallery API Reference
+cardinAL's API Reference
 ============================
 
-The complete Sphinx-Gallery project is automatically documented for
+The complete cardinAL project is automatically documented for
 every module.
 
-.. currentmodule:: sphinx_gallery
+.. currentmodule:: cardinAL
 
-.. automodule:: sphinx_gallery
+.. automodule:: cardinAL
    :no-members:
    :no-inherited-members:
 
-:py:mod:`sphinx_gallery`:
+:py:mod:`cardinAL`:
 
 .. autosummary::
    :toctree: gen_modules/
    :template: module.rst
 
-   gen_gallery
-   backreferences
-   gen_rst
-   scrapers
-   py_source_parser
-   docs_resolv
-   notebook
-   downloads
-   docs_resolv
-   sorting
-   binder
+   base
+   uncertainty
