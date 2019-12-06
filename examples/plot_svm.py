@@ -11,7 +11,7 @@ from matplotlib import pyplot as plt
 from sklearn.svm import SVC
 import numpy as np
 from cardinAL.random import RandomSampler
-from cardinAL.uncertainty import UncertaintySampler
+from cardinAL.uncertainty import ConfidenceSampler
 from copy import copy
 import matplotlib.animation as animation
 from matplotlib.cm import tab20
@@ -37,7 +37,7 @@ max_X = np.max(X[:, 0])
 # We need to run the simulation in advance
 samplers = [
     ('Random', RandomSampler(batch_size=batch_size, random_state=0)),
-    ('Lowest confidence', UncertaintySampler(model, batch_size))
+    ('Lowest confidence', ConfidenceSampler(model, batch_size))
 ]
 
 def plot(a, b, score, selected):

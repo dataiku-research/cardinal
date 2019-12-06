@@ -1,27 +1,26 @@
-import numpy as np
-from scipy.stats import entropy
-
 from sklearn.exceptions import NotFittedError
+from scipy.stats import entropy
 from sklearn.base import BaseEstimator
-
+import numpy as np
+from keras.models import Model
 from .base import BaseQuerySampler
 
 
 def _get_probability_classes(classifier, X):
-    # Keras has one peculiar behavior: the predict function act as
-    # a predict_proba. We use a workaround in that specific case.
-    classifier_module = classifier.__class__.__module__.split('.')[0]
-    if classifier_module == 'keras':
-        classwise_uncertainty = classifier.predict(X)
-    else:  # sklearn or custom model
-        classwise_uncertainty = classifier.predict_proba(X)
+    try:
+        if isinstance(classifier, Model):  # Keras models have no predict_proba
+            classwise_uncertainty = classifier.predict(X)
+        else:  # sklearn model
+            classwise_uncertainty = classifier.predict_proba(X)
+    except NotFittedError:
+        raise
     return classwise_uncertainty
 
 
-def uncertainty_sampling(classifier: BaseEstimator, X: np.ndarray,
-                         n_instances: int = 1) -> np.ndarray:
-    """
-    Uncertainty sampling query strategy. Selects the least sure instances for labelling.
+def confidence_sampling(classifier: BaseEstimator, X: np.ndarray,
+                        n_instances: int = 1) -> np.ndarray:
+    """Lowest confidence sampling query strategy. Selects the least sure instances for labelling.
+
     Args:
         classifier: The classifier for which the labels are to be queried.
         X: The pool of samples to query from.
@@ -41,9 +40,11 @@ def uncertainty_sampling(classifier: BaseEstimator, X: np.ndarray,
 
 def margin_sampling(classifier: BaseEstimator, X: np.ndarray,
                     n_instances: int = 1) -> np.ndarray:
-    """
-    Margin sampling query strategy. Selects the instances where the difference between
-    the first most likely and second most likely classes are the smallest.
+    """Margin sampling query strategy, selects the samples with lowest difference between top 2 probabilities.
+
+    This strategy takes the probabilities of top two classes and uses their
+    difference as a score for selection.
+
     Args:
         classifier: The classifier for which the labels are to be queried.
         X: The pool of samples to query from.
@@ -63,9 +64,10 @@ def margin_sampling(classifier: BaseEstimator, X: np.ndarray,
 
 def entropy_sampling(classifier: BaseEstimator, X: np.ndarray,
                      n_instances: int = 1) -> np.ndarray:
-    """
-    Entropy sampling query strategy. Selects the instances where the class probabilities
-    have the largest entropy.
+    """Entropy sampling query strategy, uses entropy of all probabilities as score.
+
+    This strategy selects the samples with the highest entropy in their prediction
+    probabilities.
     
     Args:
         classifier: The classifier for which the labels are to be queried.
@@ -84,45 +86,41 @@ def entropy_sampling(classifier: BaseEstimator, X: np.ndarray,
     return index, entropies[index]
 
 
-class UncertaintySampler(BaseQuerySampler):
+class ConfidenceSampler(BaseQuerySampler):
     """Selects samples with lowest prediction confidence.
 
-    Parameters
-    ----------
-    pipeline : sklearn.Pipeline
-        Pipeline used to determine the prediction confidence. For this method
-        it must be a classifier with a predict_proba method.
-    batch_size : int
-        Number of samples to draw when predicting.
-    verbose : integer, optional
-        The verbosity level
-    Attributes
-    ----------
-    pipeline_ : sklearn.pipeline
-        Pipeline used to predict the class probability.
+    Lowest confidence sampling looks at the probability of the class predicted by
+    the classifier and selects the samples where this probability is the lowest.
+
+    Parameters:
+        classifier (sklearn.BaseEstimator): Classifier used to
+            determine the prediction confidence. The object must
+            comply with scikit-learn interface and expose a
+            `predict_proba` method.
+        batch_size (int): Number of samples to draw when predicting.
+        verbose (int, optional): The verbosity level. Defaults to 0.
+    
+    Attributes:
+        classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
 
-    def __init__(self, pipeline, batch_size, verbose=0):
+    def __init__(self, classifier, batch_size, verbose=0):
         super().__init__()
         # TODO: can we check that the pipeline has a predict_proba?
-        self.pipeline_ = pipeline
+        self.classifier_ = classifier
         self.batch_size = batch_size
         self.verbose = verbose
 
     def fit(self, X, y):
         """Fit the estimator on labeled samples.
-        Parameters
-        ----------
-        X : {array-like, sparse matrix}, shape (n_samples, n_features)
-            Training data
-        y : numpy array, shape (n_samples,)
-            Target values
-        Returns
-        -------
-        self : returns an instance of self.
+
+        Args:
+            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Training data
+            y (numpy array, shape (n_samples,)): Target values
+
+        Returns:
+            self: An instance of self.
         """
-        self._classes = [0, 1]
-        
         # We delegate pretty much everything to the estimator
         self.pipeline_.fit(X, y)
         
@@ -130,18 +128,15 @@ class UncertaintySampler(BaseQuerySampler):
 
     def predict(self, X):
         """Selects the samples to annotate from unlabelled data.
-        Parameters
-        ----------
-        X : {array-like, sparse matrix}, shape (n_samples, n_features)
-            Training data
-        y : numpy array, shape (n_samples,)
-            Target values
-        Returns
-        -------
-        self : returns an instance of self.
+
+        Args:
+            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
+
+        Returns:
+            predictions (np.array): Returns an array where selected samples are classified as 1.
         """
         selected_samples = np.zeros(X.shape[0])
-        index, confidence = uncertainty_sampling(self.pipeline_, X, n_instances=X.shape[0])
+        index, confidence = confidence_sampling(self.classifier_, X, n_instances=X.shape[0])
         
         self.confidence_ = confidence
         index = index[:self.batch_size]
@@ -153,21 +148,22 @@ class UncertaintySampler(BaseQuerySampler):
 
 
 class MarginSampler(BaseQuerySampler):
-    """Selects samples with the lowest margin between the first and second classes.
+    """Selects samples with greatest confusion between the top two classes.
 
-    Parameters
-    ----------
-    pipeline : sklearn.Pipeline
-        Pipeline used to determine the prediction confidence. For this method
-        it must be a classifier with a predict_proba method.
-    batch_size : int
-        Number of samples to draw when predicting.
-    verbose : integer, optional
-        The verbosity level
-    Attributes
-    ----------
-    pipeline_ : sklearn.pipeline
-        Pipeline used to predict the class probability.
+    Smallest margin sampling uses the difference of predicted probability between
+    the top two classes to select the samples on which the model is hesitating
+    the most, hence the lowest difference.
+
+    Parameters:
+        classifier (sklearn.BaseEstimator): Classifier used to
+            determine the prediction confidence. The object must
+            comply with scikit-learn interface and expose a
+            `predict_proba` method.
+        batch_size (int): Number of samples to draw when predicting.
+        verbose (int, optional): The verbosity level. Defaults to 0.
+    
+    Attributes:
+        classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
 
     def __init__(self, pipeline, batch_size, verbose=0):
@@ -179,15 +175,13 @@ class MarginSampler(BaseQuerySampler):
 
     def fit(self, X, y):
         """Fit the estimator on labeled samples.
-        Parameters
-        ----------
-        X : {array-like, sparse matrix}, shape (n_samples, n_features)
-            Training data
-        y : numpy array, shape (n_samples,)
-            Target values
-        Returns
-        -------
-        self : returns an instance of self.
+
+        Args:
+            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Training data
+            y (numpy array, shape (n_samples,)): Target values
+
+        Returns:
+            self: An instance of self.
         """
         self._classes = [0, 1]
         
@@ -198,15 +192,12 @@ class MarginSampler(BaseQuerySampler):
 
     def predict(self, X):
         """Selects the samples to annotate from unlabelled data.
-        Parameters
-        ----------
-        X : {array-like, sparse matrix}, shape (n_samples, n_features)
-            Training data
-        y : numpy array, shape (n_samples,)
-            Target values
-        Returns
-        -------
-        self : returns an instance of self.
+
+        Args:
+            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
+
+        Returns:
+            predictions (np.array): Returns an array where selected samples are classified as 1.
         """
         selected_samples = np.zeros(X.shape[0])
         index, confidence = margin_sampling(self.pipeline_, X, n_instances=X.shape[0])
@@ -221,21 +212,22 @@ class MarginSampler(BaseQuerySampler):
 
 
 class EntropySampler(BaseQuerySampler):
-    """Selects samples with highest entropy.
+    """Selects samples with greatest entropy among all class probabilities.
 
-    Parameters
-    ----------
-    pipeline : sklearn.Pipeline
-        Pipeline used to determine the prediction confidence. For this method
-        it must be a classifier with a predict_proba method.
-    batch_size : int
-        Number of samples to draw when predicting.
-    verbose : integer, optional
-        The verbosity level
-    Attributes
-    ----------
-    pipeline_ : sklearn.pipeline
-        Pipeline used to predict the class probability.
+    Greatest entropy sampling measures the uncertainty of the model over all
+    classes through the entropy of the probabilites of all classes. Highest
+    entropy samples are selected.
+
+    Parameters:
+        classifier (sklearn.BaseEstimator): Classifier used to
+            determine the prediction confidence. The object must
+            comply with scikit-learn interface and expose a
+            `predict_proba` method.
+        batch_size (int): Number of samples to draw when predicting.
+        verbose (int, optional): The verbosity level. Defaults to 0.
+    
+    Attributes:
+        classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
 
     def __init__(self, pipeline, batch_size, verbose=0):
@@ -247,15 +239,13 @@ class EntropySampler(BaseQuerySampler):
 
     def fit(self, X, y):
         """Fit the estimator on labeled samples.
-        Parameters
-        ----------
-        X : {array-like, sparse matrix}, shape (n_samples, n_features)
-            Training data
-        y : numpy array, shape (n_samples,)
-            Target values
-        Returns
-        -------
-        self : returns an instance of self.
+
+        Args:
+            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Training data
+            y (numpy array, shape (n_samples,)): Target values
+
+        Returns:
+            self: An instance of self.
         """
         self._classes = [0, 1]
         
@@ -266,15 +256,12 @@ class EntropySampler(BaseQuerySampler):
 
     def predict(self, X):
         """Selects the samples to annotate from unlabelled data.
-        Parameters
-        ----------
-        X : {array-like, sparse matrix}, shape (n_samples, n_features)
-            Training data
-        y : numpy array, shape (n_samples,)
-            Target values
-        Returns
-        -------
-        self : returns an instance of self.
+
+        Args:
+            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
+
+        Returns:
+            predictions (np.array): Returns an array where selected samples are classified as 1.
         """
         selected_samples = np.zeros(X.shape[0])
         index, confidence = entropy_sampling(self.pipeline_, X, n_instances=X.shape[0])
