@@ -106,7 +106,7 @@ class ConfidenceSampler(BaseQuerySampler):
 
     def __init__(self, classifier, batch_size, verbose=0):
         super().__init__()
-        # TODO: can we check that the pipeline has a predict_proba?
+        # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.batch_size = batch_size
         self.verbose = verbose
@@ -122,7 +122,7 @@ class ConfidenceSampler(BaseQuerySampler):
             self: An instance of self.
         """
         # We delegate pretty much everything to the estimator
-        self.pipeline_.fit(X, y)
+        self.classifier_.fit(X, y)
         
         return self
 
@@ -166,10 +166,10 @@ class MarginSampler(BaseQuerySampler):
         classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
 
-    def __init__(self, pipeline, batch_size, verbose=0):
+    def __init__(self, classifier, batch_size, verbose=0):
         super().__init__()
-        # TODO: can we check that the pipeline has a predict_proba?
-        self.pipeline_ = pipeline
+        # TODO: can we check that the classifier has a predict_proba?
+        self.classifier_ = classifier
         self.batch_size = batch_size
         self.verbose = verbose
 
@@ -183,10 +183,8 @@ class MarginSampler(BaseQuerySampler):
         Returns:
             self: An instance of self.
         """
-        self._classes = [0, 1]
-        
         # We delegate pretty much everything to the estimator
-        self.pipeline_.fit(X, y)
+        self.classifier_.fit(X, y)
         
         return self
 
@@ -200,7 +198,7 @@ class MarginSampler(BaseQuerySampler):
             predictions (np.array): Returns an array where selected samples are classified as 1.
         """
         selected_samples = np.zeros(X.shape[0])
-        index, confidence = margin_sampling(self.pipeline_, X, n_instances=X.shape[0])
+        index, confidence = margin_sampling(self.classifier_, X, n_instances=X.shape[0])
         
         self.confidence_ = confidence
         index = index[:self.batch_size]
@@ -230,10 +228,10 @@ class EntropySampler(BaseQuerySampler):
         classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
 
-    def __init__(self, pipeline, batch_size, verbose=0):
+    def __init__(self, classifier, batch_size, verbose=0):
         super().__init__()
-        # TODO: can we check that the pipeline has a predict_proba?
-        self.pipeline_ = pipeline
+        # TODO: can we check that the classifier has a predict_proba?
+        self.classifier_ = classifier
         self.batch_size = batch_size
         self.verbose = verbose
 
@@ -247,10 +245,8 @@ class EntropySampler(BaseQuerySampler):
         Returns:
             self: An instance of self.
         """
-        self._classes = [0, 1]
-        
         # We delegate pretty much everything to the estimator
-        self.pipeline_.fit(X, y)
+        self.classifier_.fit(X, y)
         
         return self
 
@@ -264,7 +260,7 @@ class EntropySampler(BaseQuerySampler):
             predictions (np.array): Returns an array where selected samples are classified as 1.
         """
         selected_samples = np.zeros(X.shape[0])
-        index, confidence = entropy_sampling(self.pipeline_, X, n_instances=X.shape[0])
+        index, confidence = entropy_sampling(self.classifier_, X, n_instances=X.shape[0])
         
         self.confidence_ = confidence
         index = index[:self.batch_size]
