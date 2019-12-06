@@ -1,11 +1,12 @@
 """
 Lowest confidence vs. Random sampling
-=====
+=====================================
 
 The simplest way ton convince ourselves that active learning actually
 works is to first test it on simulated data. In this example, we will
 generate a simple classification task and see how active learning allows
 ont to converge faster toward the best result.
+
 """
 
 
