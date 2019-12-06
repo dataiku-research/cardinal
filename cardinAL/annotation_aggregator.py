@@ -1,3 +1,7 @@
+"""
+Annotation aggregation
+"""
+
 import numpy as np
 from snorkel.labeling import LabelModel
 
