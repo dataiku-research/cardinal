@@ -1,0 +1,79 @@
+.. Please when editing this file make sure to keep it matching the
+   docs in ../configuration.rst:reference_to_examples
+
+cardinAL.uncertainty
+====================
+
+.. automodule:: cardinAL.uncertainty
+
+   
+   
+
+   Functions
+   ---------
+
+   
+
+   .. autofunction:: confidence_sampling
+
+   .. include:: backreferences/cardinAL.uncertainty.confidence_sampling.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+
+   .. autofunction:: entropy_sampling
+
+   .. include:: backreferences/cardinAL.uncertainty.entropy_sampling.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+
+   .. autofunction:: margin_sampling
+
+   .. include:: backreferences/cardinAL.uncertainty.margin_sampling.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   
+   
+
+   
+   
+
+   Classes
+   -------
+
+   
+   .. autoclass:: ConfidenceSampler
+      :members:
+
+   .. include:: backreferences/cardinAL.uncertainty.ConfidenceSampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   .. autoclass:: EntropySampler
+      :members:
+
+   .. include:: backreferences/cardinAL.uncertainty.EntropySampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   .. autoclass:: MarginSampler
+      :members:
+
+   .. include:: backreferences/cardinAL.uncertainty.MarginSampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   
+   
+
+   
+   
+   

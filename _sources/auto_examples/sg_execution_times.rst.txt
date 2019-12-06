@@ -1,0 +1,12 @@
+
+:orphan:
+
+.. _sphx_glr_auto_examples_sg_execution_times:
+
+Computation times
+=================
+**00:01.671** total execution time for **auto_examples** files:
+
++-----------------------------------------------------------------------------------------------+-----------+---------+
+| :ref:`sphx_glr_auto_examples_plot_random_vs_confidence.py` (``plot_random_vs_confidence.py``) | 00:01.671 | 17.8 MB |
++-----------------------------------------------------------------------------------------------+-----------+---------+

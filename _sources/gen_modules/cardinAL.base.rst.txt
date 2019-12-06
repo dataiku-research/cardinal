@@ -1,0 +1,41 @@
+.. Please when editing this file make sure to keep it matching the
+   docs in ../configuration.rst:reference_to_examples
+
+cardinAL.base
+=============
+
+.. automodule:: cardinAL.base
+
+   
+   
+   
+
+   
+   
+
+   Classes
+   -------
+
+   
+   .. autoclass:: BaseQuerySampler
+      :members:
+
+   .. include:: backreferences/cardinAL.base.BaseQuerySampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   .. autoclass:: ChainQuerySampler
+      :members:
+
+   .. include:: backreferences/cardinAL.base.ChainQuerySampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   
+   
+
+   
+   
+   

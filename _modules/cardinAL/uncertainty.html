@@ -1,0 +1,487 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cardinAL.uncertainty &mdash; cardinAL 0.0.1-git documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> cardinAL
+          
+
+          
+            
+            <img src="../../_static/cardinal.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+      <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Versions</span>
+        v: stable
+        <span class="fa fa-caret-down"></span>
+      </span>
+      <div class="rst-other-versions">
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="https://sphinx-gallery.github.io/dev">dev</a></dd>
+          
+            <dd><a href="https://sphinx-gallery.github.io/stable">stable</a></dd>
+          
+        </dl>
+      </div>
+    </div>
+
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Using cardinAL</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to active learning</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Example galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API and developer reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">cardinAL’s API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku/cardinAL">Fork cardinAL on Github</a></li>
+</ul>
+
+            
+          
+
+  
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">cardinAL</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>cardinAL.uncertainty</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cardinAL.uncertainty</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn.exceptions</span> <span class="k">import</span> <span class="n">NotFittedError</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">entropy</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">BaseQuerySampler</span>
+
+
+<span class="k">def</span> <span class="nf">_get_probability_classes</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">Model</span><span class="p">):</span>  <span class="c1"># Keras models have no predict_proba</span>
+            <span class="n">classwise_uncertainty</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># sklearn model</span>
+            <span class="n">classwise_uncertainty</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">NotFittedError</span><span class="p">:</span>
+        <span class="k">raise</span>
+    <span class="k">return</span> <span class="n">classwise_uncertainty</span>
+
+
+<div class="viewcode-block" id="confidence_sampling"><a class="viewcode-back" href="../../gen_modules/cardinAL.uncertainty.html#cardinAL.uncertainty.confidence_sampling">[docs]</a><span class="k">def</span> <span class="nf">confidence_sampling</span><span class="p">(</span><span class="n">classifier</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                        <span class="n">n_instances</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Lowest confidence sampling query strategy. Selects the least sure instances for labelling.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        classifier: The classifier for which the labels are to be queried.</span>
+<span class="sd">        X: The pool of samples to query from.</span>
+<span class="sd">        n_instances: Number of samples to be queried.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The indices of the instances from X chosen to be labelled;</span>
+<span class="sd">        the instances from X chosen to be labelled.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">classwise_uncertainty</span> <span class="o">=</span> <span class="n">_get_probability_classes</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+        
+    <span class="c1"># for each point, select the maximum uncertainty</span>
+    <span class="n">uncertainty</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">classwise_uncertainty</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">uncertainty</span><span class="p">))[:</span><span class="n">n_instances</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">index</span><span class="p">,</span> <span class="n">uncertainty</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="margin_sampling"><a class="viewcode-back" href="../../gen_modules/cardinAL.uncertainty.html#cardinAL.uncertainty.margin_sampling">[docs]</a><span class="k">def</span> <span class="nf">margin_sampling</span><span class="p">(</span><span class="n">classifier</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                    <span class="n">n_instances</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Margin sampling query strategy, selects the samples with lowest difference between top 2 probabilities.</span>
+
+<span class="sd">    This strategy takes the probabilities of top two classes and uses their</span>
+<span class="sd">    difference as a score for selection.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        classifier: The classifier for which the labels are to be queried.</span>
+<span class="sd">        X: The pool of samples to query from.</span>
+<span class="sd">        n_instances: Number of samples to be queried.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The indices of the instances from X chosen to be labelled;</span>
+<span class="sd">        the instances from X chosen to be labelled.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">classwise_uncertainty</span> <span class="o">=</span> <span class="n">_get_probability_classes</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+
+    <span class="n">part</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">classwise_uncertainty</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">margin</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">part</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">part</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">margin</span><span class="p">))[:</span><span class="n">n_instances</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">index</span><span class="p">,</span> <span class="n">margin</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="entropy_sampling"><a class="viewcode-back" href="../../gen_modules/cardinAL.uncertainty.html#cardinAL.uncertainty.entropy_sampling">[docs]</a><span class="k">def</span> <span class="nf">entropy_sampling</span><span class="p">(</span><span class="n">classifier</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                     <span class="n">n_instances</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Entropy sampling query strategy, uses entropy of all probabilities as score.</span>
+
+<span class="sd">    This strategy selects the samples with the highest entropy in their prediction</span>
+<span class="sd">    probabilities.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        classifier: The classifier for which the labels are to be queried.</span>
+<span class="sd">        X: The pool of samples to query from.</span>
+<span class="sd">        n_instances: Number of samples to be queried.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The indices of the instances from X chosen to be labelled;</span>
+<span class="sd">        the instances from X chosen to be labelled.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">classwise_uncertainty</span> <span class="o">=</span> <span class="n">_get_probability_classes</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+    
+    <span class="n">entropies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">entropy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">classwise_uncertainty</span><span class="p">)))</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">entropies</span><span class="p">))[:</span><span class="n">n_instances</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">index</span><span class="p">,</span> <span class="n">entropies</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ConfidenceSampler"><a class="viewcode-back" href="../../gen_modules/cardinAL.uncertainty.html#cardinAL.uncertainty.ConfidenceSampler">[docs]</a><span class="k">class</span> <span class="nc">ConfidenceSampler</span><span class="p">(</span><span class="n">BaseQuerySampler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Selects samples with lowest prediction confidence.</span>
+
+<span class="sd">    Lowest confidence sampling looks at the probability of the class predicted by</span>
+<span class="sd">    the classifier and selects the samples where this probability is the lowest.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        classifier (sklearn.BaseEstimator): Classifier used to</span>
+<span class="sd">            determine the prediction confidence. The object must</span>
+<span class="sd">            comply with scikit-learn interface and expose a</span>
+<span class="sd">            `predict_proba` method.</span>
+<span class="sd">        batch_size (int): Number of samples to draw when predicting.</span>
+<span class="sd">        verbose (int, optional): The verbosity level. Defaults to 0.</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        classifier_ (sklearn.BaseEstimator): The fitted classifier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classifier</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># TODO: can we check that the classifier has a predict_proba?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier_</span> <span class="o">=</span> <span class="n">classifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+<div class="viewcode-block" id="ConfidenceSampler.fit"><a class="viewcode-back" href="../../gen_modules/cardinAL.uncertainty.html#cardinAL.uncertainty.ConfidenceSampler.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fit the estimator on labeled samples.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Training data</span>
+<span class="sd">            y (numpy array, shape (n_samples,)): Target values</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            self: An instance of self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># We delegate pretty much everything to the estimator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier_</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="ConfidenceSampler.predict"><a class="viewcode-back" href="../../gen_modules/cardinAL.uncertainty.html#cardinAL.uncertainty.ConfidenceSampler.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Selects the samples to annotate from unlabelled data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            predictions (np.array): Returns an array where selected samples are classified as 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">selected_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">index</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">confidence_sampling</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classifier_</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">n_instances</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">confidence_</span> <span class="o">=</span> <span class="n">confidence</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">]</span>
+        
+        <span class="n">selected_samples</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels_</span> <span class="o">=</span> <span class="n">selected_samples</span>
+
+        <span class="k">return</span> <span class="n">selected_samples</span></div></div>
+
+
+<div class="viewcode-block" id="MarginSampler"><a class="viewcode-back" href="../../gen_modules/cardinAL.uncertainty.html#cardinAL.uncertainty.MarginSampler">[docs]</a><span class="k">class</span> <span class="nc">MarginSampler</span><span class="p">(</span><span class="n">BaseQuerySampler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Selects samples with greatest confusion between the top two classes.</span>
+
+<span class="sd">    Smallest margin sampling uses the difference of predicted probability between</span>
+<span class="sd">    the top two classes to select the samples on which the model is hesitating</span>
+<span class="sd">    the most, hence the lowest difference.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        classifier (sklearn.BaseEstimator): Classifier used to</span>
+<span class="sd">            determine the prediction confidence. The object must</span>
+<span class="sd">            comply with scikit-learn interface and expose a</span>
+<span class="sd">            `predict_proba` method.</span>
+<span class="sd">        batch_size (int): Number of samples to draw when predicting.</span>
+<span class="sd">        verbose (int, optional): The verbosity level. Defaults to 0.</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        classifier_ (sklearn.BaseEstimator): The fitted classifier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classifier</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># TODO: can we check that the classifier has a predict_proba?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier_</span> <span class="o">=</span> <span class="n">classifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+<div class="viewcode-block" id="MarginSampler.fit"><a class="viewcode-back" href="../../gen_modules/cardinAL.uncertainty.html#cardinAL.uncertainty.MarginSampler.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fit the estimator on labeled samples.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Training data</span>
+<span class="sd">            y (numpy array, shape (n_samples,)): Target values</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            self: An instance of self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># We delegate pretty much everything to the estimator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier_</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="MarginSampler.predict"><a class="viewcode-back" href="../../gen_modules/cardinAL.uncertainty.html#cardinAL.uncertainty.MarginSampler.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Selects the samples to annotate from unlabelled data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            predictions (np.array): Returns an array where selected samples are classified as 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">selected_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">index</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">margin_sampling</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classifier_</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">n_instances</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">confidence_</span> <span class="o">=</span> <span class="n">confidence</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">]</span>
+        
+        <span class="n">selected_samples</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels_</span> <span class="o">=</span> <span class="n">selected_samples</span>
+
+        <span class="k">return</span> <span class="n">selected_samples</span></div></div>
+
+
+<div class="viewcode-block" id="EntropySampler"><a class="viewcode-back" href="../../gen_modules/cardinAL.uncertainty.html#cardinAL.uncertainty.EntropySampler">[docs]</a><span class="k">class</span> <span class="nc">EntropySampler</span><span class="p">(</span><span class="n">BaseQuerySampler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Selects samples with greatest entropy among all class probabilities.</span>
+
+<span class="sd">    Greatest entropy sampling measures the uncertainty of the model over all</span>
+<span class="sd">    classes through the entropy of the probabilites of all classes. Highest</span>
+<span class="sd">    entropy samples are selected.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        classifier (sklearn.BaseEstimator): Classifier used to</span>
+<span class="sd">            determine the prediction confidence. The object must</span>
+<span class="sd">            comply with scikit-learn interface and expose a</span>
+<span class="sd">            `predict_proba` method.</span>
+<span class="sd">        batch_size (int): Number of samples to draw when predicting.</span>
+<span class="sd">        verbose (int, optional): The verbosity level. Defaults to 0.</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        classifier_ (sklearn.BaseEstimator): The fitted classifier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classifier</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># TODO: can we check that the classifier has a predict_proba?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier_</span> <span class="o">=</span> <span class="n">classifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+<div class="viewcode-block" id="EntropySampler.fit"><a class="viewcode-back" href="../../gen_modules/cardinAL.uncertainty.html#cardinAL.uncertainty.EntropySampler.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fit the estimator on labeled samples.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Training data</span>
+<span class="sd">            y (numpy array, shape (n_samples,)): Target values</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            self: An instance of self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># We delegate pretty much everything to the estimator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier_</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="EntropySampler.predict"><a class="viewcode-back" href="../../gen_modules/cardinAL.uncertainty.html#cardinAL.uncertainty.EntropySampler.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Selects the samples to annotate from unlabelled data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            predictions (np.array): Returns an array where selected samples are classified as 1.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">selected_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">index</span><span class="p">,</span> <span class="n">confidence</span> <span class="o">=</span> <span class="n">entropy_sampling</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classifier_</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">n_instances</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">confidence_</span> <span class="o">=</span> <span class="n">confidence</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">]</span>
+        
+        <span class="n">selected_samples</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels_</span> <span class="o">=</span> <span class="n">selected_samples</span>
+
+        <span class="k">return</span> <span class="n">selected_samples</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019-2019, Dataiku
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
