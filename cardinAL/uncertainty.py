@@ -1,19 +1,20 @@
-from sklearn.exceptions import NotFittedError
-from scipy.stats import entropy
-from sklearn.base import BaseEstimator
 import numpy as np
-from keras.models import Model
+from scipy.stats import entropy
+
+from sklearn.exceptions import NotFittedError
+from sklearn.base import BaseEstimator
+
 from .base import BaseQuerySampler
 
 
 def _get_probability_classes(classifier, X):
-    try:
-        if isinstance(classifier, Model):  # Keras models have no predict_proba
-            classwise_uncertainty = classifier.predict(X)
-        else:  # sklearn model
-            classwise_uncertainty = classifier.predict_proba(X)
-    except NotFittedError:
-        raise
+    # Keras has one peculiar behavior: the predict function act as
+    # a predict_proba. We use a workaround in that specific case.
+    classifier_module = classifier.__class__.__module__.split('.')[0]
+    if classifier_module == 'keras':
+        classwise_uncertainty = classifier.predict(X)
+    else:  # sklearn or custom model
+        classwise_uncertainty = classifier.predict_proba(X)
     return classwise_uncertainty
 
 
