@@ -1,7 +1,7 @@
 from .base import BaseQuerySampler
 import numpy as np
 from sklearn.cluster import KMeans
-from .uncertainty import UncertaintySampler
+from .uncertainty import ConfidenceSampler
 
 
 class KCentroidSampler(BaseQuerySampler):
@@ -90,7 +90,7 @@ class WKMeansSampler(BaseQuerySampler):
     def __init__(self, pipeline, beta, batch_size, verbose=0, **kmeans_args):
         super().__init__()
 
-        self.uncertainty = UncertaintySampler(
+        self.uncertainty = ConfidenceSampler(
             pipeline,
             beta * batch_size,
             verbose)

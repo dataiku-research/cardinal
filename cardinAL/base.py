@@ -49,7 +49,9 @@ class ChainQuerySampler(BaseQuerySampler):
         selected = self.sampler_list[0].predict(X).astype(bool)
 
         for sampler in self.sampler_list[1:]:
-            new_selected = sampler.fit_predict(X[selected])
+            # for some reason, fit_predict is not working
+            sampler.fit(X)
+            new_selected = sampler.predict(X[selected])
             selected[selected] = new_selected
         
         return selected
