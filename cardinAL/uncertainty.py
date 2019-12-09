@@ -2,7 +2,6 @@ from sklearn.exceptions import NotFittedError
 from scipy.stats import entropy
 from sklearn.base import BaseEstimator
 import numpy as np
-from keras.models import Model
 from .base import BaseQuerySampler
 
 
