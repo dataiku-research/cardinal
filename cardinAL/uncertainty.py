@@ -7,7 +7,7 @@ from .base import BaseQuerySampler
 
 def _get_probability_classes(classifier, X):
 
-    if classifier.__class__.__name__.split('.')[0] == 'keras':  # Keras models have no predict_proba
+    if classifier.__class__.__module__.split('.')[0] == 'keras':  # Keras models have no predict_proba
         classwise_uncertainty = classifier.predict(X)
     else:  # sklearn compatible model
         classwise_uncertainty = classifier.predict_proba(X)
