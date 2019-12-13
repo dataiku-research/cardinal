@@ -2,13 +2,13 @@ from sklearn.exceptions import NotFittedError
 from scipy.stats import entropy
 from sklearn.base import BaseEstimator
 import numpy as np
-from keras.models import Model
 from .base import BaseQuerySampler
 
 
 def _get_probability_classes(classifier, X):
-
-    if classifier.__class__.__module__.split('.')[0] == 'keras':  # Keras models have no predict_proba
+    if classifier == 'precomputed':
+        return X
+    elif classifier.__class__.__module__.split('.')[0] == 'keras':  # Keras models have no predict_proba
         classwise_uncertainty = classifier.predict(X)
     else:  # sklearn compatible model
         classwise_uncertainty = classifier.predict_proba(X)
@@ -96,18 +96,22 @@ class ConfidenceSampler(BaseQuerySampler):
             comply with scikit-learn interface and expose a
             `predict_proba` method.
         batch_size (int): Number of samples to draw when predicting.
+        assume_fitted (bool): If true, classifier is not refit
         verbose (int, optional): The verbosity level. Defaults to 0.
     
     Attributes:
         classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
 
-    def __init__(self, classifier, batch_size, verbose=0):
+    def __init__(self, classifier, batch_size, assume_fitted=False, verbose=0):
         super().__init__()
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.batch_size = batch_size
+        self.assume_fitted = assume_fitted
         self.verbose = verbose
+        if self.classifier = 'precomputed':
+            self.assume_fitted = True
 
     def fit(self, X, y):
         """Fit the estimator on labeled samples.
@@ -119,9 +123,8 @@ class ConfidenceSampler(BaseQuerySampler):
         Returns:
             self: An instance of self.
         """
-        # We delegate pretty much everything to the estimator
-        self.classifier_.fit(X, y)
-        
+        if not self.assume_fitted:
+            self.classifier_.fit(X, y)
         return self
 
     def predict(self, X):
@@ -158,19 +161,22 @@ class MarginSampler(BaseQuerySampler):
             comply with scikit-learn interface and expose a
             `predict_proba` method.
         batch_size (int): Number of samples to draw when predicting.
+        assume_fitted (bool): If true, classifier is not refit
         verbose (int, optional): The verbosity level. Defaults to 0.
     
     Attributes:
         classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
 
-    def __init__(self, classifier, batch_size, verbose=0, refit=True):
+    def __init__(self, classifier, batch_size, assume_fitted=False, verbose=0):
         super().__init__()
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.batch_size = batch_size
+        self.assume_fitted = assume_fitted
         self.verbose = verbose
-        self.refit = refit
+        if self.classifier = 'precomputed':
+            self.assume_fitted = True
 
     def fit(self, X, y):
         """Fit the estimator on labeled samples.
@@ -182,10 +188,8 @@ class MarginSampler(BaseQuerySampler):
         Returns:
             self: An instance of self.
         """
-        # We delegate pretty much everything to the estimator
-        if self.refit:
+        if not self.assume_fitted:
             self.classifier_.fit(X, y)
-        
         return self
 
     def predict(self, X):
@@ -222,18 +226,22 @@ class EntropySampler(BaseQuerySampler):
             comply with scikit-learn interface and expose a
             `predict_proba` method.
         batch_size (int): Number of samples to draw when predicting.
+        assume_fitted (bool): If true, classifier is not refit
         verbose (int, optional): The verbosity level. Defaults to 0.
     
     Attributes:
         classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
 
-    def __init__(self, classifier, batch_size, verbose=0):
+    def __init__(self, classifier, batch_size, assume_fitted=False, verbose=0):
         super().__init__()
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.batch_size = batch_size
+        self.assume_fitted = assume_fitted
         self.verbose = verbose
+        if self.classifier = 'precomputed':
+            self.assume_fitted = True
 
     def fit(self, X, y):
         """Fit the estimator on labeled samples.
@@ -245,9 +253,8 @@ class EntropySampler(BaseQuerySampler):
         Returns:
             self: An instance of self.
         """
-        # We delegate pretty much everything to the estimator
-        self.classifier_.fit(X, y)
-        
+        if not self.assume_fitted:
+            self.classifier_.fit(X, y)
         return self
 
     def predict(self, X):
