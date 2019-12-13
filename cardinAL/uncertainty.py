@@ -110,7 +110,7 @@ class ConfidenceSampler(BaseQuerySampler):
         self.batch_size = batch_size
         self.assume_fitted = assume_fitted
         self.verbose = verbose
-        if self.classifier == 'precomputed':
+        if self.classifier_ == 'precomputed':
             self.assume_fitted = True
 
     def fit(self, X, y):
@@ -175,7 +175,7 @@ class MarginSampler(BaseQuerySampler):
         self.batch_size = batch_size
         self.assume_fitted = assume_fitted
         self.verbose = verbose
-        if self.classifier == 'precomputed':
+        if self.classifier_ == 'precomputed':
             self.assume_fitted = True
 
     def fit(self, X, y):
@@ -240,7 +240,7 @@ class EntropySampler(BaseQuerySampler):
         self.batch_size = batch_size
         self.assume_fitted = assume_fitted
         self.verbose = verbose
-        if self.classifier == 'precomputed':
+        if self.classifier_ == 'precomputed':
             self.assume_fitted = True
 
     def fit(self, X, y):
