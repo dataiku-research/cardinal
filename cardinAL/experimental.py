@@ -2,6 +2,8 @@ import numpy as np
 from .base import BaseQuerySampler
 from sklearn.base import clone
 from sklearn.exceptions import NotFittedError
+from .uncertainty import _get_probability_classes, confidence_sampling
+from .clustering import KMeansSampler
 
 
 class DeltaSampler(BaseQuerySampler):
@@ -89,3 +91,43 @@ class DeltaSampler(BaseQuerySampler):
         self.labels_ = selected_samples
 
         return selected_samples
+
+
+class ProbaKMeans(BaseQuerySampler):
+    """Does stuff
+    """
+
+    def __init__(self, classifier, batch_size, assume_fitted=False, verbose=0, **kmeans_args):
+        super().__init__()
+        # TODO: can we check that the classifier has a predict_proba?
+        self.classifier_ = classifier
+        self.assume_fitted = assume_fitted
+
+        self.kmeans = KMeansSampler(
+            batch_size,
+            verbose, **kmeans_args)
+        self.batch_size = batch_size
+        self.verbose = verbose
+        if self.classifier_ == 'precomputed':
+            self.assume_fitted = True
+
+
+    def fit(self, X, y):
+        """Fit the estimator on labeled samples.
+
+        Args:
+            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Training data
+            y (numpy array, shape (n_samples,)): Target values
+
+        Returns:
+            self: An instance of self.
+        """
+        if not self.assume_fitted:
+            self.classifier_.fit(X, y)
+        return self
+
+    def predict(self, X):
+        proba = _get_probability_classes(self.classifier_, X)
+        uncertainty = 1 - np.max(proba, axis=1)
+        selected = self.kmeans.predict(proba, sample_weight=uncertainty)
+        return selected.astype(int)

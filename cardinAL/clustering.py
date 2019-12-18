@@ -105,6 +105,6 @@ class WKMeansSampler(BaseQuerySampler):
     def predict(self, X):
         selected = self.uncertainty.predict(X).astype(bool)
         X_selected = X[selected]
-        k_selected = self.kmeans.predict(X_selected)
+        k_selected = self.kmeans.predict(X_selected, sample_weight=self.uncertainty.confidence_)
         selected[selected] = k_selected
         return selected.astype(int)
