@@ -16,8 +16,6 @@ class RankedBatchSampler(BaseQuerySampler):
     ----------
     query_sampler : cardinAL.BaseQuerySampler
         A query sampler which scores will be used to score the batch of samples
-    alpha: float, optional
-        Weight of the sample similarity in the final score.
     TODO This is a duplicate of the property in the query_sampler
     batch_size : int
         Number of samples to draw when predicting.
@@ -29,10 +27,9 @@ class RankedBatchSampler(BaseQuerySampler):
         Pipeline used to predict the class probability.
     """
 
-    def __init__(self, query_sampler, alpha, batch_size, verbose=0):
+    def __init__(self, query_sampler, batch_size, verbose=0):
         super().__init__()
         self.query_sampler = query_sampler
-        self.alpha = alpha
         self.batch_size = batch_size
         self.verbose = verbose
 
@@ -76,10 +73,8 @@ class RankedBatchSampler(BaseQuerySampler):
         self : returns an instance of self.
         """
 
-        if self.alpha == 'auto':
-            alpha = X.shape[0] / (X.shape[0] + self.X_train.shape[0])
-        else:
-            alpha = self.alpha
+        n_unlabeled = X.shape[0]
+        n_labeled = self.X_train.shape[0]
 
         # UGLY This is done to get the prediction scores.
         # There are several options to avoid this:
@@ -91,13 +86,13 @@ class RankedBatchSampler(BaseQuerySampler):
 
         # We compute the distances for labeled data
         # TODO: can be parallelized
-        distances = pairwise_distances(X, self.X_train, metric='euclidean').min(axis=1)
+        similarity_scores = 1 / (1 + pairwise_distances(X, self.X_train, metric='euclidean').min(axis=1))
 
         selected_samples = np.zeros(X.shape[0])
 
         for _ in range(self.batch_size):
 
-            similarity_scores = 1 / (1 + distances)
+            alpha = n_unlabeled / (n_unlabeled + n_labeled)
             scores = alpha * (1 - similarity_scores) + (1 - alpha) * uncertainty
 
             idx_furthest = np.argmax(scores)
@@ -105,7 +100,10 @@ class RankedBatchSampler(BaseQuerySampler):
 
             # Update the distances considering this sample as reference one
             distances_to_furthest = pairwise_distances(X, X[idx_furthest, None], metric='euclidean')[:, 0]
-            distances = np.min([distances, distances_to_furthest], axis=0)
+            similarity_scores = np.max([similarity_scores, 1 / (1 + distances_to_furthest)], axis=0)
+
+            n_labeled += 1
+            n_unlabeled -= 1
 
         return selected_samples
 
