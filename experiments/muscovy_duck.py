@@ -4,12 +4,12 @@
 import itertools
 import os
 import numpy as np
-import shutil
 from sklearn.utils import check_random_state
 
 
 class IncompatibleStepError(Exception):
     pass
+
 
 def robust_load(path):
     if os.path.isdir(path):
@@ -251,6 +251,7 @@ def random_sampler_step(data):
     from cardinAL.random import RandomSampler
 
     return dict(sampler=RandomSampler(batch_size=data['batch_size'], random_state=data['random_state']))
+
 
 def sampler_step(clazz, *args, **kwargs):
     return lambda data: dict(sampler=clazz(batch_size=data['batch_size'], *args, **kwargs))
