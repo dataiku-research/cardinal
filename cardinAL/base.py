@@ -23,7 +23,7 @@ class BaseQuerySampler(ClusterMixin, TransformerMixin, BaseEstimator):
 
 
 class ChainQuerySampler(BaseQuerySampler):
-    """Allows to whain query sampling methods
+    """Allows to chain query sampling methods
     This strategy is usually used to chain a simple query sampler with a
     more complex one. The first query sampler is used to reduce the
     dimensionality.
