@@ -11,7 +11,7 @@ from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import check_random_state
-from cardinAL.uncertainty import MarginSampler, EntropySampler
+from cardinAL.uncertainty import MarginSampler, EntropySampler, margin_sampling
 from cardinAL.random import RandomSampler
 from cardinAL.submodularity import SubmodularSampler
 from cardinAL.clustering import KMeansSampler, WKMeansSampler
@@ -20,6 +20,8 @@ from cardinAL.experimental import DeltaSampler
 from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import pairwise_distances
+from sklearn.semi_supervised import LabelSpreading
+from scipy.sparse import vstack
 
 
 # This example is drawn from the sklearn gallery and adapted for active learning
@@ -37,6 +39,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import check_random_state
+from cardinAL.base import BaseQuerySampler
 from cardinAL.uncertainty import MarginSampler, ConfidenceSampler, EntropySampler
 from cardinAL.random import RandomSampler
 from cardinAL.submodularity import SubmodularSampler
@@ -101,8 +104,88 @@ def create_sklearn_log(data):
 
 bencher.register_step('create_model', 'sklearn-log', create_sklearn_log)
 
+
+
+class MarginSSLSampler(BaseQuerySampler):
+    """Selects samples with greatest confusion between the top two classes.
+
+    Smallest margin sampling uses the difference of predicted probability between
+    the top two classes to select the samples on which the model is hesitating
+    the most, hence the lowest difference.
+
+    Parameters:
+        classifier (sklearn.BaseEstimator): Classifier used to
+            determine the prediction confidence. The object must
+            comply with scikit-learn interface and expose a
+            `predict_proba` method.
+        batch_size (int): Number of samples to draw when predicting.
+        assume_fitted (bool): If true, classifier is not refit
+        verbose (int, optional): The verbosity level. Defaults to 0.
+    
+    Attributes:
+        classifier_ (sklearn.BaseEstimator): The fitted classifier.
+    """
+
+    def __init__(self, classifier, batch_size, assume_fitted=False, verbose=0):
+        super().__init__()
+        # TODO: can we check that the classifier has a predict_proba?
+        self.classifier_ = classifier
+        self.batch_size = batch_size
+        self.assume_fitted = assume_fitted
+        self.verbose = verbose
+        if self.classifier_ == 'precomputed':
+            self.assume_fitted = True
+
+    def fit(self, X, y):
+        """Fit the estimator on labeled samples.
+
+        Args:
+            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Training data
+            y (numpy array, shape (n_samples,)): Target values
+
+        Returns:
+            self: An instance of self.
+        """
+        self.X_train = X
+        self.y_train = y
+        return self
+
+    def predict(self, X):
+        """Selects the samples to annotate from unlabelled data.
+
+        Args:
+            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
+
+        Returns:
+            predictions (np.array): Returns an array where selected samples are classified as 1.
+        """
+
+        # Train clf
+        n_train, n_test = self.X_train.shape[0], X.shape[0]
+        X_ = vstack([self.X_train, X])
+        # y is of shape n_train + n_test, we fill the test samples with 0 for each class
+        y_ = np.hstack([self.y_train, -np.ones(n_test)])
+        
+        lp_model = LabelSpreading(gamma=.25, max_iter=20)
+        lp_model.fit(X_, y_)
+        predicted_labels = lp_model.transduction_
+        self.classifier_.fit(X_, predicted_labels)
+
+        selected_samples = np.zeros(X.shape[0])
+        index, confidence = margin_sampling(self.classifier_, X, n_instances=X.shape[0])
+        
+        self.confidence_ = confidence
+        index = index[:self.batch_size]
+        
+        selected_samples[index] = 1
+        self.labels_ = selected_samples
+
+        return selected_samples
+
+
 bencher.register_step('create_sampler', 'random', random_sampler_step)
 bencher.register_step('create_sampler', 'margin', lambda data: dict(sampler=MarginSampler(data['clf'], batch_size=data['batch_size'], assume_fitted=True)))
+bencher.register_step('create_sampler', 'margin_ssl', lambda data: dict(sampler=MarginSSLSampler(data['clf'], batch_size=data['batch_size'], assume_fitted=True)))
 #bencher.register_step('create_sampler', 'uncertainty', lambda data: dict(sampler=ConfidenceSampler(data['clf'], batch_size=data['batch_size'])))
 #bencher.register_step('create_sampler', 'entropy', lambda data: dict(sampler=EntropySampler(data['clf'], batch_size=data['batch_size'])))
 
