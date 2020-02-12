@@ -44,7 +44,7 @@ class KCentroidSampler(BaseQuerySampler):
         self._classes = [0, 1]  
         return self
 
-    def predict(self, X, sample_weight=None):
+    def select_samples(self, X, sample_weight=None):
         """Fits clustering on the samples and select the ones closest to centroids.
         Parameters
         ----------
@@ -58,9 +58,7 @@ class KCentroidSampler(BaseQuerySampler):
         """
         model = self.clustering_.fit(X, sample_weight=sample_weight)
         closest = np.argmin(model.transform(X), axis=0)
-        selected_samples = np.zeros(X.shape[0])
-        selected_samples[closest] = 1
-        return selected_samples
+        return closest
 
 
 class KMeansSampler(KCentroidSampler):
@@ -102,9 +100,9 @@ class WKMeansSampler(BaseQuerySampler):
     def fit(self, X, y):
         self.uncertainty.fit(X, y)
 
-    def predict(self, X):
-        selected = self.uncertainty.predict(X).astype(bool)
+    def select_samples(self, X):
+        selected = self.uncertainty.select_samples(X)
         X_selected = X[selected]
-        k_selected = self.kmeans.predict(X_selected, sample_weight=self.uncertainty.confidence_)
+        k_selected = self.kmeans.predict(X_selected, sample_weight=self.uncertainty.scores_)
         selected[selected] = k_selected
         return selected.astype(int)

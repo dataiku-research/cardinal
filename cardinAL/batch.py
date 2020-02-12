@@ -45,8 +45,6 @@ class RankedBatchSampler(BaseQuerySampler):
         -------
         self : returns an instance of self.
         """
-        self._classes = [0, 1]
-        
         # We delegate pretty much everything to the estimator
         self.query_sampler.fit(X, y)
 
@@ -60,7 +58,7 @@ class RankedBatchSampler(BaseQuerySampler):
         
         return self
 
-    def predict(self, X):
+    def select_samples(self, X):
         """Selects the samples to annotate from unlabelled data.
         Parameters
         ----------
@@ -82,13 +80,13 @@ class RankedBatchSampler(BaseQuerySampler):
         # - Have a more generic object to make this code easier without copy pasting everything
 
         self.query_sampler.predict(X)
-        uncertainty = self.query_sampler.confidence_
+        uncertainty = self.query_sampler.scores_
 
         # We compute the distances for labeled data
         # TODO: can be parallelized
         similarity_scores = 1 / (1 + pairwise_distances(X, self.X_train, metric='euclidean').min(axis=1))
 
-        selected_samples = np.zeros(X.shape[0])
+        selected_samples = []
 
         for _ in range(self.batch_size):
 
@@ -96,7 +94,7 @@ class RankedBatchSampler(BaseQuerySampler):
             scores = alpha * (1 - similarity_scores) + (1 - alpha) * uncertainty
 
             idx_furthest = np.argmax(scores)
-            selected_samples[idx_furthest] = 1
+            selected_samples.append(idx_furthest)
 
             # Update the distances considering this sample as reference one
             distances_to_furthest = pairwise_distances(X, X[idx_furthest, None], metric='euclidean')[:, 0]

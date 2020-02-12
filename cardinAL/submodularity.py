@@ -45,11 +45,9 @@ class SubmodularSampler(BaseQuerySampler):
         self._classes = [0, 1]  
         return self
 
-    def predict(self, X):
+    def select_samples(self, X):
         if self.compute_distances:
             model = FacilityLocationSelection(self.batch_size, pairwise_func='precomputed').fit(pairwise_distances(X))
         else:  
             model = FacilityLocationSelection(self.batch_size).fit(X)
-        selected_samples = np.zeros(X.shape[0])
-        selected_samples[model.ranking] = 1
-        return selected_samples
+        return model.ranking
