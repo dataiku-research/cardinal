@@ -15,30 +15,23 @@ def _get_probability_classes(classifier, X):
     return classwise_uncertainty
 
 
-def confidence_sampling(classifier: BaseEstimator, X: np.ndarray,
-                        n_instances: int = 1) -> np.ndarray:
-    """Lowest confidence sampling query strategy. Selects the least sure instances for labelling.
+def confidence_score(classifier: BaseEstimator, X: np.ndarray) -> np.ndarray:
+    """Measure the confidence score of a model for a set of samples.
 
     Args:
         classifier: The classifier for which the labels are to be queried.
         X: The pool of samples to query from.
-        n_instances: Number of samples to be queried.
 
     Returns:
-        The indices of the instances from X chosen to be labelled;
-        the instances from X chosen to be labelled.
+        The confidence score for each sample.
     """
     classwise_uncertainty = _get_probability_classes(classifier, X)
-        
-    # for each point, select the maximum uncertainty
     uncertainty = 1 - np.max(classwise_uncertainty, axis=1)
-    index = np.flip(np.argsort(uncertainty))[:n_instances]
-    
-    return index, uncertainty[index]
+    return uncertainty
 
-def margin_sampling(classifier: BaseEstimator, X: np.ndarray,
-                    n_instances: int = 1) -> np.ndarray:
-    """Margin sampling query strategy, selects the samples with lowest difference between top 2 probabilities.
+
+def margin_score(classifier: BaseEstimator, X: np.ndarray) -> np.ndarray:
+    """Compute the difference between the two top probability classes for each sample. 
 
     This strategy takes the probabilities of top two classes and uses their
     difference as a score for selection.
@@ -46,22 +39,17 @@ def margin_sampling(classifier: BaseEstimator, X: np.ndarray,
     Args:
         classifier: The classifier for which the labels are to be queried.
         X: The pool of samples to query from.
-        n_instances: Number of samples to be queried.
 
     Returns:
-        The indices of the instances from X chosen to be labelled;
-        the instances from X chosen to be labelled.
+        The margin score for each sample.
     """
     classwise_uncertainty = _get_probability_classes(classifier, X)
-
     part = np.partition(classwise_uncertainty, -2, axis=1)
     margin = 1 - (part[:, -1] - part[:, -2])
-    index = np.flip(np.argsort(margin))[:n_instances]
-    
-    return index, margin[index]
+    return margin
 
-def entropy_sampling(classifier: BaseEstimator, X: np.ndarray,
-                     n_instances: int = 1) -> np.ndarray:
+
+def entropy_score(classifier: BaseEstimator, X: np.ndarray) -> np.ndarray:
     """Entropy sampling query strategy, uses entropy of all probabilities as score.
 
     This strategy selects the samples with the highest entropy in their prediction
@@ -73,15 +61,11 @@ def entropy_sampling(classifier: BaseEstimator, X: np.ndarray,
         n_instances: Number of samples to be queried.
 
     Returns:
-        The indices of the instances from X chosen to be labelled;
-        the instances from X chosen to be labelled.
+        The entropy score for each label
     """
     classwise_uncertainty = _get_probability_classes(classifier, X)
-    
     entropies = np.transpose(entropy(np.transpose(classwise_uncertainty)))
-    index = np.flip(np.argsort(entropies))[:n_instances]
-    
-    return index, entropies[index]
+    return entropies
 
 
 class ConfidenceSampler(BaseQuerySampler):
@@ -104,10 +88,9 @@ class ConfidenceSampler(BaseQuerySampler):
     """
 
     def __init__(self, classifier, batch_size, assume_fitted=False, verbose=0):
-        super().__init__()
+        super().__init__(batch_size=batch_size)
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
-        self.batch_size = batch_size
         self.assume_fitted = assume_fitted
         self.verbose = verbose
         if self.classifier_ == 'precomputed':
@@ -127,7 +110,7 @@ class ConfidenceSampler(BaseQuerySampler):
             self.classifier_.fit(X, y)
         return self
 
-    def predict(self, X):
+    def score_samples(self, X):
         """Selects the samples to annotate from unlabelled data.
 
         Args:
@@ -136,16 +119,7 @@ class ConfidenceSampler(BaseQuerySampler):
         Returns:
             predictions (np.array): Returns an array where selected samples are classified as 1.
         """
-        selected_samples = np.zeros(X.shape[0])
-        index, confidence = confidence_sampling(self.classifier_, X, n_instances=X.shape[0])
-        
-        self.confidence_ = confidence
-        index = index[:self.batch_size]
-        
-        selected_samples[index] = 1
-        self.labels_ = selected_samples
-
-        return selected_samples
+        return confidence_score(self.classifier_, X)
 
 
 class MarginSampler(BaseQuerySampler):
@@ -169,10 +143,9 @@ class MarginSampler(BaseQuerySampler):
     """
 
     def __init__(self, classifier, batch_size, assume_fitted=False, verbose=0):
-        super().__init__()
+        super().__init__(batch_size=batch_size)
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
-        self.batch_size = batch_size
         self.assume_fitted = assume_fitted
         self.verbose = verbose
         if self.classifier_ == 'precomputed':
@@ -192,7 +165,7 @@ class MarginSampler(BaseQuerySampler):
             self.classifier_.fit(X, y)
         return self
 
-    def predict(self, X):
+    def score_samples(self, X):
         """Selects the samples to annotate from unlabelled data.
 
         Args:
@@ -201,16 +174,7 @@ class MarginSampler(BaseQuerySampler):
         Returns:
             predictions (np.array): Returns an array where selected samples are classified as 1.
         """
-        selected_samples = np.zeros(X.shape[0])
-        index, confidence = margin_sampling(self.classifier_, X, n_instances=X.shape[0])
-        
-        self.confidence_ = confidence
-        index = index[:self.batch_size]
-        
-        selected_samples[index] = 1
-        self.labels_ = selected_samples
-
-        return selected_samples
+        return margin_score(self.classifier_, X)
 
 
 class EntropySampler(BaseQuerySampler):
@@ -234,10 +198,9 @@ class EntropySampler(BaseQuerySampler):
     """
 
     def __init__(self, classifier, batch_size, assume_fitted=False, verbose=0):
-        super().__init__()
+        super().__init__(batch_size=batch_size)
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
-        self.batch_size = batch_size
         self.assume_fitted = assume_fitted
         self.verbose = verbose
         if self.classifier_ == 'precomputed':
@@ -257,7 +220,7 @@ class EntropySampler(BaseQuerySampler):
             self.classifier_.fit(X, y)
         return self
 
-    def predict(self, X):
+    def score_samples(self, X):
         """Selects the samples to annotate from unlabelled data.
 
         Args:
@@ -266,13 +229,4 @@ class EntropySampler(BaseQuerySampler):
         Returns:
             predictions (np.array): Returns an array where selected samples are classified as 1.
         """
-        selected_samples = np.zeros(X.shape[0])
-        index, confidence = entropy_sampling(self.classifier_, X, n_instances=X.shape[0])
-        
-        self.confidence_ = confidence
-        index = index[:self.batch_size]
-        
-        selected_samples[index] = 1
-        self.labels_ = selected_samples
-
-        return selected_samples
+        return entropy_score(self.classifier_, X)

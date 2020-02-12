@@ -2,6 +2,8 @@
 Base classes
 """
 
+import numpy as np
+
 from sklearn.base import BaseEstimator, ClusterMixin, TransformerMixin
 
 
@@ -15,11 +17,31 @@ class BaseQuerySampler(ClusterMixin, TransformerMixin, BaseEstimator):
     easily dropped since it is more of a hack than a feature.
     """
 
-    def __init__(self):
-        self.labels_ = None
+    def __init__(self, batch_size):
+        self.batch_size = batch_size
+        pass
 
-    def predict(self, X):
+    def fit(self, X, y=None):
+        pass
+
+    def score_samples(self, X):
         raise NotImplementedError
+
+    def select_samples(self, X, strategy='top'):
+        sample_scores = self.score_samples(X)
+        self.sample_scores_ = sample_scores
+        if strategy == 'top':
+            index = np.argsort(sample_scores)[-self.batch_size:]
+        elif strategy == 'linear_choice':
+            index = np.random.choice(
+                np.arange(X.shape[0]), k=self.batch_size,
+                replace=False, p=sample_scores / np.sum(sample_scores))
+        elif strategy == 'squared_choice':
+            sample_scores = sample_scores ** 2
+            index = np.random.choice(
+                np.arange(X.shape[0]), k=self.batch_size,
+                replace=False, p=sample_scores / np.sum(sample_scores))
+        return index
 
 
 class ChainQuerySampler(BaseQuerySampler):
@@ -36,13 +58,12 @@ class ChainQuerySampler(BaseQuerySampler):
         # Fits only the first one. The other will depend on this one.
         self.sampler_list[0].fit(X, y)
     
-    def predict(self, X):
-        selected = self.sampler_list[0].predict(X).astype(bool)
+    def select_samples(self, X, strategy='top'):
+        selected = self.sampler_list[0].select_samples(X, strategy=strategy)
 
         for sampler in self.sampler_list[1:]:
-            # for some reason, fit_predict is not working
             sampler.fit(X)
             new_selected = sampler.predict(X[selected])
-            selected[selected] = new_selected
+            selected = selected[new_selected]
         
         return selected

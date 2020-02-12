@@ -3,37 +3,8 @@ from .base import BaseQuerySampler
 from sklearn.utils import check_random_state
 
 
-def random_sampling(X: np.ndarray,
-                    idx_labeled: np.ndarray = None,
-                    n_instances: int = 1) -> np.ndarray:
-    """
-    Random sampling query strategy. Selects instances randomly
-    
-    Args:
-        X: The pool of samples to query from.
-        idx_labeled: Samples to remove because they have been already labelled
-        n_instances: Number of samples to be queried.
-
-    Returns:
-        The indices of the instances from X chosen to be labelled;
-        the instances from X chosen to be labelled.
-        
-    Note:
-        This class is handy for testing against naive method
-    """
-    unlabeled = np.ones(n_instances)
-    if idx_labeled is not None:
-        unlabeled[idx_labeled] = 0
-    index = np.where(unlabeled)[0]
-    np.random.shuffle(index)
-    index = index[:n_instances]
-    
-    return index, unlabeled[index]
-
-
 class RandomSampler(BaseQuerySampler):
-    """TODO
-    Documentation.
+    """Randomly select samples
 
     Parameters
     ----------
@@ -57,15 +28,10 @@ class RandomSampler(BaseQuerySampler):
     """
 
     def __init__(self, batch_size=0.05, shuffle=True,
-                 verbose=0, random_state=None,
-                 n_iter_no_change=5, class_weight=None):
-        super().__init__()
-        self.batch_size = batch_size
+                 random_state=None):
+        super().__init__(batch_size=batch_size)
         self.shuffle = shuffle
-        self.verbose = verbose
         self.random_state = random_state
-        self.n_iter_no_change = n_iter_no_change
-        self.class_weight = class_weight
 
     def fit(self, X, y):
         """Fit linear model with Stochastic Gradient Descent.
@@ -79,12 +45,8 @@ class RandomSampler(BaseQuerySampler):
         -------
         self : returns an instance of self.
         """
-        self._classes = ['not selected', 'selected']
         self.random_state = check_random_state(self.random_state)
         return self
 
-    def predict(self, X):
-        selected_samples = np.zeros(X.shape[0])
-        selected_samples[:self.batch_size] = 1
-        self.random_state.shuffle(selected_samples)
-        return selected_samples
+    def score_samples(self, X):
+        return self.random_state.rand(X.shape[0])
