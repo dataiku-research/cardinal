@@ -2,7 +2,7 @@ import numpy as np
 from .base import BaseQuerySampler
 from sklearn.base import clone
 from sklearn.exceptions import NotFittedError
-from .uncertainty import _get_probability_classes, confidence_sampling
+from .uncertainty import _get_probability_classes
 from .clustering import KMeansSampler
 
 
