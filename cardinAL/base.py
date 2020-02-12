@@ -1,3 +1,9 @@
+"""
+Base classes
+"""
+
+import numpy as np
+
 from sklearn.base import BaseEstimator, ClusterMixin, TransformerMixin
 
 
@@ -11,28 +17,35 @@ class BaseQuerySampler(ClusterMixin, TransformerMixin, BaseEstimator):
     easily dropped since it is more of a hack than a feature.
     """
 
-    def __init__(self):
-        self.labels_ = None
-        self._transformed = False
+    def __init__(self, batch_size):
+        self.batch_size = batch_size
+        pass
 
-    def predict(self, X):
+    def fit(self, X, y=None):
+        pass
+
+    def score_samples(self, X):
         raise NotImplementedError
 
-    def transform(self, X):
-        self.labels_ = self.predict(X).astype(bool)
-        self._transformed = True
-        return X[self.labels_]
-
-    def inverse_transform(self, X):
-        if not self._transformed:
-            return X
-        unmask = self.labels_.copy()
-        unmask[unmask == 1] = X
-        return unmask
+    def select_samples(self, X, strategy='top'):
+        sample_scores = self.score_samples(X)
+        self.sample_scores_ = sample_scores
+        if strategy == 'top':
+            index = np.argsort(sample_scores)[-self.batch_size:]
+        elif strategy == 'linear_choice':
+            index = np.random.choice(
+                np.arange(X.shape[0]), k=self.batch_size,
+                replace=False, p=sample_scores / np.sum(sample_scores))
+        elif strategy == 'squared_choice':
+            sample_scores = sample_scores ** 2
+            index = np.random.choice(
+                np.arange(X.shape[0]), k=self.batch_size,
+                replace=False, p=sample_scores / np.sum(sample_scores))
+        return index
 
 
 class ChainQuerySampler(BaseQuerySampler):
-    """Allows to whain query sampling methods
+    """Allows to chain query sampling methods
     This strategy is usually used to chain a simple query sampler with a
     more complex one. The first query sampler is used to reduce the
     dimensionality.
@@ -45,13 +58,12 @@ class ChainQuerySampler(BaseQuerySampler):
         # Fits only the first one. The other will depend on this one.
         self.sampler_list[0].fit(X, y)
     
-    def predict(self, X):
-        selected = self.sampler_list[0].predict(X).astype(bool)
+    def select_samples(self, X, strategy='top'):
+        selected = self.sampler_list[0].select_samples(X, strategy=strategy)
 
         for sampler in self.sampler_list[1:]:
-            # for some reason, fit_predict is not working
             sampler.fit(X)
             new_selected = sampler.predict(X[selected])
-            selected[selected] = new_selected
+            selected = selected[new_selected]
         
         return selected

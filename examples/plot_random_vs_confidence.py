@@ -88,19 +88,20 @@ for i, (sampler_name, sampler) in enumerate(samplers):
     # We force having one sample in each class for the init
     init_idx = [np.where(y == 0)[0][0], np.where(y == 1)[0][0]]
 
-    selected = np.zeros(n, dtype=bool)
-    selected[init_idx] = True
+    mask = np.zeros(n, dtype=bool)
+    indices = np.arange(n)
+    mask[init_idx] = True
 
     for j in range(n_iter):
-        model.fit(X[selected], y[selected])
-        sampler.fit(X[selected], y[selected])
+        model.fit(X[mask], y[mask])
+        sampler.fit(X[mask], y[mask])
         w = model.coef_[0]
         
         plt.subplot(len(samplers), n_iter, i * n_iter + j + 1)
-        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), selected.copy())
+        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), mask.copy())
 
-        new_selected = sampler.predict(X[~selected])
-        selected[~selected] = new_selected
+        selected = sampler.select_samples(X[~mask])
+        mask[indices[~mask][selected]] = True
 
         if j == 0:
             plt.ylabel(sampler_name)
