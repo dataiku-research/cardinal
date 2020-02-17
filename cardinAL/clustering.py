@@ -102,6 +102,6 @@ class WKMeansSampler(BaseQuerySampler):
     def select_samples(self, X):
         selected = self.uncertainty.select_samples(X)
         X_selected = X[selected]
-        k_selected = self.kmeans.select_samples(X_selected, sample_weight=self.uncertainty.scores_)
+        k_selected = self.kmeans.select_samples(X_selected, sample_weight=self.uncertainty.sample_scores_)
         selected[selected] = k_selected
         return selected.astype(int)
