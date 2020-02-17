@@ -24,9 +24,8 @@ class KCentroidSampler(BaseQuerySampler):
         The fitted clustering estimator.
     """
     def __init__(self, clustering, batch_size, verbose=0):
-        super().__init__()
+        super().__init__(batch_size)
         self.clustering_ = clustering
-        self.batch_size = batch_size
         self.verbose = verbose
 
     def fit(self, X, y=None):
