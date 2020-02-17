@@ -28,9 +28,8 @@ class RankedBatchSampler(BaseQuerySampler):
     """
 
     def __init__(self, query_sampler, batch_size, verbose=0):
-        super().__init__()
+        super().__init__(batch_size)
         self.query_sampler = query_sampler
-        self.batch_size = batch_size
         self.verbose = verbose
 
     def fit(self, X, y):
@@ -79,8 +78,7 @@ class RankedBatchSampler(BaseQuerySampler):
         # - Use predit_proba but the score returned is not really a proba
         # - Have a more generic object to make this code easier without copy pasting everything
 
-        self.query_sampler.predict(X)
-        uncertainty = self.query_sampler.scores_
+        uncertainty = self.query_sampler.score_samples(X)
 
         # We compute the distances for labeled data
         # TODO: can be parallelized

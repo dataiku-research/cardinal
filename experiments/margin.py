@@ -19,7 +19,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import check_random_state
-from cardinAL.uncertainty import UncertaintySampler
+from cardinAL.uncertainty import ConfidenceSampler
 from cardinAL.random import RandomSampler
 from cardinAL.submodularity import SubmodularSampler
 from cardinAL.clustering import KMeansSampler, WKMeansSampler
@@ -113,7 +113,7 @@ for seed, dataset, classifier, sampler in itertools.product(seeds, datasets, cla
         'modal': ModalWrapper(ActiveLearner(clf, margin_sampling), batch_size=batch_size, refit=False),
         'alipy': AlipyWrapper(clf, lambda x,y: QueryInstanceUncertainty(x, y, measure='margin'), batch_size=batch_size),
         'libact': LibactWrapper(clf, UncertaintySampling, batch_size=batch_size, init_params={'method': 'sm'}),
-        'cardinal': UncertaintySampler(clf, batch_size=batch_size)
+        'cardinal': ConfidenceSampler(clf, batch_size=batch_size)
     }
 
     al_model = methods[sampler]

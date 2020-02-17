@@ -24,9 +24,8 @@ class SubmodularSampler(BaseQuerySampler):
     """
 
     def __init__(self, batch_size, compute_distances=False, verbose=0):
-        super().__init__()
+        super().__init__(batch_size)
         # TODO: can we check that the pipeline has a predict_proba?
-        self.batch_size = batch_size
         self.compute_distances = compute_distances
         self.verbose = verbose
 
