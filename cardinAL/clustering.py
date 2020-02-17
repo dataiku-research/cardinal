@@ -85,7 +85,7 @@ class KMeansSampler(KCentroidSampler):
 class WKMeansSampler(BaseQuerySampler):
 
     def __init__(self, pipeline, beta, batch_size, verbose=0, **kmeans_args):
-        super().__init__()
+        super().__init__(batch_size)
 
         self.uncertainty = ConfidenceSampler(
             pipeline,
