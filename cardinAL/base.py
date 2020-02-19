@@ -63,7 +63,7 @@ class ChainQuerySampler(BaseQuerySampler):
 
         for sampler in self.sampler_list[1:]:
             sampler.fit(X)
-            new_selected = sampler.predict(X[selected])
+            new_selected = sampler.select_samples(X[selected])
             selected = selected[new_selected]
         
         return selected
