@@ -61,7 +61,7 @@ def _import_module_with_version_check(
     except ImportError as exc:
         user_friendly_info = ('Module "{0}" could not be found. {1}').format(
             module_name,
-            install_info or 'Please install it properly to use nilearn.')
+            install_info or 'Please install it properly to use cardinAL.')
         exc.args += (user_friendly_info,)
         # Necessary for Python 3 because the repr/str of ImportError
         # objects was changed in Python 3
@@ -78,7 +78,7 @@ def _import_module_with_version_check(
     if version_too_old:
         message = (
             'A {module_name} version of at least {minimum_version} '
-            'is required to use nilearn. {module_version} was found. '
+            'is required to use cardinAL. {module_version} was found. '
             'Please upgrade {module_name}').format(
                 module_name=module_name,
                 minimum_version=minimum_version,
