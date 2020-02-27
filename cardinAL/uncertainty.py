@@ -117,7 +117,7 @@ class ConfidenceSampler(BaseQuerySampler):
             X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
 
         Returns:
-            predictions (np.array): Returns an array where selected samples are classified as 1.
+            predictions (np.array): The score of each sample according to lowest confidence estimation.
         """
         return confidence_score(self.classifier_, X)
 
@@ -172,7 +172,7 @@ class MarginSampler(BaseQuerySampler):
             X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
 
         Returns:
-            predictions (np.array): Returns an array where selected samples are classified as 1.
+            predictions (np.array): The score of each sample according to smallest margin estimation.
         """
         return margin_score(self.classifier_, X)
 
@@ -227,6 +227,6 @@ class EntropySampler(BaseQuerySampler):
             X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
 
         Returns:
-            predictions (np.array): Returns an array where selected samples are classified as 1.
+            predictions (np.array): The entropy score of each sample.
         """
         return entropy_score(self.classifier_, X)

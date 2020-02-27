@@ -28,6 +28,15 @@ class BaseQuerySampler(ClusterMixin, TransformerMixin, BaseEstimator):
         raise NotImplementedError
 
     def select_samples(self, X, strategy='top'):
+        """Selects the samples to annotate from unlabelled data using the internal scoring.
+
+        Args:
+            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
+            strategy (str): Strategy to use to select queries. Can top, linear_choice, or squared_choice.
+
+        Returns:
+            predictions (np.array): Indices of the selected samples.
+        """
         sample_scores = self.score_samples(X)
         self.sample_scores_ = sample_scores
         if strategy == 'top':

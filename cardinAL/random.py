@@ -27,10 +27,8 @@ class RandomSampler(BaseQuerySampler):
         Pipeline used to predict the class probability.
     """
 
-    def __init__(self, batch_size=0.05, shuffle=True,
-                 random_state=None):
+    def __init__(self, batch_size=0.05, random_state=None):
         super().__init__(batch_size=batch_size)
-        self.shuffle = shuffle
         self.random_state = random_state
 
     def fit(self, X, y):
