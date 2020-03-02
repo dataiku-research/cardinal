@@ -1,11 +1,22 @@
-from sklearn.exceptions import NotFittedError
 from scipy.stats import entropy
 from sklearn.base import BaseEstimator
 import numpy as np
-from .base import BaseQuerySampler
+
+from .base import ScoredQuerySampler
 
 
-def _get_probability_classes(classifier, X):
+def _get_probability_classes(
+        classifier: BaseEstimator,
+        X: np.ndarray) -> np.ndarray:
+    """Returns classifier.predict_proba(X)
+
+    Args:
+        classifier (BaseEstimator): The classifier for which probabilities are to be queried.
+        X (np.ndarray): Samples to classify.
+
+    Returns:
+        The probability of each class for each sample.
+    """
     if classifier == 'precomputed':
         return X
     elif classifier.__class__.__module__.split('.')[0] == 'keras':  # Keras models have no predict_proba
@@ -68,7 +79,7 @@ def entropy_score(classifier: BaseEstimator, X: np.ndarray) -> np.ndarray:
     return entropies
 
 
-class ConfidenceSampler(BaseQuerySampler):
+class ConfidenceSampler(ScoredQuerySampler):
     """Selects samples with lowest prediction confidence.
 
     Lowest confidence sampling looks at the probability of the class predicted by
@@ -86,9 +97,8 @@ class ConfidenceSampler(BaseQuerySampler):
     Attributes:
         classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
-
-    def __init__(self, classifier, batch_size, assume_fitted=False, verbose=0):
-        super().__init__(batch_size=batch_size)
+    def __init__(self, classifier, batch_size, strategy='top', assume_fitted=False, verbose=0):
+        super().__init__(batch_size=batch_size, strategy=strategy)
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.assume_fitted = assume_fitted
@@ -122,7 +132,7 @@ class ConfidenceSampler(BaseQuerySampler):
         return confidence_score(self.classifier_, X)
 
 
-class MarginSampler(BaseQuerySampler):
+class MarginSampler(ScoredQuerySampler):
     """Selects samples with greatest confusion between the top two classes.
 
     Smallest margin sampling uses the difference of predicted probability between
@@ -142,8 +152,8 @@ class MarginSampler(BaseQuerySampler):
         classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
 
-    def __init__(self, classifier, batch_size, assume_fitted=False, verbose=0):
-        super().__init__(batch_size=batch_size)
+    def __init__(self, classifier, batch_size, strategy='top', assume_fitted=False, verbose=0):
+        super().__init__(batch_size=batch_size, strategy=strategy)
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.assume_fitted = assume_fitted
@@ -177,7 +187,7 @@ class MarginSampler(BaseQuerySampler):
         return margin_score(self.classifier_, X)
 
 
-class EntropySampler(BaseQuerySampler):
+class EntropySampler(ScoredQuerySampler):
     """Selects samples with greatest entropy among all class probabilities.
 
     Greatest entropy sampling measures the uncertainty of the model over all
@@ -197,8 +207,8 @@ class EntropySampler(BaseQuerySampler):
         classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
 
-    def __init__(self, classifier, batch_size, assume_fitted=False, verbose=0):
-        super().__init__(batch_size=batch_size)
+    def __init__(self, classifier, batch_size, strategy='top', assume_fitted=False, verbose=0):
+        super().__init__(batch_size=batch_size, strategy=strategy)
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.assume_fitted = assume_fitted

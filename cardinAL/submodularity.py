@@ -1,7 +1,8 @@
 from apricot import FacilityLocationSelection
-from .base import BaseQuerySampler
 import numpy as np
 from sklearn.metrics import pairwise_distances
+
+from .base import BaseQuerySampler
 
 
 class SubmodularSampler(BaseQuerySampler):

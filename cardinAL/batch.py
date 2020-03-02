@@ -1,12 +1,10 @@
 # Note: This code is inspired from modAL implementation
 # https://modal-python.readthedocs.io/en/latest/content/query_strategies/ranked_batch_mode.html
 
-from sklearn.exceptions import NotFittedError
-from sklearn.base import BaseEstimator
-from scipy.stats import entropy
 import numpy as np
-from .base import BaseQuerySampler
 from sklearn.metrics import pairwise_distances
+
+from .base import BaseQuerySampler
 
 
 class RankedBatchSampler(BaseQuerySampler):
