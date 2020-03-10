@@ -7,17 +7,16 @@ from sklearn.utils import check_random_state
 class BaseQuerySampler(BaseEstimator):
     """Base interface for query samplers
     
-    A query sampler is an object that takes as input labeled and/or unlabled samples
-    and use knowledge from them to selected the most informative ones.
+    A query sampler is an object that takes as input labeled and/or unlabeled
+    samples and use knowledge from them to selected the most informative ones.
     """
-
-    def __init__(self, batch_size):
+    def __init__(self, batch_size: int):
         self.batch_size = batch_size
 
-    def fit(self, X, y=None):
+    def fit(self, X: np.ndarray, y: np.ndarray = None):
         pass
 
-    def select_samples(self, X):
+    def select_samples(self, X: np.ndarray):
         """Selects the samples to annotate from unlabeled data.
 
         Args:

@@ -20,6 +20,7 @@ from sklearn.svm import SVC
 
 from cardinAL.uncertainty import ConfidenceSampler
 from cardinAL.clustering import KMeansSampler
+from cardinAL.batch import RankedBatchSampler
 from cardinAL.random import RandomSampler
 
 np.random.seed(7)
@@ -104,10 +105,12 @@ def plot(a, b, score, selected):
 samplers = [
     ('Lowest confidence', ConfidenceSampler(model, batch_size)),
     ('KMeans', KMeansSampler(batch_size)),
+    ('WKMeans', KMeansSampler(batch_size)),
+    ('Batch', RankedBatchSampler(batch_size)),
     ('Random', RandomSampler(batch_size))
 ]
 
-plt.figure(figsize=(8, 6))
+plt.figure(figsize=(10, 10))
 
 for i, (sampler_name, sampler) in enumerate(samplers):
     mask = np.zeros(n, dtype=bool)
@@ -121,8 +124,19 @@ for i, (sampler_name, sampler) in enumerate(samplers):
         
         plt.subplot(len(samplers), n_iter, i * n_iter + j + 1)
 
-        selected = sampler.select_samples(X[~mask])
-        mask[indices[~mask][selected]] = True
+        if sampler_name == 'Batch':
+            # This is an SSL method that requires 
+            weights = ConfidenceSampler(model, batch_size).score_samples(X)
+            weights[mask] = -1
+            selected = sampler.select_samples(X, samples_weights=weights)
+            mask[selected] = True
+        elif sampler_name == 'WKmeans':
+            weights = ConfidenceSampler(model, batch_size).score_samples(X[~mask])
+            selected = sampler.select_samples(X[~mask], samples_weights=weights)
+            mask[indices[~mask][selected]] = True
+        else:
+            selected = sampler.select_samples(X[~mask])
+            mask[indices[~mask][selected]] = True
 
         if j == 0:
             plt.ylabel(sampler_name)

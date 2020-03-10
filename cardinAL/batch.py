@@ -53,7 +53,7 @@ class RankedBatchSampler(BaseQuerySampler):
 
         n_samples = X.shape[0]
         index = np.arange(n_samples)
-        unlabeled_mask = (samples_weights > .5)
+        unlabeled_mask = (samples_weights > -.5)
         n_unlabeled = unlabeled_mask.sum()
 
         # We are going to modify this array so we copy it
