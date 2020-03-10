@@ -1,6 +1,7 @@
-from .base import BaseQuerySampler
 import numpy as np
 from sklearn.cluster import KMeans
+
+from .base import BaseQuerySampler
 from .uncertainty import ConfidenceSampler
 
 
@@ -40,7 +41,6 @@ class KCentroidSampler(BaseQuerySampler):
         -------
         self : returns an instance of self.
         """
-        self._classes = [0, 1]  
         return self
 
     def select_samples(self, X, sample_weight=None):
@@ -77,31 +77,9 @@ class KMeansSampler(KCentroidSampler):
 
     def __init__(self, batch_size, verbose=0, **kmeans_args):
         if 'n_clusters' in kmeans_args:
-            print('Warning, overriding n_clusters')  # TODO better error hanbdling
+            raise ValueError(
+                'You have specified n_clusters={} when creating KMeansSampler.'
+                ' This is not supported since n_clusters is overridden using '
+                'batch_size.'.format(kmeans_args['n_clusters'])
         kmeans_args['n_clusters'] = batch_size
         super().__init__(KMeans(**kmeans_args), batch_size, verbose)
-
-
-class WKMeansSampler(BaseQuerySampler):
-
-    def __init__(self, pipeline, beta, batch_size, verbose=0, **kmeans_args):
-        super().__init__(batch_size)
-
-        self.uncertainty = ConfidenceSampler(
-            pipeline,
-            beta * batch_size,
-            verbose)
-
-        self.kmeans = KMeansSampler(
-            batch_size,
-            verbose, **kmeans_args)
-
-    def fit(self, X, y):
-        self.uncertainty.fit(X, y)
-
-    def select_samples(self, X):
-        selected = self.uncertainty.select_samples(X)
-        X_selected = X[selected]
-        k_selected = self.kmeans.select_samples(X_selected, sample_weight=self.uncertainty.sample_scores_[selected])
-        selected = selected[k_selected]
-        return selected

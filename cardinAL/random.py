@@ -1,9 +1,9 @@
 import numpy as np
-from .base import BaseQuerySampler
+from .base import ScoredQuerySampler
 from sklearn.utils import check_random_state
 
 
-class RandomSampler(BaseQuerySampler):
+class RandomSampler(ScoredQuerySampler):
     """Randomly select samples
 
     Parameters
