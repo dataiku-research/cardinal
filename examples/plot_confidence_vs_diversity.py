@@ -20,6 +20,7 @@ from sklearn.svm import SVC
 
 from cardinAL.uncertainty import ConfidenceSampler
 from cardinAL.clustering import KMeansSampler
+from cardinAL.random import RandomSampler
 
 np.random.seed(7)
 
@@ -55,18 +56,34 @@ model = SVC(kernel='linear', C=1E10, probability=True)
 # estimated by the SVM.
 
 def plot(a, b, score, selected):
+
     plt.xlabel('Accuracy {}%'.format(int(score * 100)), fontsize=10)
 
+    l_to_c = {0: 'tomato', 1:'royalblue'}
+
+    x1, x2 = (np.min(X[:, 0]), np.max(X[:, 0]))
+    y1, y2 = (np.min(X[:, 1]), np.max(X[:, 1]))
+
+    # We compute the intersection of the line with the rectange
+    p1, p2 = (x1, a * x1 + b), ((y1 - b) / a, y1)
+    p3, p4 = (x2, a * x2 + b), ((y2 - b) / a, y2)
+    p1, p2, p3, p4 = sorted([p1, p2, p3, p4])
+
+    plt.fill_between([p1[0], p4[0]], [p1[1], p4[1]], [p4[1], p4[1]],
+                     color=l_to_c[model.predict([(p1[0], p4[1])])[0]], alpha=0.1)
+    plt.fill_between([p1[0], p4[0]], [p1[1], p4[1]], [p1[1], p1[1]],
+                     color=l_to_c[model.predict([(p4[0], p1[1])])[0]], alpha=0.1)
+   
     # Plot not selected first in low alpha, then selected
     for l, s in [(0, False), (1, False), (0, True), (1, True)]:
         alpha = 1. if s else 0.3
-        color = 'tomato' if l == 0 else 'royalblue'
         mask = np.logical_and(selected == s, l == y)
-        plt.scatter(X[mask, 0], X[mask, 1], c=color, alpha=alpha)
+        plt.scatter(X[mask, 0], X[mask, 1], c=l_to_c[l], alpha=alpha)
         
     # Plot the separation margin of the SVM
-    x_bounds = np.array([np.min(X[:, 0]), np.max(X[:, 0])])
-    plt.plot(x_bounds, a * x_bounds + b)
+    plt.plot(*zip(p2, p3), c='purple')
+    plt.gca().set_xlim(x1, x2)
+    plt.gca().set_ylim(y1, y2)
 
 
 ##############################################################################
@@ -77,13 +94,20 @@ def plot(a, b, score, selected):
 # experiment. At each iteration, the model is learned on all labeled data to
 # measure its performance. Then, the model is inspected to find out the samples
 # on which its confidence is low. This is done through cardinAL samplers.
+#
+# In this experiment, we see that lowest confidence will explore the far-away
+# cluster only once all other samples have been labeled. KMeans uses a more
+# exploratory approach and select items in this cluster right away.
+# It is worth noticing that random sampling also have good exploration
+# properties.
 
 samplers = [
     ('Lowest confidence', ConfidenceSampler(model, batch_size)),
-    ('KMeans', KMeansSampler(batch_size))
+    ('KMeans', KMeansSampler(batch_size)),
+    ('Random', RandomSampler(batch_size))
 ]
 
-plt.figure(figsize=(10, 4))
+plt.figure(figsize=(8, 6))
 
 for i, (sampler_name, sampler) in enumerate(samplers):
     mask = np.zeros(n, dtype=bool)
@@ -96,7 +120,6 @@ for i, (sampler_name, sampler) in enumerate(samplers):
         w = model.coef_[0]
         
         plt.subplot(len(samplers), n_iter, i * n_iter + j + 1)
-        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), mask.copy())
 
         selected = sampler.select_samples(X[~mask])
         mask[indices[~mask][selected]] = True
@@ -108,6 +131,8 @@ for i, (sampler_name, sampler) in enumerate(samplers):
         plt.gca().set_yticks(())
         if i == 0:
             plt.gca().set_title('Iteration {}'.format(j), fontsize=10)
+
+        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), mask.copy())
 
 plt.tight_layout()
 plt.subplots_adjust(top=0.86)
