@@ -80,6 +80,6 @@ class KMeansSampler(KCentroidSampler):
             raise ValueError(
                 'You have specified n_clusters={} when creating KMeansSampler.'
                 ' This is not supported since n_clusters is overridden using '
-                'batch_size.'.format(kmeans_args['n_clusters'])
+                'batch_size.'.format(kmeans_args['n_clusters']))
         kmeans_args['n_clusters'] = batch_size
         super().__init__(KMeans(**kmeans_args), batch_size, verbose)

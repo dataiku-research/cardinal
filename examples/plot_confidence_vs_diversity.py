@@ -1,11 +1,10 @@
 """
-Lowest confidence vs. Random sampling
+Lowest confidence vs. KMeans sampling
 =====================================
 
-The simplest way ton convince ourselves that active learning actually
-works is to first test it on simulated data. In this example, we will
-generate a simple classification task and see how active learning allows
-ont to converge faster toward the best result.
+In this example, we show the usefulness of diversity-based approaches using a
+toy example where a very unlucky initialization makes lowest confidence
+approach underperform.
 
 """
 
@@ -19,11 +18,10 @@ import numpy as np
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn.svm import SVC
 
-from cardinAL.random import RandomSampler
 from cardinAL.uncertainty import ConfidenceSampler
+from cardinAL.clustering import KMeansSampler
 
-
-np.random.seed(8)
+np.random.seed(7)
 
 ##############################################################################
 # Parameters of our experiment:
@@ -32,16 +30,22 @@ np.random.seed(8)
 #   the training set at each iteration
 # * _n_iter_ is the number of iterations in our simulation
 #
-# Our simulated data is composed of 2 clusters that are very close to each other
-# but linearly separable. We use as simple SVM classifier as it is a basic classifer.
+# We simulate data where the samples of one of the class are scattered in 3
+# blobs, one of them being far away from the two others. We also select an
+# initialization index where no sample from the far-away sample is initially
+# selected. This will force the decision boundary to stay far from that cluster
+# and thus "trick" the lowest confidence method.
 
+n = 28
+batch_size = 4
+n_iter = 5
 
-n = 30
-batch_size = 2
-n_iter = 6
-
-X, y = make_blobs(n_samples=n, centers=2,
-                  random_state=0, cluster_std=0.80)
+X, y = make_blobs(n_samples=n, centers=[(1, 0), (0, 1), (2, 2), (4, 0)],
+                  random_state=0, cluster_std=0.2)
+    
+# We select samples in clusters 0, 1 and 2. Cluster 3 will be ignored by uncertainty sampling
+init_idx = [i for j in range(3) for i in np.where(y == j)[0][:2]]
+y[y > 1] = 1
 
 model = SVC(kernel='linear', C=1E10, probability=True)
 
@@ -59,7 +63,7 @@ def plot(a, b, score, selected):
         color = 'tomato' if l == 0 else 'royalblue'
         mask = np.logical_and(selected == s, l == y)
         plt.scatter(X[mask, 0], X[mask, 1], c=color, alpha=alpha)
-
+        
     # Plot the separation margin of the SVM
     x_bounds = np.array([np.min(X[:, 0]), np.max(X[:, 0])])
     plt.plot(x_bounds, a * x_bounds + b)
@@ -75,16 +79,13 @@ def plot(a, b, score, selected):
 # on which its confidence is low. This is done through cardinAL samplers.
 
 samplers = [
-    ('Random', RandomSampler(batch_size=batch_size, random_state=0)),
-    ('Lowest confidence', ConfidenceSampler(model, batch_size))
+    ('Lowest confidence', ConfidenceSampler(model, batch_size)),
+    ('KMeans', KMeansSampler(batch_size))
 ]
 
 plt.figure(figsize=(10, 4))
 
 for i, (sampler_name, sampler) in enumerate(samplers):
-    # We force having one sample in each class for the init
-    init_idx = [np.where(y == 0)[0][0], np.where(y == 1)[0][0]]
-
     mask = np.zeros(n, dtype=bool)
     indices = np.arange(n)
     mask[init_idx] = True

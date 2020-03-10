@@ -98,7 +98,7 @@ class ConfidenceSampler(ScoredQuerySampler):
         classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
     def __init__(self, classifier, batch_size, strategy='top', assume_fitted=False, verbose=0):
-        super().__init__(batch_size=batch_size, strategy=strategy)
+        super().__init__(batch_size, strategy=strategy)
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.assume_fitted = assume_fitted
@@ -153,7 +153,7 @@ class MarginSampler(ScoredQuerySampler):
     """
 
     def __init__(self, classifier, batch_size, strategy='top', assume_fitted=False, verbose=0):
-        super().__init__(batch_size=batch_size, strategy=strategy)
+        super().__init__(batch_size, strategy=strategy)
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.assume_fitted = assume_fitted
@@ -208,7 +208,7 @@ class EntropySampler(ScoredQuerySampler):
     """
 
     def __init__(self, classifier, batch_size, strategy='top', assume_fitted=False, verbose=0):
-        super().__init__(batch_size=batch_size, strategy=strategy)
+        super().__init__(batch_size, strategy=strategy)
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.assume_fitted = assume_fitted

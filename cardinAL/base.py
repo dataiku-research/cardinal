@@ -1,6 +1,7 @@
 import numpy as np
 
 from sklearn.base import BaseEstimator
+from sklearn.utils import check_random_state
 
 
 class BaseQuerySampler(BaseEstimator):
@@ -28,7 +29,7 @@ class BaseQuerySampler(BaseEstimator):
         raise NotImplementedError
 
 
-class ScoredQuerySampler(BaseEstimator):
+class ScoredQuerySampler(BaseQuerySampler):
     """Base class providing utils for query samplers
     A query sampler can be seen as a clustering since it is most of the time
     an unsupervised approach sorting out samples to be annotated and those who
@@ -38,10 +39,10 @@ class ScoredQuerySampler(BaseEstimator):
     easily dropped since it is more of a hack than a feature.
     """
 
-    def __init__(self, batch_size, strategy='top'):
-        self.batch_size = batch_size
+    def __init__(self, batch_size, strategy='top', random_state=None):
+        super().__init__(batch_size)
         self.strategy = strategy
-        pass
+        self.random_state = check_random_state(random_state)
 
     def fit(self, X, y=None):
         pass
@@ -64,8 +65,13 @@ class ScoredQuerySampler(BaseEstimator):
         if self.strategy == 'top':
             index = np.argsort(sample_scores)[-self.batch_size:]
         elif self.strategy == 'linear_choice':
-            index = np.random.choice(
-                np.arange(X.shape[0]), k=self.batch_size,
+            index = self.random_state.choice(
+                np.arange(X.shape[0]), size=self.batch_size,
+                replace=False, p=sample_scores / np.sum(sample_scores))
+        elif self.strategy == 'squared_choice':
+            sample_scores = sample_scores ** 2
+            index = self.random_state.choice(
+                np.arange(X.shape[0]), size=self.batch_size,
                 replace=False, p=sample_scores / np.sum(sample_scores))
         else:
             raise ValueError('Unknown sample selection stretegy {}'.format(self.strategy))
