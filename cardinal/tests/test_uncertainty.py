@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.testing import assert_array_equal
 
-from cardinAL.uncertainty import ConfidenceSampler, MarginSampler, EntropySampler
+from cardinal.uncertainty import ConfidenceSampler, MarginSampler, EntropySampler
 
 
 def test_all_uncertainty():

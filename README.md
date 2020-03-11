@@ -1,2 +1,2 @@
-# cardinAL
+# cardinal
 Active learning python package

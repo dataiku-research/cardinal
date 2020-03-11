@@ -19,10 +19,10 @@ import numpy as np
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn.svm import SVC
 
-from cardinAL.uncertainty import ConfidenceSampler
-from cardinAL.clustering import KMeansSampler
-from cardinAL.batch import RankedBatchSampler
-from cardinAL.random import RandomSampler
+from cardinal.uncertainty import ConfidenceSampler
+from cardinal.clustering import KMeansSampler
+from cardinal.batch import RankedBatchSampler
+from cardinal.random import RandomSampler
 
 np.random.seed(7)
 
@@ -108,7 +108,7 @@ def plot(a, b, score, selected):
 # As presented in the introduction, this loop represents the active learning
 # experiment. At each iteration, the model is learned on all labeled data to
 # measure its performance. Then, the model is inspected to find out the samples
-# on which its confidence is low. This is done through cardinAL samplers.
+# on which its confidence is low. This is done through cardinal samplers.
 #
 # In this experiment, we see that lowest confidence will explore the far-away
 # cluster only once all other samples have been labeled. KMeans uses a more

@@ -1,5 +1,5 @@
 test-code:
-	python -m pytest --pyargs cardinAL
+	python -m pytest --pyargs cardinal
 
 test-doc:
 	pytest --doctest-glob='*.rst' `find doc/ -name '*.rst'`

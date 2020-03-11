@@ -19,8 +19,8 @@ import numpy as np
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn.svm import SVC
 
-from cardinAL.random import RandomSampler
-from cardinAL.uncertainty import ConfidenceSampler
+from cardinal.random import RandomSampler
+from cardinal.uncertainty import ConfidenceSampler
 
 
 np.random.seed(8)
@@ -72,7 +72,7 @@ def plot(a, b, score, selected):
 # As presented in the introduction, this loop represents the active learning
 # experiment. At each iteration, the model is learned on all labeled data to
 # measure its performance. Then, the model is inspected to find out the samples
-# on which its confidence is low. This is done through cardinAL samplers.
+# on which its confidence is low. This is done through cardinal samplers.
 
 samplers = [
     ('Random', RandomSampler(batch_size=batch_size, random_state=0)),
