@@ -13,6 +13,7 @@ approach underperform.
 # Those are the necessary imports and initialiaztion
 
 from matplotlib import pyplot as plt
+from matplotlib.patches import Polygon
 import numpy as np
 
 from sklearn.datasets.samples_generator import make_blobs
@@ -62,6 +63,7 @@ def plot(a, b, score, selected):
 
     l_to_c = {0: 'tomato', 1:'royalblue'}
 
+    f = (lambda x: a * x + b)
     x1, x2 = (np.min(X[:, 0]), np.max(X[:, 0]))
     y1, y2 = (np.min(X[:, 1]), np.max(X[:, 1]))
 
@@ -70,10 +72,21 @@ def plot(a, b, score, selected):
     p3, p4 = (x2, a * x2 + b), ((y2 - b) / a, y2)
     p1, p2, p3, p4 = sorted([p1, p2, p3, p4])
 
-    plt.fill_between([p1[0], p4[0]], [p1[1], p4[1]], [p4[1], p4[1]],
-                     color=l_to_c[model.predict([(p1[0], p4[1])])[0]], alpha=0.1)
-    plt.fill_between([p1[0], p4[0]], [p1[1], p4[1]], [p1[1], p1[1]],
-                     color=l_to_c[model.predict([(p4[0], p1[1])])[0]], alpha=0.1)
+    corners = [(x1, y1), (x1, y2), (x2, y2), (x2, y1)]
+    dists = [f(x) - y for x, y in corners]
+    while dists[0] > 0 or dists[-1] < 0:
+        dists.append(dists.pop(0))
+        corners.append(corners.pop(0))
+    first_pos = next(i for i, x in enumerate(dists) if x > 0)
+    plt.gca().add_patch(Polygon([p3, p2] + corners[:first_pos], joinstyle='round',
+        facecolor=l_to_c[model.predict([corners[0]])[0]], alpha=0.2))
+    plt.gca().add_patch(Polygon([p2, p3] + corners[first_pos:], joinstyle='round',
+        facecolor=l_to_c[model.predict([corners[-1]])[0]], alpha=0.2))
+
+    #plt.fill_between([p1[0], p4[0]], [p1[1], p4[1]], [p4[1], p4[1]],
+    #                 color=l_to_c[model.predict([(p1[0], p4[1])])[0]], alpha=0.1)
+    #plt.fill_between([p1[0], p4[0]], [p1[1], p4[1]], [p1[1], p1[1]],
+    #                 color=l_to_c[model.predict([(p4[0], p1[1])])[0]], alpha=0.1)
    
     # Plot not selected first in low alpha, then selected
     for l, s in [(0, False), (1, False), (0, True), (1, True)]:
@@ -83,8 +96,9 @@ def plot(a, b, score, selected):
         
     # Plot the separation margin of the SVM
     plt.plot(*zip(p2, p3), c='purple')
-    plt.gca().set_xlim(x1, x2)
-    plt.gca().set_ylim(y1, y2)
+    eps = 0.1
+    plt.gca().set_xlim(x1 - eps, x2 + eps)
+    plt.gca().set_ylim(y1 - eps, y2 + eps)
 
 
 ##############################################################################
