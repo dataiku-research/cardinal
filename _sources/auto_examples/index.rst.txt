@@ -26,6 +26,26 @@
    :hidden:
 
    /auto_examples/plot_random_vs_confidence
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we show the usefulness of diversity-based approaches using a toy example where...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_confidence_vs_diversity_thumb.png
+
+     :ref:`sphx_glr_auto_examples_plot_confidence_vs_diversity.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_confidence_vs_diversity
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>
@@ -40,13 +60,13 @@
 
   .. container:: sphx-glr-download
 
-    :download:`Download all examples in Python source code: auto_examples_python.zip <//Users/aabraham/tmp/cardinAL/doc/auto_examples/auto_examples_python.zip>`
+    :download:`Download all examples in Python source code: auto_examples_python.zip <//Users/aabraham/cardinal/doc/auto_examples/auto_examples_python.zip>`
 
 
 
   .. container:: sphx-glr-download
 
-    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip <//Users/aabraham/tmp/cardinAL/doc/auto_examples/auto_examples_jupyter.zip>`
+    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip <//Users/aabraham/cardinal/doc/auto_examples/auto_examples_jupyter.zip>`
 
 
 .. only:: html

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cardinAL.base &mdash; cardinAL 0.0.1-git documentation</title>
+  <title>cardinal.base &mdash; cardinal 0.0.2-git documentation</title>
   
 
   
@@ -39,8 +39,8 @@
   <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="cardinAL.uncertainty" href="cardinAL.uncertainty.html" />
-    <link rel="prev" title="cardinAL’s API Reference" href="../reference.html" /> 
+    <link rel="next" title="cardinal.uncertainty" href="cardinal.uncertainty.html" />
+    <link rel="prev" title="cardinal’s API Reference" href="../reference.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> cardinAL
+            <a href="../index.html" class="icon icon-home"> cardinal
           
 
           
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.0.1
+                0.0.2
               </div>
             
           
@@ -111,26 +111,27 @@
               
             
             
-              <p class="caption"><span class="caption-text">Using cardinAL</span></p>
+              <p class="caption"><span class="caption-text">Using cardinal</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to active learning</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">cardinAL’s API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">cardinAL.base</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">cardinal’s API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">cardinal.base</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="cardinAL.uncertainty.html">cardinAL.uncertainty</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cardinal.uncertainty.html">cardinal.uncertainty</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../changes.html">Change Log</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku/cardinAL">Fork cardinAL on Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku/cardinal">Fork cardinal on Github</a></li>
 </ul>
 
             
@@ -147,7 +148,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">cardinAL</a>
+          <a href="../index.html">cardinal</a>
         
       </nav>
 
@@ -166,9 +167,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="../reference.html">cardinAL’s API Reference</a> &raquo;</li>
+          <li><a href="../reference.html">cardinal’s API Reference</a> &raquo;</li>
       
-    <li>cardinAL.base</li>
+    <li>cardinal.base</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -180,30 +181,143 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-cardinAL.base">
-<span id="cardinal-base"></span><h1>cardinAL.base<a class="headerlink" href="#module-cardinAL.base" title="Permalink to this headline">¶</a></h1>
-<p>Base classes</p>
+  <div class="section" id="module-cardinal.base">
+<span id="cardinal-base"></span><h1>cardinal.base<a class="headerlink" href="#module-cardinal.base" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="cardinAL.base.BaseQuerySampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinAL.base.</code><code class="sig-name descname">BaseQuerySampler</code><a class="reference internal" href="../_modules/cardinAL/base.html#BaseQuerySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinAL.base.BaseQuerySampler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Base class providing utils for query samplers
-A query sampler can be seen as a clustering since it is most of the time
-an unsupervised approach sorting out samples to be annotated and those who
-should not.
-This is also considered a transformer for the sole purpose of chaining them.
-It is common in sampling to chain several approached. However, this can be
-easily dropped since it is more of a hack than a feature.</p>
+<dt id="cardinal.base.BaseQuerySampler">
+<em class="property">class </em><code class="sig-prename descclassname">cardinal.base.</code><code class="sig-name descname">BaseQuerySampler</code><span class="sig-paren">(</span><em class="sig-param">batch_size: int</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/base.html#BaseQuerySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.BaseQuerySampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base interface for query samplers</p>
+<p>A query sampler is an object that takes as input labeled and/or unlabeled
+samples and use knowledge from them to selected the most informative ones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>batch_size</strong> – Numbers of samples to select.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="cardinal.base.BaseQuerySampler.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">y: numpy.ndarray = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/base.html#BaseQuerySampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.BaseQuerySampler.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the model on labeled samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – Samples to learn from.</p></li>
+<li><p><strong>y</strong> – Labels of the samples.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The object itself.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cardinal.base.BaseQuerySampler.select_samples">
+<code class="sig-name descname">select_samples</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/base.html#BaseQuerySampler.select_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.BaseQuerySampler.select_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects the samples to annotate from unlabeled data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> – Samples to evaluate.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Indices of the selected samples.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <div class="sphx-glr-clear"></div><dl class="class">
-<dt id="cardinAL.base.ChainQuerySampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinAL.base.</code><code class="sig-name descname">ChainQuerySampler</code><span class="sig-paren">(</span><em class="sig-param">*sampler_list</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinAL/base.html#ChainQuerySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinAL.base.ChainQuerySampler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows to whain query sampling methods
+<dt id="cardinal.base.ChainQuerySampler">
+<em class="property">class </em><code class="sig-prename descclassname">cardinal.base.</code><code class="sig-name descname">ChainQuerySampler</code><span class="sig-paren">(</span><em class="sig-param">*sampler_list: List[cardinal.base.BaseQuerySampler]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/base.html#ChainQuerySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ChainQuerySampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows to chain query sampling methods
 This strategy is usually used to chain a simple query sampler with a
 more complex one. The first query sampler is used to reduce the
 dimensionality.</p>
+<dl class="method">
+<dt id="cardinal.base.ChainQuerySampler.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em>, <em class="sig-param">y: numpy.array = None</em><span class="sig-paren">)</span> &#x2192; cardinal.base.ChainQuerySampler<a class="reference internal" href="../_modules/cardinal/base.html#ChainQuerySampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ChainQuerySampler.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits the first query sampler</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – Samples to evaluate.</p></li>
+<li><p><strong>y</strong> – Labels of the labeled samples.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Indices of the selected samples.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cardinal.base.ChainQuerySampler.select_samples">
+<code class="sig-name descname">select_samples</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/base.html#ChainQuerySampler.select_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ChainQuerySampler.select_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects the samples by chaining samplers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> – Samples to evaluate.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Indices of the selected samples.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="sphx-glr-clear"></div><dl class="class">
+<dt id="cardinal.base.ScoredQuerySampler">
+<em class="property">class </em><code class="sig-prename descclassname">cardinal.base.</code><code class="sig-name descname">ScoredQuerySampler</code><span class="sig-paren">(</span><em class="sig-param">batch_size: int</em>, <em class="sig-param">strategy: str = 'top'</em>, <em class="sig-param">random_state: Union[numpy.random.mtrand.RandomState</em>, <em class="sig-param">int] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/base.html#ScoredQuerySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ScoredQuerySampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class handling query samplers relying on a total order.
+Query sampling methods often scores all the samples and then pick samples
+using these scores. This base class handles the selection system, only
+a scoring method is then required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>batch_size</strong> – Numbers of samples to select.</p></li>
+<li><p><strong>strategy</strong> – Describes how to select the samples based on scores. Can be
+“top”, “linear_choice”, “squared_choice”.</p></li>
+<li><p><strong>random_state</strong> – Random seeding</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="cardinal.base.ScoredQuerySampler.score_samples">
+<code class="sig-name descname">score_samples</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/base.html#ScoredQuerySampler.score_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ScoredQuerySampler.score_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give an informativeness score to unlabeled samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> – Samples to evaluate.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Scores of the samples.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="cardinal.base.ScoredQuerySampler.select_samples">
+<code class="sig-name descname">select_samples</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/base.html#ScoredQuerySampler.select_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ScoredQuerySampler.select_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects the samples from unlabeled data using the internal scoring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – Samples to evaluate.</p></li>
+<li><p><strong>strategy</strong> – Strategy to use to select queries. Can be one oftop,
+linear_choice, or squared_choice.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Indices of the selected samples.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <div class="sphx-glr-clear"></div></div>
@@ -217,10 +331,10 @@ dimensionality.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="cardinAL.uncertainty.html" class="btn btn-neutral float-right" title="cardinAL.uncertainty" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="cardinal.uncertainty.html" class="btn btn-neutral float-right" title="cardinal.uncertainty" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../reference.html" class="btn btn-neutral float-left" title="cardinAL’s API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../reference.html" class="btn btn-neutral float-left" title="cardinal’s API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -229,7 +343,7 @@ dimensionality.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019-2019, Dataiku
+        &copy; Copyright 2019-2020, Dataiku
 
     </p>
   </div>

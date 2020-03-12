@@ -1,12 +1,12 @@
 ====================================
-Welcome to cardinAL's documentation!
+Welcome to cardinal's documentation!
 ====================================
 
-cardinAL is a python package that allows simple and scikit-learn compatible active learning
+cardinal is a python package that allows simple and scikit-learn compatible active learning
 experiments. It provides the building blocks necessary to perform simple or more complex
 query sampling strategies.
 
-The code of the project is on Github: `cardinAL <https://github.com/dataiku/cardinAL>`_
+The code of the project is on Github: `cardinal <https://github.com/dataiku/cardinal>`_
 
 
 .. _install:
@@ -17,8 +17,8 @@ Installation
 Fetch the code
 --------------
 
-cardinAL is still in alpha development phase and thus not available through
-the Pypi repository. In order to install cardinAL, one must download its source
+cardinal is still in alpha development phase and thus not available through
+the Pypi repository. In order to install cardinal, one must download its source
 code and perform the installation manually.
 
 You will also need to install the dependencies list in the requirements file.
@@ -27,8 +27,8 @@ To install everything do:
 
 .. code-block:: bash
 
-    $ git clone https://github.com/dataiku/cardinAL
-    $ cardinAL
+    $ git clone https://github.com/dataiku/cardinal
+    $ cardinal
     $ pip install -r requirements.txt
     $ pip install -e .
 
@@ -41,7 +41,7 @@ In addition, you will need the following dependencies to build the
 
 .. toctree::
    :maxdepth: 2
-   :caption: Using cardinAL
+   :caption: Using cardinal
 
    introduction
 
@@ -57,7 +57,7 @@ In addition, you will need the following dependencies to build the
 
    reference
    changes
-   Fork cardinAL on Github <https://github.com/dataiku/cardinAL>
+   Fork cardinal on Github <https://github.com/dataiku/cardinal>
 
 
 Indices and tables

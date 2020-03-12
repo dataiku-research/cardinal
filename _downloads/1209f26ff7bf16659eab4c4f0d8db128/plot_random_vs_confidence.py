@@ -19,8 +19,8 @@ import numpy as np
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn.svm import SVC
 
-from cardinAL.random import RandomSampler
-from cardinAL.uncertainty import ConfidenceSampler
+from cardinal.random import RandomSampler
+from cardinal.uncertainty import ConfidenceSampler
 
 
 np.random.seed(8)
@@ -53,15 +53,12 @@ model = SVC(kernel='linear', C=1E10, probability=True)
 def plot(a, b, score, selected):
     plt.xlabel('Accuracy {}%'.format(int(score * 100)), fontsize=10)
 
-    # We map our prediction to 4 values:
-    # 0 is dark blue and designates samples of class 1 in the training set
-    # 1 is dark red and designates samples of class 2 in the training set
-    # 2 is light red and designates samples of class 2 *not* in the training set
-    # 3 is light blue and designates samples of class 1 *not* in the training set
-    y_ = y.copy()
-    y_[~selected] = 3 - y_[~selected]
-
-    plt.scatter(X[:, 0], X[:, 1], c=y_, cmap='tab20')
+    # Plot not selected first in low alpha, then selected
+    for l, s in [(0, False), (1, False), (0, True), (1, True)]:
+        alpha = 1. if s else 0.3
+        color = 'tomato' if l == 0 else 'royalblue'
+        mask = np.logical_and(selected == s, l == y)
+        plt.scatter(X[mask, 0], X[mask, 1], c=color, alpha=alpha)
 
     # Plot the separation margin of the SVM
     x_bounds = np.array([np.min(X[:, 0]), np.max(X[:, 0])])
@@ -75,7 +72,7 @@ def plot(a, b, score, selected):
 # As presented in the introduction, this loop represents the active learning
 # experiment. At each iteration, the model is learned on all labeled data to
 # measure its performance. Then, the model is inspected to find out the samples
-# on which its confidence is low. This is done through cardinAL samplers.
+# on which its confidence is low. This is done through cardinal samplers.
 
 samplers = [
     ('Random', RandomSampler(batch_size=batch_size, random_state=0)),
@@ -88,19 +85,20 @@ for i, (sampler_name, sampler) in enumerate(samplers):
     # We force having one sample in each class for the init
     init_idx = [np.where(y == 0)[0][0], np.where(y == 1)[0][0]]
 
-    selected = np.zeros(n, dtype=bool)
-    selected[init_idx] = True
+    mask = np.zeros(n, dtype=bool)
+    indices = np.arange(n)
+    mask[init_idx] = True
 
     for j in range(n_iter):
-        model.fit(X[selected], y[selected])
-        sampler.fit(X[selected], y[selected])
+        model.fit(X[mask], y[mask])
+        sampler.fit(X[mask], y[mask])
         w = model.coef_[0]
         
         plt.subplot(len(samplers), n_iter, i * n_iter + j + 1)
-        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), selected.copy())
+        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), mask.copy())
 
-        new_selected = sampler.predict(X[~selected])
-        selected[~selected] = new_selected
+        selected = sampler.select_samples(X[~mask])
+        mask[indices[~mask][selected]] = True
 
         if j == 0:
             plt.ylabel(sampler_name)

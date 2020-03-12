@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to cardinAL’s documentation! &mdash; cardinAL 0.0.1-git documentation</title>
+  <title>Welcome to cardinal’s documentation! &mdash; cardinal 0.0.2-git documentation</title>
   
 
   
@@ -53,7 +53,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> cardinAL
+            <a href="#" class="icon icon-home"> cardinal
           
 
           
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.0.1
+                0.0.2
               </div>
             
           
@@ -110,19 +110,20 @@
               
             
             
-              <p class="caption"><span class="caption-text">Using cardinAL</span></p>
+              <p class="caption"><span class="caption-text">Using cardinal</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to active learning</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="reference.html">cardinAL’s API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">cardinal’s API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html">Change Log</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku/cardinAL">Fork cardinAL on Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku/cardinal">Fork cardinal on Github</a></li>
 </ul>
 
             
@@ -139,7 +140,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">cardinAL</a>
+          <a href="#">cardinal</a>
         
       </nav>
 
@@ -158,7 +159,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="#">Docs</a> &raquo;</li>
       
-    <li>Welcome to cardinAL’s documentation!</li>
+    <li>Welcome to cardinal’s documentation!</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -171,22 +172,22 @@
            <div itemprop="articleBody">
             
   <div class="section" id="welcome-to-cardinal-s-documentation">
-<h1>Welcome to cardinAL’s documentation!<a class="headerlink" href="#welcome-to-cardinal-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>cardinAL is a python package that allows simple and scikit-learn compatible active learning
+<h1>Welcome to cardinal’s documentation!<a class="headerlink" href="#welcome-to-cardinal-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>cardinal is a python package that allows simple and scikit-learn compatible active learning
 experiments. It provides the building blocks necessary to perform simple or more complex
 query sampling strategies.</p>
-<p>The code of the project is on Github: <a class="reference external" href="https://github.com/dataiku/cardinAL">cardinAL</a></p>
+<p>The code of the project is on Github: <a class="reference external" href="https://github.com/dataiku/cardinal">cardinal</a></p>
 <div class="section" id="installation">
 <span id="install"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="fetch-the-code">
 <h3>Fetch the code<a class="headerlink" href="#fetch-the-code" title="Permalink to this headline">¶</a></h3>
-<p>cardinAL is still in alpha development phase and thus not available through
-the Pypi repository. In order to install cardinAL, one must download its source
+<p>cardinal is still in alpha development phase and thus not available through
+the Pypi repository. In order to install cardinal, one must download its source
 code and perform the installation manually.</p>
 <p>You will also need to install the dependencies list in the requirements file.</p>
 <p>To install everything do:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/dataiku/cardinAL
-$ cardinAL
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/dataiku/cardinal
+$ cardinal
 $ pip install -r requirements.txt
 $ pip install -e .
 </pre></div>
@@ -198,27 +199,29 @@ $ pip install -e .
 <li><p>sphinx-gallery</p></li>
 </ul>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Using cardinAL</span></p>
+<p class="caption"><span class="caption-text">Using cardinal</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to active learning</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Example galleries</span></p>
+<ul>
+</ul>
 </div>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="reference.html">cardinAL’s API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gen_modules/cardinAL.base.html">cardinAL.base</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gen_modules/cardinAL.uncertainty.html">cardinAL.uncertainty</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">cardinal’s API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gen_modules/cardinal.base.html">cardinal.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gen_modules/cardinal.uncertainty.html">cardinal.uncertainty</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html">Change Log</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="changes.html#v0-0-1">v0.0.1</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku/cardinAL">Fork cardinAL on Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku/cardinal">Fork cardinal on Github</a></li>
 </ul>
 </div>
 </div>
@@ -251,7 +254,7 @@ $ pip install -e .
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019-2019, Dataiku
+        &copy; Copyright 2019-2020, Dataiku
 
     </p>
   </div>
