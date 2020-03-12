@@ -1,19 +1,19 @@
 
 .. _reference:
 
-cardinAL's API Reference
+cardinal's API Reference
 ============================
 
-The complete cardinAL project is automatically documented for
+The complete cardinal project is automatically documented for
 every module.
 
-.. currentmodule:: cardinAL
+.. currentmodule:: cardinal
 
-.. automodule:: cardinAL
+.. automodule:: cardinal
    :no-members:
    :no-inherited-members:
 
-:py:mod:`cardinAL`:
+:py:mod:`cardinal`:
 
 .. autosummary::
    :toctree: gen_modules/

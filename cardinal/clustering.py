@@ -10,19 +10,13 @@ class KCentroidSampler(BaseQuerySampler):
     In order to increase diversity, it is possible to use a centroid based
     clustering to select samples.
 
-    Parameters
-    ----------
-    clustering : sklearn estimator
-        A clustering algorithm that must feature a transform method that
-        returns the distance of samples from centroids.
-    batch_size : int
-        Number of samples to draw when predicting.
-    verbose : integer, optional
-        The verbosity level
-    Attributes
-    ----------
-    clustering_ : sklearn estimator
-        The fitted clustering estimator.
+    Args:
+        clustering: A clustering algorithm matching the sklearn interface
+        batch_size: Number of samples to draw when predicting.
+        verbose: The verbosity level
+
+    Attributes:
+        clustering_ : The fitted clustering estimator.
     """
     def __init__(self, clustering, batch_size, verbose=0):
         super().__init__(batch_size)

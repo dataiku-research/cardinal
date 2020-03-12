@@ -86,18 +86,19 @@ class ConfidenceSampler(ScoredQuerySampler):
     the classifier and selects the samples where this probability is the lowest.
 
     Parameters:
-        classifier (sklearn.BaseEstimator): Classifier used to
-            determine the prediction confidence. The object must
-            comply with scikit-learn interface and expose a
+        classifier: Classifier used to determine the prediction confidence.
+            The object must comply with scikit-learn interface and expose a
             `predict_proba` method.
-        batch_size (int): Number of samples to draw when predicting.
-        assume_fitted (bool): If true, classifier is not refit
-        verbose (int, optional): The verbosity level. Defaults to 0.
+        batch_size: Number of samples to draw when predicting.
+        assume_fitted: If true, classifier is not refit
+        verbose: The verbosity level. Defaults to 0.
     
     Attributes:
         classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
-    def __init__(self, classifier, batch_size, strategy='top', assume_fitted=False, verbose=0):
+    def __init__(self, classifier: BaseEstimator, batch_size: int,
+                 strategy: str = 'top', assume_fitted: bool = False,
+                 verbose: int = 0):
         super().__init__(batch_size, strategy=strategy)
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
@@ -106,12 +107,12 @@ class ConfidenceSampler(ScoredQuerySampler):
         if self.classifier_ == 'precomputed':
             self.assume_fitted = True
 
-    def fit(self, X, y):
+    def fit(self, X: np.array, y: np.array):
         """Fit the estimator on labeled samples.
 
         Args:
-            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Training data
-            y (numpy array, shape (n_samples,)): Target values
+            X: Labeled samples
+            y: Target values
 
         Returns:
             self: An instance of self.
@@ -120,14 +121,14 @@ class ConfidenceSampler(ScoredQuerySampler):
             self.classifier_.fit(X, y)
         return self
 
-    def score_samples(self, X):
-        """Selects the samples to annotate from unlabelled data.
+    def score_samples(self, X: np.array) -> np.array:
+        """Selects the samples to annotate from unlabeled data.
 
         Args:
-            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
+            X: shape (n_samples, n_features), Samples to evaluate.
 
         Returns:
-            predictions (np.array): The score of each sample according to lowest confidence estimation.
+            The score of each sample according to lowest confidence estimation.
         """
         return confidence_score(self.classifier_, X)
 
@@ -140,19 +141,20 @@ class MarginSampler(ScoredQuerySampler):
     the most, hence the lowest difference.
 
     Parameters:
-        classifier (sklearn.BaseEstimator): Classifier used to
+        classifier: Classifier used to
             determine the prediction confidence. The object must
             comply with scikit-learn interface and expose a
             `predict_proba` method.
-        batch_size (int): Number of samples to draw when predicting.
-        assume_fitted (bool): If true, classifier is not refit
-        verbose (int, optional): The verbosity level. Defaults to 0.
+        batch_size: Number of samples to draw when predicting.
+        assume_fitted: If true, classifier is not refit
+        verbose: The verbosity level. Defaults to 0.
     
     Attributes:
         classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
-
-    def __init__(self, classifier, batch_size, strategy='top', assume_fitted=False, verbose=0):
+    def __init__(self, classifier: BaseEstimator, batch_size: int,
+                 strategy: str = 'top', assume_fitted: bool = False,
+                 verbose: int = 0):
         super().__init__(batch_size, strategy=strategy)
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
@@ -161,12 +163,12 @@ class MarginSampler(ScoredQuerySampler):
         if self.classifier_ == 'precomputed':
             self.assume_fitted = True
 
-    def fit(self, X, y):
+    def fit(self, X: np.array, y: np.array):
         """Fit the estimator on labeled samples.
 
         Args:
-            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Training data
-            y (numpy array, shape (n_samples,)): Target values
+            X: Labeled samples
+            y: Target values
 
         Returns:
             self: An instance of self.
@@ -175,14 +177,14 @@ class MarginSampler(ScoredQuerySampler):
             self.classifier_.fit(X, y)
         return self
 
-    def score_samples(self, X):
-        """Selects the samples to annotate from unlabelled data.
+    def score_samples(self, X: np.array) -> np.array:
+        """Selects the samples to annotate from unlabeled data.
 
         Args:
-            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
+            X: shape (n_samples, n_features), Samples to evaluate.
 
         Returns:
-            predictions (np.array): The score of each sample according to smallest margin estimation.
+            The score of each sample according to lowest confidence estimation.
         """
         return margin_score(self.classifier_, X)
 
@@ -195,19 +197,20 @@ class EntropySampler(ScoredQuerySampler):
     entropy samples are selected.
 
     Parameters:
-        classifier (sklearn.BaseEstimator): Classifier used to
+        classifier: Classifier used to
             determine the prediction confidence. The object must
             comply with scikit-learn interface and expose a
             `predict_proba` method.
-        batch_size (int): Number of samples to draw when predicting.
-        assume_fitted (bool): If true, classifier is not refit
-        verbose (int, optional): The verbosity level. Defaults to 0.
+        batch_size: Number of samples to draw when predicting.
+        assume_fitted: If true, classifier is not refit
+        verbose: The verbosity level. Defaults to 0.
     
     Attributes:
         classifier_ (sklearn.BaseEstimator): The fitted classifier.
     """
-
-    def __init__(self, classifier, batch_size, strategy='top', assume_fitted=False, verbose=0):
+    def __init__(self, classifier: BaseEstimator, batch_size: int,
+                 strategy: str = 'top', assume_fitted: bool = False,
+                 verbose: int = 0):
         super().__init__(batch_size, strategy=strategy)
         # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
@@ -216,12 +219,12 @@ class EntropySampler(ScoredQuerySampler):
         if self.classifier_ == 'precomputed':
             self.assume_fitted = True
 
-    def fit(self, X, y):
+    def fit(self, X: np.array, y: np.array):
         """Fit the estimator on labeled samples.
 
         Args:
-            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Training data
-            y (numpy array, shape (n_samples,)): Target values
+            X: Labeled samples
+            y: Target values
 
         Returns:
             self: An instance of self.
@@ -230,13 +233,13 @@ class EntropySampler(ScoredQuerySampler):
             self.classifier_.fit(X, y)
         return self
 
-    def score_samples(self, X):
-        """Selects the samples to annotate from unlabelled data.
+    def score_samples(self, X: np.array) -> np.array:
+        """Selects the samples to annotate from unlabeled data.
 
         Args:
-            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
+            X: shape (n_samples, n_features), Samples to evaluate.
 
         Returns:
-            predictions (np.array): The entropy score of each sample.
+            The score of each sample according to lowest confidence estimation.
         """
         return entropy_score(self.classifier_, X)

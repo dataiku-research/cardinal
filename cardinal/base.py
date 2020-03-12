@@ -1,7 +1,10 @@
-import numpy as np
+from typing import List
 
+import numpy as np
 from sklearn.base import BaseEstimator
 from sklearn.utils import check_random_state
+
+from .typeutils import RandomStateType
 
 
 class BaseQuerySampler(BaseEstimator):
@@ -9,55 +12,76 @@ class BaseQuerySampler(BaseEstimator):
     
     A query sampler is an object that takes as input labeled and/or unlabeled
     samples and use knowledge from them to selected the most informative ones.
+
+    Args:
+        batch_size: Numbers of samples to select.
     """
     def __init__(self, batch_size: int):
         self.batch_size = batch_size
 
     def fit(self, X: np.ndarray, y: np.ndarray = None):
-        pass
+        """Fit the model on labeled samples.
 
-    def select_samples(self, X: np.ndarray):
+        Args:
+            X: Samples to learn from.
+            y: Labels of the samples.
+
+        Returns:
+            The object itself.
+        """
+        return self
+
+    def select_samples(self, X: np.array) -> np.array:
         """Selects the samples to annotate from unlabeled data.
 
         Args:
-            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
+            X: Samples to evaluate.
 
         Returns:
-            predictions (np.array): Indices of the selected samples.
+            Indices of the selected samples.
         """
         raise NotImplementedError
 
 
 class ScoredQuerySampler(BaseQuerySampler):
-    """Base class providing utils for query samplers
-    A query sampler can be seen as a clustering since it is most of the time
-    an unsupervised approach sorting out samples to be annotated and those who
-    should not.
-    This is also considered a transformer for the sole purpose of chaining them.
-    It is common in sampling to chain several approached. However, this can be
-    easily dropped since it is more of a hack than a feature.
-    """
+    """Base class handling query samplers relying on a total order.
+    Query sampling methods often scores all the samples and then pick samples
+    using these scores. This base class handles the selection system, only
+    a scoring method is then required.
 
-    def __init__(self, batch_size, strategy='top', random_state=None):
+    Args:
+        batch_size: Numbers of samples to select.
+        strategy: Describes how to select the samples based on scores. Can be
+                  "top", "linear_choice", "squared_choice".
+        random_state: Random seeding
+    """
+    def __init__(self, batch_size: int, strategy: str = 'top',
+                 random_state: RandomStateType = None):
         super().__init__(batch_size)
         self.strategy = strategy
         self.random_state = check_random_state(random_state)
 
-    def fit(self, X, y=None):
-        pass
-
-    def score_samples(self, X):
-        raise NotImplementedError
-
-    def select_samples(self, X):
-        """Selects the samples to annotate from unlabelled data using the internal scoring.
+    def score_samples(self, X: np.array) -> np.array:
+        """Give an informativeness score to unlabeled samples.
 
         Args:
-            X ({array-like, sparse matrix}, shape (n_samples, n_features)): Samples to evaluate.
-            strategy (str): Strategy to use to select queries. Can top, linear_choice, or squared_choice.
+            X: Samples to evaluate.
 
         Returns:
-            predictions (np.array): Indices of the selected samples.
+            Scores of the samples.
+        """
+        raise NotImplementedError
+
+    def select_samples(self, X: np.array) -> np.array:
+        """Selects the samples from unlabeled data using the internal scoring.
+
+        Args:
+            X: Samples to evaluate.
+            strategy: Strategy to use to select queries. Can be one oftop,
+                      linear_choice, or squared_choice.
+
+        Returns:
+            Indices of the selected samples.
         """
         sample_scores = self.score_samples(X)
         self.sample_scores_ = sample_scores
@@ -73,7 +97,8 @@ class ScoredQuerySampler(BaseQuerySampler):
                 np.arange(X.shape[0]), size=self.batch_size,
                 replace=False, p=sample_scores / np.sum(sample_scores))
         else:
-            raise ValueError('Unknown sample selection stretegy {}'.format(self.strategy))
+            raise ValueError('Unknown sample selection strategy {}'
+                             .format(self.strategy))
         return index
 
 
@@ -84,14 +109,31 @@ class ChainQuerySampler(BaseQuerySampler):
     dimensionality.
     """
 
-    def __init__(self, *sampler_list):
+    def __init__(self, *sampler_list: List[BaseQuerySampler]):
         self.sampler_list = sampler_list
 
-    def fit(self, X, y=None):
-        # Fits only the first one. The other will depend on this one.
+    def fit(self, X: np.array, y: np.array = None) -> 'ChainQuerySampler':
+        """Fits the first query sampler
+
+        Args:
+            X: Samples to evaluate.
+            y: Labels of the labeled samples.
+        
+        Returns:
+            Indices of the selected samples.
+        """
         self.sampler_list[0].fit(X, y)
+        return self
     
-    def select_samples(self, X):
+    def select_samples(self, X: np.array) -> np.array:
+        """Selects the samples by chaining samplers.
+
+        Args:
+            X: Samples to evaluate.
+
+        Returns:
+            Indices of the selected samples.
+        """
         selected = self.sampler_list[0].select_samples(X)
 
         for sampler in self.sampler_list[1:]:

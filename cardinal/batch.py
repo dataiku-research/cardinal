@@ -8,44 +8,39 @@ from .base import BaseQuerySampler
 
 
 class RankedBatchSampler(BaseQuerySampler):
-    """TODO
+    """Selects samples to label by maximizing the distance between them.
 
-    Parameters
-    ----------
-    batch_size : int
-        Number of samples to draw when predicting.
-    verbose : integer, optional
-        The verbosity level
-    Attributes
-    ----------
-    pipeline_ : sklearn.pipeline
-        Pipeline used to predict the class probability.
+    Args:
+        batch_size: Number of samples to select.
+        metric: Metric to use for distance computation.
+        verbose: The verbosity level
     """
-
-    def __init__(self, batch_size, verbose=0):
+    def __init__(self, batch_size: int, metric: str = 'euclidean',
+                 verbose: int = 0):
         super().__init__(batch_size)
+        self.metric = metric
         self.verbose = verbose
 
     def fit(self, X, y=None):
-        """Does nothing, all data must be passed at sample selection.
-        Parameters
-        ----------
-        X : {array-like, sparse matrix}, shape (n_samples, n_features)
-            Training data
-        Returns
-        -------
-        self : returns an instance of self.
+        """Does nothing, RankedBatch is unsupervised.
+
+        Args:
+            X: Samples to learn from.
+            y: Labels of the samples.
+
+        Returns:
+            The object itself.
         """
         return self
 
-    def select_samples(self, X, samples_weights):
+    def select_samples(self, X: np.array,
+                       samples_weights: np.array) -> np.array:
         """Selects the samples to annotate from unlabelled data.
-        Parameters
-        ----------
-        X : {array-like, sparse matrix}, shape (n_samples, n_features)
-            Training data
-        sample_weights : numpy array, shape (n_samples,)
-            Weights of the samples. Set labeled samples as -1.
+        
+        Args:
+            X:  shape (n_samples, n_features), Training data
+            sample_weights: shape (n_samples, Weights of the
+                            samples. Set labeled samples as -1.
         Returns
         -------
         self : returns an instance of self.
@@ -62,7 +57,8 @@ class RankedBatchSampler(BaseQuerySampler):
         # We compute the distances for labeled data in 2 steps
         # TODO: can be parallelized
         _, similarity_scores = pairwise_distances_argmin_min(
-            X[unlabeled_mask], X[np.logical_not(unlabeled_mask)], metric='euclidean')
+            X[unlabeled_mask], X[np.logical_not(unlabeled_mask)],
+            metric=self.metric)
         similarity_scores = 1 / (1 + similarity_scores)
 
         selected_samples = []
@@ -70,15 +66,19 @@ class RankedBatchSampler(BaseQuerySampler):
         for _ in range(self.batch_size):
 
             alpha = n_unlabeled / n_samples
-            scores = alpha * (1 - similarity_scores) + (1 - alpha) * samples_weights[unlabeled_mask]
+            scores = (alpha * (1 - similarity_scores)
+                      + (1 - alpha) * samples_weights[unlabeled_mask])
 
             idx_furthest = index[unlabeled_mask][np.argmax(scores)]
             selected_samples.append(idx_furthest)
 
-            # Update the distances considering this sample as reference one
-            distances_to_furthest = pairwise_distances(X[unlabeled_mask], X[idx_furthest, None], metric='euclidean')[:, 0]
-            similarity_scores = np.max([similarity_scores, 1 / (1 + distances_to_furthest)], axis=0)
+            # Update similarities considering the selected sample as labeled
+            # We could remove its value from the array but we avoid realloc
+            sim = 1 / (1 + pairwise_distances(
+                X[unlabeled_mask], X[idx_furthest, None],
+                metric=self.metric)[:, 0])
+            similarity_scores = np.max([similarity_scores, sim], axis=0)
             samples_weights[idx_furthest] = 0.
             n_unlabeled -= 1
 
-        return selected_samples
+        return np.asarray(selected_samples)
