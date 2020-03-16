@@ -2,7 +2,7 @@
 .. _reference:
 
 cardinal's API Reference
-============================
+========================
 
 The complete cardinal project is automatically documented for
 every module.
@@ -21,3 +21,4 @@ every module.
 
    base
    uncertainty
+   clustering
