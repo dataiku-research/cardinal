@@ -22,91 +22,70 @@ cardinal version, required package versions, and utilities for checking
 #
 __version__ = '0.0.2'
 
-_CARDINAL_INSTALL_MSG = 'See %s for installation information.' % (
-    'https://github.com/dataiku/cardinal')
-
 # This is a tuple to preserve order, so that dependencies are checked
-#   in some meaningful order (more => less 'core').
-REQUIRED_MODULE_METADATA = (
-    ('numpy', {
-        'min_version': '1.11',
-        'required_at_installation': True,
-        'install_info': _CARDINAL_INSTALL_MSG}),
-    ('scipy', {
+# in some meaningful order (more => less 'core').
+DEPENDENCIES_METADATA = (
+    ('numpy', {'min_version': '1.11'}),
+    ('scipy', {'min_version': '0.19'}),
+    ('scikit-learn', {
         'min_version': '0.19',
-        'required_at_installation': True,
-        'install_info': _CARDINAL_INSTALL_MSG}),
-    ('sklearn', {
-        'min_version': '0.19',
-        'required_at_installation': True,
-        'install_info': _CARDINAL_INSTALL_MSG}),
-    ('joblib', {
-        'min_version': '0.11',
-        'required_at_installation': True,
-        'install_info': _CARDINAL_INSTALL_MSG}))
+        'extra_options': ['sklearn', 'examples', 'submodular']}),
+    ('apricot-select', {
+        'min_version': '0.5.0',
+        'extra_options': ['submodular']}),
+    ('matplotlib', {
+        'min_version': '2.0',
+        'extra_options': ['examples']}),
+)
 
-OPTIONAL_MATPLOTLIB_MIN_VERSION = '2.0'
+package_to_module = {
+    'scikit-learn': 'sklearn',
+    'apricot-select': 'apricot'
+}
 
 
-def _import_module_with_version_check(
-        module_name,
-        minimum_version,
-        install_info=None):
+def check_modules(extra_option=None, import_module=None):
     """Check that module is installed with a recent enough version
     """
     from distutils.version import LooseVersion
 
-    try:
-        module = __import__(module_name)
-    except ImportError as exc:
-        user_friendly_info = ('Module "{0}" could not be found. {1}').format(
-            module_name,
-            install_info or 'Please install it properly to use cardinal.')
-        exc.args += (user_friendly_info,)
-        # Necessary for Python 3 because the repr/str of ImportError
-        # objects was changed in Python 3
-        if hasattr(exc, 'msg'):
+    if import_module:
+        import_module = '.' + import_module
+
+    for package_name, metadata in DEPENDENCIES_METADATA:
+
+        if not ((extra_option is None and 'extra_options' not in metadata)
+                or (extra_option in metadata.get('extra_options', []))):
+            continue
+
+        min_version = metadata['min_version']
+        try:
+            module_name = package_to_module.get(package_name, package_name)
+            module = __import__(module_name)
+        except ImportError as exc:
+            user_friendly_info = (
+                'Module "{0}" could not be found. '
+                'Please install it properly to use cardinal{1}.'.format(
+                    package_name, import_module))
+            exc.args += (user_friendly_info,)
             exc.msg += '. ' + user_friendly_info
-        raise
+            raise
 
-    # Avoid choking on modules with no __version__ attribute
-    module_version = getattr(module, '__version__', '0.0.0')
+        # Avoid choking on modules with no __version__ attribute
+        module_version = getattr(module, '__version__', '0.0.0')
 
-    version_too_old = (not LooseVersion(module_version) >=
-                       LooseVersion(minimum_version))
+        version_too_old = (not LooseVersion(module_version) >=
+                           LooseVersion(min_version))
 
-    if version_too_old:
-        message = (
-            'A {module_name} version of at least {minimum_version} '
-            'is required to use cardinal. {module_version} was found. '
-            'Please upgrade {module_name}').format(
-                module_name=module_name,
-                minimum_version=minimum_version,
-                module_version=module_version)
+        if version_too_old:
+            message = (
+                'A {package_name} version of at least {minimum_version} '
+                'is required to use cardinal{import_module}. '
+                '{module_version} was found. '
+                'Please upgrade {package_name}').format(
+                    package_name=package_name,
+                    minimum_version=min_version,
+                    module_version=module_version,
+                    import_module=import_module)
 
-        raise ImportError(message)
-
-    return module
-
-
-def _check_module_dependencies(is_cardinal_installing=False):
-    """Throw an exception if cardinal dependencies are not installed.
-    Parameters
-    ----------
-    is_cardinal_installing: boolean
-        if True, only error on missing packages that cannot be auto-installed.
-        if False, error on any missing package.
-    Throws
-    -------
-    ImportError
-    """
-
-    for (module_name, module_metadata) in REQUIRED_MODULE_METADATA:
-        if not (is_cardinal_installing and
-                not module_metadata['required_at_installation']):
-            # Skip check only when installing and it's a module that
-            # will be auto-installed.
-            _import_module_with_version_check(
-                module_name=module_name,
-                minimum_version=module_metadata['min_version'],
-                install_info=module_metadata.get('install_info'))
+            raise ImportError(message)

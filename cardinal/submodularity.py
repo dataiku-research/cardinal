@@ -1,5 +1,8 @@
+from .version import check_modules
+
+check_modules('submodular', 'submodularity')  # noqa
+
 from apricot import FacilityLocationSelection
-import numpy as np
 from sklearn.metrics import pairwise_distances
 
 from .base import BaseQuerySampler

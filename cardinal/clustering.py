@@ -1,8 +1,10 @@
+from .version import check_modules
+
+check_modules('kmeans', 'clustering')  # noqa
+
 import numpy as np
 from sklearn.cluster import KMeans
-
 from .base import BaseQuerySampler
-from .uncertainty import ConfidenceSampler
 
 
 class KCentroidSampler(BaseQuerySampler):

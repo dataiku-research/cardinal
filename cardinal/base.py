@@ -1,13 +1,11 @@
 from typing import List
 
 import numpy as np
-from sklearn.base import BaseEstimator
-from sklearn.utils import check_random_state
 
-from .typeutils import RandomStateType
+from .typeutils import RandomStateType, check_random_state
 
 
-class BaseQuerySampler(BaseEstimator):
+class BaseQuerySampler():
     """Base interface for query samplers
     
     A query sampler is an object that takes as input labeled and/or unlabeled

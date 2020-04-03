@@ -1,22 +1,21 @@
 #! /usr/bin/env python
 
-descr = """Active learning python package"""
-
 import sys
 import os
+from collections import defaultdict
 
 from setuptools import setup, find_packages
+
+
+descr = """Active learning python package"""
 
 
 def load_version():
     """Executes cardinal/version.py in a globals dictionary and return it.
     """
-    # load all vars into globals, otherwise
-    #   the later function call using global vars doesn't work.
     globals_dict = {}
     with open(os.path.join('cardinal', 'version.py')) as fp:
         exec(fp.read(), globals_dict)
-
     return globals_dict
 
 
@@ -44,14 +43,21 @@ VERSION = _VERSION_GLOBALS['__version__']
 
 if __name__ == "__main__":
     if is_installing():
-        module_check_fn = _VERSION_GLOBALS['_check_module_dependencies']
-        module_check_fn(is_cardinal_installing=True)
+        module_check_fn = _VERSION_GLOBALS['check_modules']
+        module_check_fn()
 
-    install_requires = \
-        ['%s>=%s' % (mod, meta['min_version'])
-            for mod, meta in _VERSION_GLOBALS['REQUIRED_MODULE_METADATA']
-            if not meta['required_at_installation']]
+    install_requires = []
+    extras_require = defaultdict(list)
 
+    for mod, meta in _VERSION_GLOBALS['DEPENDENCIES_METADATA']:
+        dep_str = '%s>=%s' % (mod, meta['min_version'])
+        if 'extra_options' in meta:
+            for extra_option in meta['extra_options']:
+                extras_require[extra_option].append(dep_str)
+            extras_require['all'].append(dep_str)
+        else:
+            install_requires.append(dep_str)
+  
     setup(name=DISTNAME,
           maintainer=MAINTAINER,
           maintainer_email=MAINTAINER_EMAIL,
@@ -77,4 +83,6 @@ if __name__ == "__main__":
           ],
           packages=find_packages(),
           package_data={},
-          install_requires=install_requires,)
+          python_requires='>=3.5',
+          install_requires=install_requires,
+          extras_require=extras_require)

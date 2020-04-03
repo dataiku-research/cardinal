@@ -52,6 +52,7 @@ y[y > 1] = 1
 
 model = SVC(kernel='linear', C=1E10, probability=True)
 
+
 ##############################################################################
 # This helper function plots our simulated points in red and blue. The one that
 # are not in the training set are faded. We also plot the linear separation
@@ -78,9 +79,11 @@ def plot(a, b, score, selected):
         dists.append(dists.pop(0))
         corners.append(corners.pop(0))
     first_pos = next(i for i, x in enumerate(dists) if x > 0)
-    plt.gca().add_patch(Polygon([p3, p2] + corners[:first_pos], joinstyle='round',
+    plt.gca().add_patch(Polygon(
+        [p3, p2] + corners[:first_pos], joinstyle='round',
         facecolor=l_to_c[model.predict([corners[0]])[0]], alpha=0.2))
-    plt.gca().add_patch(Polygon([p2, p3] + corners[first_pos:], joinstyle='round',
+    plt.gca().add_patch(Polygon(
+        [p2, p3] + corners[first_pos:], joinstyle='round',
         facecolor=l_to_c[model.predict([corners[-1]])[0]], alpha=0.2))
 
     #plt.fill_between([p1[0], p4[0]], [p1[1], p4[1]], [p4[1], p4[1]],

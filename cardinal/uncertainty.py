@@ -1,5 +1,4 @@
 from scipy.stats import entropy
-from sklearn.base import BaseEstimator
 import numpy as np
 
 from .base import ScoredQuerySampler
