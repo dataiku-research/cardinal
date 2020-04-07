@@ -68,7 +68,8 @@ def plot(a, b, score, selected):
     x1, x2 = (np.min(X[:, 0]), np.max(X[:, 0]))
     y1, y2 = (np.min(X[:, 1]), np.max(X[:, 1]))
 
-    # We compute the intersection of the line with the rectange
+    # This code computes the coordinates of the background rectangles
+    # in order to have pretty prints.
     p1, p2 = (x1, a * x1 + b), ((y1 - b) / a, y1)
     p3, p4 = (x2, a * x2 + b), ((y2 - b) / a, y2)
     p1, p2, p3, p4 = sorted([p1, p2, p3, p4])
@@ -85,11 +86,6 @@ def plot(a, b, score, selected):
     plt.gca().add_patch(Polygon(
         [p2, p3] + corners[first_pos:], joinstyle='round',
         facecolor=l_to_c[model.predict([corners[-1]])[0]], alpha=0.2))
-
-    #plt.fill_between([p1[0], p4[0]], [p1[1], p4[1]], [p4[1], p4[1]],
-    #                 color=l_to_c[model.predict([(p1[0], p4[1])])[0]], alpha=0.1)
-    #plt.fill_between([p1[0], p4[0]], [p1[1], p4[1]], [p1[1], p1[1]],
-    #                 color=l_to_c[model.predict([(p4[0], p1[1])])[0]], alpha=0.1)
    
     # Plot not selected first in low alpha, then selected
     for l, s in [(0, False), (1, False), (0, True), (1, True)]:
@@ -163,7 +159,8 @@ for i, (sampler_name, sampler) in enumerate(samplers):
         if i == 0:
             plt.gca().set_title('Iteration {}'.format(j), fontsize=10)
 
-        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), mask.copy())
+        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y),
+             mask.copy())
 
 plt.tight_layout()
 plt.subplots_adjust(top=0.86)
