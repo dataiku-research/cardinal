@@ -1,0 +1,22 @@
+
+
+Examples using ``numpy.max``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we show the usefulness of diversity-based approaches using a toy example where...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_confidence_vs_diversity_thumb.png
+
+     :ref:`sphx_glr_auto_examples_plot_confidence_vs_diversity.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_plot_confidence_vs_diversity.py`

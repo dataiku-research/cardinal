@@ -1,0 +1,22 @@
+
+
+Examples using ``numpy.arange``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we run an experiment on real data and show how active learning can be monitore...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_digits_metrics_thumb.png
+
+     :ref:`sphx_glr_auto_examples_plot_digits_metrics.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_plot_digits_metrics.py`

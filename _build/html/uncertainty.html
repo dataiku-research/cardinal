@@ -1,0 +1,263 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Uncertainty based query sampling &mdash; cardinal 0.0.2-git documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/theme_override.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cardinal
+          
+
+          
+            
+            <img src="_static/cardinal.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+      <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Versions</span>
+        v: stable
+        <span class="fa fa-caret-down"></span>
+      </span>
+      <div class="rst-other-versions">
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="https://sphinx-gallery.github.io/dev">dev</a></dd>
+          
+            <dd><a href="https://sphinx-gallery.github.io/stable">stable</a></dd>
+          
+        </dl>
+      </div>
+    </div>
+
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Using cardinal</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to active learning</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Example galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API and developer reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">cardinal’s API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku/cardinal">Fork cardinal on Github</a></li>
+</ul>
+
+            
+          
+
+  
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cardinal</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Uncertainty based query sampling</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="uncertainty-based-query-sampling">
+<h1>Uncertainty based query sampling<a class="headerlink" href="#uncertainty-based-query-sampling" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="#settles2009" id="id1"><span>[Settles2009]</span></a> summarizes the most common active learning methods and some advanced
+ones. The most common ones are known under the term of uncertainty sampling as they
+directly leverage the prediction scores of the classifier to determine the samples
+for which the prediction is the less certain.</p>
+<dl class="citation">
+<dt class="label" id="settles2009"><span class="brackets"><a class="fn-backref" href="#id1">Settles2009</a></span></dt>
+<dd><p>Settles, B. (2009). Active learning literature survey. University
+of Wisconsin-Madison Department of Computer Sciences.</p>
+</dd>
+</dl>
+<p>Note that a lot of papers report results under the name uncertainty sampling without
+mentioning the method used. This appellation covers the three following.</p>
+<p>In the following examples, we will consider a classification problem with 4 classes
+for illustration purpose. The graph indicates the probability to be chose with regard
+to the probability score among other classes.</p>
+<div class="section" id="least-confidence">
+<h2>Least confidence<a class="headerlink" href="#least-confidence" title="Permalink to this headline">¶</a></h2>
+<p>The least confidence sampling takes the samples for which the maximum probability
+among all classes is the lowest. It amounts to selecting the samples for which the
+model is not certain about the class it attributed.</p>
+<p>In this schema, the probability depends only on the distance to the closest category.</p>
+<p>The problem of this method is that, in multi class cases in particular, the score of
+the majority class may not be the most significant. We would also like to look like
+at the rest of the classes.</p>
+</div>
+<div class="section" id="margin-sampling">
+<h2>Margin sampling<a class="headerlink" href="#margin-sampling" title="Permalink to this headline">¶</a></h2>
+<p>Margin sampling takes into account the difference of prediction between the first
+and second classes chosen by the model. This method is particularly useful when we
+expect the samples to be tied between two classes. For example, in MNIST, 3 and 5
+look alike and we may expect some samples to be inbetween.</p>
+<p>It is clear in this schema, the probability to be chosen is the ratio between the
+distance to the two closest classes.</p>
+<p>But again, we may be in cases where there are more than two classes (3, 5 and 6?) and
+in this case, we would like to take all the probabilites into account.</p>
+</div>
+<div class="section" id="entropy-sampling">
+<h2>Entropy sampling<a class="headerlink" href="#entropy-sampling" title="Permalink to this headline">¶</a></h2>
+<p>In the end, the real sense of uncertainty method is to determine how much information
+the model has on our sample. Information theory has used Shannon’s entropy since ages
+to measure the amount of information in data. The last method proposes to use it on
+the prediction probabilities where more entropy means more chances to be selected.</p>
+<p>Now the probability to be selected depends on the distance to all the other classes.</p>
+<p>Be careful though: sometimes, classes in the tail of the prediction does not make sense.
+In that case, entropy sampling may be misled.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019-2020, Dataiku
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

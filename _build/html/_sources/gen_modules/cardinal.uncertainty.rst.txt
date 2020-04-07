@@ -1,0 +1,79 @@
+.. Please when editing this file make sure to keep it matching the
+   docs in ../configuration.rst:reference_to_examples
+
+cardinal.uncertainty
+====================
+
+.. automodule:: cardinal.uncertainty
+
+   
+   
+
+   Functions
+   ---------
+
+   
+
+   .. autofunction:: confidence_score
+
+   .. include:: backreferences/cardinal.uncertainty.confidence_score.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+
+   .. autofunction:: entropy_score
+
+   .. include:: backreferences/cardinal.uncertainty.entropy_score.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+
+   .. autofunction:: margin_score
+
+   .. include:: backreferences/cardinal.uncertainty.margin_score.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   
+   
+
+   
+   
+
+   Classes
+   -------
+
+   
+   .. autoclass:: ConfidenceSampler
+      :members:
+
+   .. include:: backreferences/cardinal.uncertainty.ConfidenceSampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   .. autoclass:: EntropySampler
+      :members:
+
+   .. include:: backreferences/cardinal.uncertainty.EntropySampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   .. autoclass:: MarginSampler
+      :members:
+
+   .. include:: backreferences/cardinal.uncertainty.MarginSampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   
+   
+
+   
+   
+   
