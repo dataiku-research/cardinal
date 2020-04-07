@@ -1,10 +1,8 @@
-from .version import check_modules
-
-check_modules('kmeans', 'clustering')  # noqa
-
 import numpy as np
-from sklearn.cluster import KMeans
+from scipy.optimize import linear_sum_assignment
+
 from .base import BaseQuerySampler
+from .version import check_modules
 
 
 class KCentroidSampler(BaseQuerySampler):
@@ -15,67 +13,65 @@ class KCentroidSampler(BaseQuerySampler):
     Args:
         clustering: A clustering algorithm matching the sklearn interface
         batch_size: Number of samples to draw when predicting.
-        verbose: The verbosity level
 
     Attributes:
         clustering_ : The fitted clustering estimator.
     """
-    def __init__(self, clustering, batch_size, verbose=0):
+    def __init__(self, clustering, batch_size):
         super().__init__(batch_size)
         self.clustering_ = clustering
-        self.verbose = verbose
 
-    def fit(self, X, y=None):
-        """Does nothing.
-        Parameters
-        ----------
-        X : {array-like, sparse matrix}, shape (n_samples, n_features)
-            Training data
-        y : numpy array, shape (n_samples,)
-            Target values
-        Returns
-        -------
-        self : returns an instance of self.
+    def fit(self, X, y=None) -> 'KCentroidSampler':
+        """Does nothing, this method is unsupervised.
+        
+        Args:
+            X: Labeled samples of shape (n_samples, n_features).
+            y: Labels of shape (n_samples).
+        
+        Returns:
+            The object itself
         """
         return self
 
-    def select_samples(self, X, sample_weight=None):
-        """Fits clustering on the samples and select the ones closest to centroids.
-        Parameters
-        ----------
-        X : {array-like, sparse matrix}, shape (n_samples, n_features)
-            Training data
-        y : numpy array, shape (n_samples,)
-            Target values
-        Returns
-        -------
-        self : returns an instance of self.
+    def select_samples(self, X: np.array,
+                       sample_weight: np.array = None) -> np.array:
+        """Clusters the samples and select the ones closest to centroids.
+        
+        Args:
+            X: Pool of unlabeled samples of shape (n_samples, n_features).
+            sample_weight: Weight of the samples of shape (n_samples),
+                optional.
+
+        Returns:
+            Indices of the selected samples of shape (batch_size).
         """
-        model = self.clustering_.fit(X, sample_weight=sample_weight)
-        closest = np.argmin(model.transform(X), axis=0)
-        return closest
+        if self._not_enough_samples(X):
+            return np.arange(X.shape[0])
+
+        kwargs = dict(sample_weight=sample_weight) if sample_weight else dict()
+        model = self.clustering_.fit(X, **kwargs)
+        distances = model.transform(X)
+
+        # Sometimes, one sample can be the closest to two centroids. In that
+        # case, we want to take the second closest one, etc.
+        # linear_sum_assignemnt solves this problem.
+        return linear_sum_assignment(distances)[0]
 
 
 class KMeansSampler(KCentroidSampler):
-    """Query sampler that uses a KMeans approach to increase selection diversity.
+    """Select samples as closest sample to KMeans centroids.
 
-    Parameters
-    ----------
-    batch_size : int
-        Number of samples to draw when predicting.
-    verbose : integer, optional
-        The verbosity level
-    Attributes
-    ----------
-    clustering_ : sklearn estimator
-        The fitted clustering estimator.
+    Args:
+        batch_size: Number of samples to draw when predicting.
     """
+    def __init__(self, batch_size, **kmeans_args):
+        check_modules('sklearn', 'clustering.KmeansSampler')
+        from sklearn.cluster import KMeans
 
-    def __init__(self, batch_size, verbose=0, **kmeans_args):
         if 'n_clusters' in kmeans_args:
             raise ValueError(
                 'You have specified n_clusters={} when creating KMeansSampler.'
                 ' This is not supported since n_clusters is overridden using '
                 'batch_size.'.format(kmeans_args['n_clusters']))
         kmeans_args['n_clusters'] = batch_size
-        super().__init__(KMeans(**kmeans_args), batch_size, verbose)
+        super().__init__(KMeans(**kmeans_args), batch_size)

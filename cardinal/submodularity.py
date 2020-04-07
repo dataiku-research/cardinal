@@ -2,55 +2,59 @@ from .version import check_modules
 
 check_modules('submodular', 'submodularity')  # noqa
 
+import numpy as np
 from apricot import FacilityLocationSelection
 from sklearn.metrics import pairwise_distances
 
 from .base import BaseQuerySampler
+from .typeutils import MetricType
 
 
 class SubmodularSampler(BaseQuerySampler):
-    """TODO
-    Documentation.
-
-    Parameters
-    ----------
-    batch_size : float, default: 0.05
-        If batch_size < 1., it is interpreted as fraction of the training
-        set to select for labeling. If batch_size >= 1., it is interpreted
-        as the number of samples to draw.
-    verbose : integer, optional
-        The verbosity level
-
-    Attributes
-    ----------
-    pipeline_ : sklearn.pipeline
-        Pipeline used to predict the class probability.
+    """Select samples using a facility location selector
+    
+    Args:
+        batch_size: Number of samples to select.
+        metric: Metric to use for distance computation.
+        n_jobs: Number of jobs to run in parallel. -1 means using all cores.
     """
 
-    def __init__(self, batch_size, compute_distances=False, verbose=0):
+    def __init__(self, batch_size: int, metric: MetricType = 'euclidean',
+                 n_jobs: int = 1):
         super().__init__(batch_size)
-        # TODO: can we check that the pipeline has a predict_proba?
-        self.compute_distances = compute_distances
-        self.verbose = verbose
+        self.metric = metric
+        self.n_jobs = n_jobs
 
-    def fit(self, X, y=None):
+    def fit(self, X: np.array, y: np.array = None) -> 'SubmodularSampler':
         """Fit linear model with Stochastic Gradient Descent.
-        Parameters
-        ----------
-        X : {array-like, sparse matrix}, shape (n_samples, n_features)
-            Training data
-        y : numpy array, shape (n_samples,)
-            Target values
-        Returns
-        -------
-        self : returns an instance of self.
+        
+        Args:
+            X: Labeled samples of shape (n_samples, n_features).
+            y: Labels of shape (n_samples).
+        
+        Returns:
+            The object itself
         """
-        self._classes = [0, 1]  
         return self
 
-    def select_samples(self, X):
-        if self.compute_distances:
-            model = FacilityLocationSelection(self.batch_size, pairwise_func='precomputed').fit(pairwise_distances(X))
+    def select_samples(self, X: np.array) -> np.array:
+        """Select the best samples using submodular optimization.
+
+        Args:
+            X: Pool of unlabeled samples of shape (n_samples, n_features).
+
+        Returns:
+            Indices of the selected samples of shape (batch_size).
+        """
+        if self._not_enough_samples(X):
+            return np.arange(X.shape[0])
+
+        if self.metric != 'precomputed':
+            distances = pairwise_distances(
+                X, metric=self.metric, n_jobs=self.n_jobs)
+            model = FacilityLocationSelection(
+                self.batch_size, pairwise_func='precomputed').fit(distances)
         else:  
-            model = FacilityLocationSelection(self.batch_size).fit(X)
+            model = FacilityLocationSelection(
+                self.batch_size, pairwise_func='precomputed').fit(X)
         return model.ranking

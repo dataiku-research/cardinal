@@ -44,8 +44,16 @@ package_to_module = {
 }
 
 
-def check_modules(extra_option=None, import_module=None):
+def check_modules(extra_option=None, import_module=None, strict=True):
     """Check that module is installed with a recent enough version
+
+    Args:
+        extra_option: If None, check based modules, otherwise checks
+            modules for the specified option. None by default.
+        import_module: If the check is made in a specific module, adds
+            it to error messages. Empty by default.
+        strict: If True (default), raises an error in case of problem.
+            Otherwise returns a boolean indicating if the set up is ok.
     """
     from distutils.version import LooseVersion
 
@@ -69,7 +77,10 @@ def check_modules(extra_option=None, import_module=None):
                     package_name, import_module))
             exc.args += (user_friendly_info,)
             exc.msg += '. ' + user_friendly_info
-            raise
+            if strict:
+                raise
+            else:
+                return False
 
         # Avoid choking on modules with no __version__ attribute
         module_version = getattr(module, '__version__', '0.0.0')
@@ -88,4 +99,9 @@ def check_modules(extra_option=None, import_module=None):
                     module_version=module_version,
                     import_module=import_module)
 
-            raise ImportError(message)
+            if strict:
+                raise ImportError(message)
+            else:
+                return False
+    if not strict:
+        return True

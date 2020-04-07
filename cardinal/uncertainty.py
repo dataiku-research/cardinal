@@ -101,22 +101,21 @@ class ConfidenceSampler(ScoredQuerySampler):
                  strategy: str = 'top', assume_fitted: bool = False,
                  verbose: int = 0):
         super().__init__(batch_size, strategy=strategy)
-        # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.assume_fitted = assume_fitted
         self.verbose = verbose
         if self.classifier_ == 'precomputed':
             self.assume_fitted = True
 
-    def fit(self, X: np.array, y: np.array):
+    def fit(self, X: np.array, y: np.array) -> 'ConfidenceSampler':
         """Fit the estimator on labeled samples.
 
         Args:
-            X: Labeled samples
-            y: Target values
-
+            X: Labeled samples of shape (n_samples, n_features).
+            y: Labels of shape (n_samples).
+        
         Returns:
-            self: An instance of self.
+            The object itself
         """
         if not self.assume_fitted:
             self.classifier_.fit(X, y)
@@ -157,22 +156,21 @@ class MarginSampler(ScoredQuerySampler):
                  strategy: str = 'top', assume_fitted: bool = False,
                  verbose: int = 0):
         super().__init__(batch_size, strategy=strategy)
-        # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.assume_fitted = assume_fitted
         self.verbose = verbose
         if self.classifier_ == 'precomputed':
             self.assume_fitted = True
 
-    def fit(self, X: np.array, y: np.array):
+    def fit(self, X: np.array, y: np.array) -> 'MarginSampler':
         """Fit the estimator on labeled samples.
 
         Args:
-            X: Labeled samples
-            y: Target values
-
+            X: Labeled samples of shape (n_samples, n_features).
+            y: Labels of shape (n_samples).
+        
         Returns:
-            self: An instance of self.
+            The object itself
         """
         if not self.assume_fitted:
             self.classifier_.fit(X, y)
@@ -213,22 +211,21 @@ class EntropySampler(ScoredQuerySampler):
                  strategy: str = 'top', assume_fitted: bool = False,
                  verbose: int = 0):
         super().__init__(batch_size, strategy=strategy)
-        # TODO: can we check that the classifier has a predict_proba?
         self.classifier_ = classifier
         self.assume_fitted = assume_fitted
         self.verbose = verbose
         if self.classifier_ == 'precomputed':
             self.assume_fitted = True
 
-    def fit(self, X: np.array, y: np.array):
+    def fit(self, X: np.array, y: np.array) -> 'EntropySampler':
         """Fit the estimator on labeled samples.
 
         Args:
-            X: Labeled samples
-            y: Target values
-
+            X: Labeled samples of shape (n_samples, n_features).
+            y: Labels of shape (n_samples).
+        
         Returns:
-            self: An instance of self.
+            The object itself
         """
         if not self.assume_fitted:
             self.classifier_.fit(X, y)

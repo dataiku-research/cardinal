@@ -11,7 +11,7 @@ ont to converge faster toward the best result.
 
 
 ##############################################################################
-# Those are the necessary imports and initialiaztion
+# Those are the necessary imports and initializations
 
 from matplotlib import pyplot as plt
 import numpy as np

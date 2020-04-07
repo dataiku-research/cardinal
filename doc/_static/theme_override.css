@@ -5,6 +5,18 @@
     background-color: #ebebea !important;
 }
 
+.wy-side-nav-search div.version {
+    color: #FF585D;
+}
+
+.wy-side-nav-search a {
+    color: #FF585D;
+}
+
+.wy-menu-vertical p.caption {
+    color: #FF585D;
+}
+
 div[class^="highlight"] a {
     background-color: #E6E6E6;
 }

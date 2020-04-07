@@ -1,12 +1,15 @@
 from typing import List
+from abc import ABC, abstractmethod
+from warnings import warn
 
 import numpy as np
 
-from .typeutils import RandomStateType, check_random_state
+from .typeutils import (RandomStateType, check_random_state,
+                        NotEnoughSamplesWarning)
 
 
-class BaseQuerySampler():
-    """Base interface for query samplers
+class BaseQuerySampler(ABC):
+    """Abstract Base Class for query samplers
     
     A query sampler is an object that takes as input labeled and/or unlabeled
     samples and use knowledge from them to selected the most informative ones.
@@ -17,32 +20,41 @@ class BaseQuerySampler():
     def __init__(self, batch_size: int):
         self.batch_size = batch_size
 
+    @abstractmethod
     def fit(self, X: np.ndarray, y: np.ndarray = None):
         """Fit the model on labeled samples.
 
         Args:
-            X: Samples to learn from.
-            y: Labels of the samples.
-
+            X: Labeled samples of shape (n_samples, n_features).
+            y: Labels of shape (n_samples).
+        
         Returns:
-            The object itself.
+            The object itself
         """
-        return self
+        pass
 
+    @abstractmethod
     def select_samples(self, X: np.array) -> np.array:
         """Selects the samples to annotate from unlabeled data.
 
         Args:
-            X: Samples to evaluate.
+            X: Pool of unlabeled samples of shape (n_samples, n_features).
 
         Returns:
-            Indices of the selected samples.
+            Indices of the selected samples of shape (batch_size).
         """
-        raise NotImplementedError
+        pass
+
+    def _not_enough_samples(self, X: np.array) -> bool:
+        cond = X.shape[0] < self.batch_size
+        if cond:
+            warn('Requested {} samples but data only has {}.'.format(
+                self.batch_size, X.shape[0]), NotEnoughSamplesWarning)
+        return cond
 
 
 class ScoredQuerySampler(BaseQuerySampler):
-    """Base class handling query samplers relying on a total order.
+    """Abstract Base Class handling query samplers relying on a total order.
     Query sampling methods often scores all the samples and then pick samples
     using these scores. This base class handles the selection system, only
     a scoring method is then required.
@@ -59,6 +71,7 @@ class ScoredQuerySampler(BaseQuerySampler):
         self.strategy = strategy
         self.random_state = check_random_state(random_state)
 
+    @abstractmethod
     def score_samples(self, X: np.array) -> np.array:
         """Give an informativeness score to unlabeled samples.
 
@@ -68,19 +81,22 @@ class ScoredQuerySampler(BaseQuerySampler):
         Returns:
             Scores of the samples.
         """
-        raise NotImplementedError
+        pass
 
     def select_samples(self, X: np.array) -> np.array:
         """Selects the samples from unlabeled data using the internal scoring.
 
         Args:
-            X: Samples to evaluate.
+            X: Pool of unlabeled samples of shape (n_samples, n_features).
             strategy: Strategy to use to select queries. Can be one oftop,
                       linear_choice, or squared_choice.
 
         Returns:
-            Indices of the selected samples.
+            Indices of the selected samples of shape (batch_size).
         """
+        if self._not_enough_samples(X):
+            return np.arange(X.shape[0])
+
         sample_scores = self.score_samples(X)
         self.sample_scores_ = sample_scores
         if self.strategy == 'top':
@@ -114,11 +130,11 @@ class ChainQuerySampler(BaseQuerySampler):
         """Fits the first query sampler
 
         Args:
-            X: Samples to evaluate.
-            y: Labels of the labeled samples.
+            X: Labeled samples of shape [n_samples, n_features].
+            y: Labels of shape [n_samples].
         
         Returns:
-            Indices of the selected samples.
+            The object itself
         """
         self.sampler_list[0].fit(X, y)
         return self
@@ -127,10 +143,10 @@ class ChainQuerySampler(BaseQuerySampler):
         """Selects the samples by chaining samplers.
 
         Args:
-            X: Samples to evaluate.
+            X: Pool of unlabeled samples of shape (n_samples, n_features).
 
         Returns:
-            Indices of the selected samples.
+            Indices of the selected samples of shape (batch_size).
         """
         selected = self.sampler_list[0].select_samples(X)
 

@@ -2,6 +2,10 @@
 # https://modal-python.readthedocs.io/en/latest/content/query_strategies/ranked_batch_mode.html
 
 import numpy as np
+
+from .version import check_modules
+check_modules('sklearn', 'batch')  # noqa
+
 from sklearn.metrics import pairwise_distances, pairwise_distances_argmin_min
 
 from .base import BaseQuerySampler
@@ -13,23 +17,20 @@ class RankedBatchSampler(BaseQuerySampler):
     Args:
         batch_size: Number of samples to select.
         metric: Metric to use for distance computation.
-        verbose: The verbosity level
     """
-    def __init__(self, batch_size: int, metric: str = 'euclidean',
-                 verbose: int = 0):
+    def __init__(self, batch_size: int, metric: str = 'euclidean'):
         super().__init__(batch_size)
         self.metric = metric
-        self.verbose = verbose
 
-    def fit(self, X, y=None):
+    def fit(self, X: np.array, y: np.array = None):
         """Does nothing, RankedBatch is unsupervised.
 
         Args:
-            X: Samples to learn from.
-            y: Labels of the samples.
-
+            X: Labeled samples of shape (n_samples, n_features).
+            y: Labels of shape (n_samples).
+        
         Returns:
-            The object itself.
+            The object itself
         """
         return self
 
@@ -38,13 +39,15 @@ class RankedBatchSampler(BaseQuerySampler):
         """Selects the samples to annotate from unlabelled data.
         
         Args:
-            X:  shape (n_samples, n_features), Training data
+            X: Pool of unlabeled samples of shape (n_samples, n_features).
             sample_weights: shape (n_samples, Weights of the
-                            samples. Set labeled samples as -1.
-        Returns
-        -------
-        self : returns an instance of self.
+                samples. Set labeled samples as -1.
+
+        Returns:
+            Indices of the selected samples of shape (batch_size).
         """
+        if self._not_enough_samples(X):
+            return np.arange(X.shape[0])
 
         n_samples = X.shape[0]
         index = np.arange(n_samples)
@@ -55,7 +58,6 @@ class RankedBatchSampler(BaseQuerySampler):
         samples_weights = samples_weights.copy()
 
         # We compute the distances for labeled data in 2 steps
-        # TODO: can be parallelized
         _, similarity_scores = pairwise_distances_argmin_min(
             X[unlabeled_mask], X[np.logical_not(unlabeled_mask)],
             metric=self.metric)

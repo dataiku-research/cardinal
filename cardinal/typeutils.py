@@ -1,8 +1,9 @@
-from typing import Union
+from typing import Union, Callable
 import numpy as np
 
 
 RandomStateType = Union[np.random.RandomState, int, None]
+MetricType = Union[Callable, str]
 
 
 def check_random_state(seed: RandomStateType):
@@ -22,3 +23,8 @@ def check_random_state(seed: RandomStateType):
     if isinstance(seed, np.random.RandomState):
         return seed
     return np.random.mtrand._rand
+
+
+class NotEnoughSamplesWarning(UserWarning):
+    """Custom warning used when a sampler is given less than batch_size samples
+    """
