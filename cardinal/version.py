@@ -29,13 +29,15 @@ DEPENDENCIES_METADATA = (
     ('scipy', {'min_version': '0.19'}),
     ('scikit-learn', {
         'min_version': '0.19',
-        'extra_options': ['sklearn', 'examples', 'submodular']}),
+        'extra_options': ['sklearn', 'examples', 'submodular', 'doc']}),
     ('apricot-select', {
-        'min_version': '0.5.0',
-        'extra_options': ['submodular']}),
+        'min_version': '0.5.0', 'extra_options': ['submodular', 'doc']}),
     ('matplotlib', {
-        'min_version': '2.0',
-        'extra_options': ['examples']}),
+        'min_version': '2.0', 'extra_options': ['examples', 'doc']}),
+    ('sphinx-gallery', {
+        'min_version': '0.5.0', 'extra_options': ['doc']}),
+    ('sphinx', {
+        'min_version': '2.2.2', 'extra_options': ['doc']}),
 )
 
 package_to_module = {

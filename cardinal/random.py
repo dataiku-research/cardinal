@@ -9,17 +9,15 @@ class RandomSampler(ScoredQuerySampler):
     """Randomly select samples
 
     Args:
-    batch_size : Number of samples to select.
-    random_state : The seed of the pseudo random number generator to use when
-        shuffling the data.  If int, random_state is the seed used by the
-        random number generator; If RandomState instance, random_state is the
-        random number generator; If None (defdault), the random number
-        generator is the RandomState instance used by `np.random`.
+        batch_size : Number of samples to select.
+        random_state : The seed of the pseudo random number generator to use when
+            shuffling the data.  If int, random_state is the seed used by the
+            random number generator; If RandomState instance, random_state is the
+            random number generator; If None (defdault), the random number
+            generator is the RandomState instance used by `np.random`.
 
-    Attributes
-    ----------
-    pipeline_ : sklearn.pipeline
-        Pipeline used to predict the class probability.
+    Attributes:
+        random_state : The random state used by the sampler.
     """
 
     def __init__(self, batch_size: int, random_state: RandomStateType = None):
