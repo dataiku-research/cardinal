@@ -110,9 +110,10 @@
               
             
             
-              <p class="caption"><span class="caption-text">Using cardinal</span></p>
+              <p class="caption"><span class="caption-text">Active learning</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to active learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uncertainty.html">Uncertainty based query sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
@@ -182,6 +183,7 @@
  | <a href="#F"><strong>F</strong></a>
  | <a href="#K"><strong>K</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  
 </div>
@@ -200,14 +202,18 @@
 </li>
       <li><a href="gen_modules/cardinal.base.html#module-cardinal.base">cardinal.base (module)</a>
 </li>
+      <li><a href="gen_modules/cardinal.batch.html#module-cardinal.batch">cardinal.batch (module)</a>
+</li>
       <li><a href="gen_modules/cardinal.clustering.html#module-cardinal.clustering">cardinal.clustering (module)</a>
+</li>
+      <li><a href="gen_modules/cardinal.random.html#module-cardinal.random">cardinal.random (module)</a>
 </li>
       <li><a href="gen_modules/cardinal.uncertainty.html#module-cardinal.uncertainty">cardinal.uncertainty (module)</a>
 </li>
-      <li><a href="gen_modules/cardinal.base.html#cardinal.base.ChainQuerySampler">ChainQuerySampler (class in cardinal.base)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gen_modules/cardinal.base.html#cardinal.base.ChainQuerySampler">ChainQuerySampler (class in cardinal.base)</a>
+</li>
       <li><a href="gen_modules/cardinal.uncertainty.html#cardinal.uncertainty.ConfidenceSampler.classifier_">classifier_ (cardinal.uncertainty.ConfidenceSampler attribute)</a>
 
       <ul>
@@ -245,7 +251,11 @@
       <ul>
         <li><a href="gen_modules/cardinal.base.html#cardinal.base.ChainQuerySampler.fit">(cardinal.base.ChainQuerySampler method)</a>
 </li>
+        <li><a href="gen_modules/cardinal.batch.html#cardinal.batch.RankedBatchSampler.fit">(cardinal.batch.RankedBatchSampler method)</a>
+</li>
         <li><a href="gen_modules/cardinal.clustering.html#cardinal.clustering.KCentroidSampler.fit">(cardinal.clustering.KCentroidSampler method)</a>
+</li>
+        <li><a href="gen_modules/cardinal.random.html#cardinal.random.RandomSampler.fit">(cardinal.random.RandomSampler method)</a>
 </li>
         <li><a href="gen_modules/cardinal.uncertainty.html#cardinal.uncertainty.ConfidenceSampler.fit">(cardinal.uncertainty.ConfidenceSampler method)</a>
 </li>
@@ -281,12 +291,28 @@
   </ul></td>
 </tr></table>
 
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gen_modules/cardinal.random.html#cardinal.random.RandomSampler.random_state">random_state (cardinal.random.RandomSampler attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gen_modules/cardinal.random.html#cardinal.random.RandomSampler">RandomSampler (class in cardinal.random)</a>
+</li>
+      <li><a href="gen_modules/cardinal.batch.html#cardinal.batch.RankedBatchSampler">RankedBatchSampler (class in cardinal.batch)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="gen_modules/cardinal.base.html#cardinal.base.ScoredQuerySampler.score_samples">score_samples() (cardinal.base.ScoredQuerySampler method)</a>
 
       <ul>
+        <li><a href="gen_modules/cardinal.random.html#cardinal.random.RandomSampler.score_samples">(cardinal.random.RandomSampler method)</a>
+</li>
         <li><a href="gen_modules/cardinal.uncertainty.html#cardinal.uncertainty.ConfidenceSampler.score_samples">(cardinal.uncertainty.ConfidenceSampler method)</a>
 </li>
         <li><a href="gen_modules/cardinal.uncertainty.html#cardinal.uncertainty.EntropySampler.score_samples">(cardinal.uncertainty.EntropySampler method)</a>
@@ -304,6 +330,8 @@
         <li><a href="gen_modules/cardinal.base.html#cardinal.base.ChainQuerySampler.select_samples">(cardinal.base.ChainQuerySampler method)</a>
 </li>
         <li><a href="gen_modules/cardinal.base.html#cardinal.base.ScoredQuerySampler.select_samples">(cardinal.base.ScoredQuerySampler method)</a>
+</li>
+        <li><a href="gen_modules/cardinal.batch.html#cardinal.batch.RankedBatchSampler.select_samples">(cardinal.batch.RankedBatchSampler method)</a>
 </li>
         <li><a href="gen_modules/cardinal.clustering.html#cardinal.clustering.KCentroidSampler.select_samples">(cardinal.clustering.KCentroidSampler method)</a>
 </li>

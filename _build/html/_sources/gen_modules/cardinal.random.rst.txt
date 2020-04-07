@@ -1,0 +1,33 @@
+.. Please when editing this file make sure to keep it matching the
+   docs in ../configuration.rst:reference_to_examples
+
+cardinal.random
+===============
+
+.. automodule:: cardinal.random
+
+   
+   
+   
+
+   
+   
+
+   Classes
+   -------
+
+   
+   .. autoclass:: RandomSampler
+      :members:
+
+   .. include:: backreferences/cardinal.random.RandomSampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   
+   
+
+   
+   
+   
