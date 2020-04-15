@@ -48,8 +48,9 @@ class BaseQuerySampler(ABC):
     def _not_enough_samples(self, X: np.array) -> bool:
         cond = X.shape[0] < self.batch_size
         if cond:
-            warn('Requested {} samples but data only has {}.'.format(
-                self.batch_size, X.shape[0]), NotEnoughSamplesWarning)
+            warn(f'''Requested {self.batch_size} samples but data only
+             has {X.shape[0]}. All available data will be returned''',
+                 NotEnoughSamplesWarning)
         return cond
 
 
