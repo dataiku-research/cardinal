@@ -22,13 +22,13 @@ class RankedBatchSampler(BaseQuerySampler):
         super().__init__(batch_size)
         self.metric = metric
 
-    def fit(self, X: np.array, y: np.array = None):
+    def fit(self, X: np.array, y: np.array = None) -> 'RankedBatchSampler':
         """Does nothing, RankedBatch is unsupervised.
 
         Args:
             X: Labeled samples of shape (n_samples, n_features).
             y: Labels of shape (n_samples).
-        
+       
         Returns:
             The object itself
         """
@@ -40,8 +40,8 @@ class RankedBatchSampler(BaseQuerySampler):
         
         Args:
             X: Pool of unlabeled samples of shape (n_samples, n_features).
-            sample_weights: shape (n_samples, Weights of the
-                samples. Set labeled samples as -1.
+            sample_weights: Weights of the samples of shape (n_samples).
+                Set labeled samples as -1.
 
         Returns:
             Indices of the selected samples of shape (batch_size).

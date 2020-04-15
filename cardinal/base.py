@@ -62,7 +62,7 @@ class ScoredQuerySampler(BaseQuerySampler):
     Args:
         batch_size: Numbers of samples to select.
         strategy: Describes how to select the samples based on scores. Can be
-                  "top", "linear_choice", "squared_choice".
+                  "top", "weighted".
         random_state: Random seeding
     """
     def __init__(self, batch_size: int, strategy: str = 'top',
@@ -101,12 +101,7 @@ class ScoredQuerySampler(BaseQuerySampler):
         self.sample_scores_ = sample_scores
         if self.strategy == 'top':
             index = np.argsort(sample_scores)[-self.batch_size:]
-        elif self.strategy == 'linear_choice':
-            index = self.random_state.choice(
-                np.arange(X.shape[0]), size=self.batch_size,
-                replace=False, p=sample_scores / np.sum(sample_scores))
-        elif self.strategy == 'squared_choice':
-            sample_scores = sample_scores ** 2
+        elif self.strategy == 'weighted':
             index = self.random_state.choice(
                 np.arange(X.shape[0]), size=self.batch_size,
                 replace=False, p=sample_scores / np.sum(sample_scores))
@@ -152,7 +147,7 @@ class ChainQuerySampler(BaseQuerySampler):
 
         for sampler in self.sampler_list[1:]:
             sampler.fit(X)
-            new_selected = sampler.predict(X[selected])
+            new_selected = sampler.select_samples(X[selected])
             selected = selected[new_selected]
         
         return selected
