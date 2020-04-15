@@ -1,13 +1,12 @@
 from scipy.stats import entropy
 import numpy as np
 
-from sklearn.base import BaseEstimator
-
 from .base import ScoredQuerySampler
+from .typeutils import check_proba_estimator
 
 
 def _get_probability_classes(
-        classifier: BaseEstimator,
+        classifier,
         X: np.ndarray) -> np.ndarray:
     """Returns classifier.predict_proba(X)
 
@@ -20,14 +19,15 @@ def _get_probability_classes(
     """
     if classifier == 'precomputed':
         return X
-    elif classifier.__class__.__module__.split('.')[0] == 'keras':  # Keras models have no predict_proba
+    check_proba_estimator(classifier)
+    if classifier.__class__.__module__.split('.')[0] == 'keras':  # Keras models have no predict_proba
         classwise_uncertainty = classifier.predict(X)
     else:  # sklearn compatible model
         classwise_uncertainty = classifier.predict_proba(X)
     return classwise_uncertainty
 
 
-def confidence_score(classifier: BaseEstimator, X: np.ndarray) -> np.ndarray:
+def confidence_score(classifier, X: np.ndarray) -> np.ndarray:
     """Measure the confidence score of a model for a set of samples.
 
     Args:
@@ -42,7 +42,7 @@ def confidence_score(classifier: BaseEstimator, X: np.ndarray) -> np.ndarray:
     return uncertainty
 
 
-def margin_score(classifier: BaseEstimator, X: np.ndarray) -> np.ndarray:
+def margin_score(classifier, X: np.ndarray) -> np.ndarray:
     """Compute the difference between the two top probability classes for each sample. 
 
     This strategy takes the probabilities of top two classes and uses their
@@ -61,7 +61,7 @@ def margin_score(classifier: BaseEstimator, X: np.ndarray) -> np.ndarray:
     return margin
 
 
-def entropy_score(classifier: BaseEstimator, X: np.ndarray) -> np.ndarray:
+def entropy_score(classifier, X: np.ndarray) -> np.ndarray:
     """Entropy sampling query strategy, uses entropy of all probabilities as score.
 
     This strategy selects the samples with the highest entropy in their prediction
@@ -101,6 +101,7 @@ class ConfidenceSampler(ScoredQuerySampler):
                  strategy: str = 'top', assume_fitted: bool = False,
                  verbose: int = 0):
         super().__init__(batch_size, strategy=strategy)
+        check_proba_estimator(classifier)
         self.classifier_ = classifier
         self.assume_fitted = assume_fitted
         self.verbose = verbose
