@@ -172,7 +172,7 @@ for i, (sampler_name, sampler) in enumerate(samplers):
 
         all_accuracies.append(accuracies)
         all_explorations.append(explorations)
-        all_contradictions.append(contradictions.get_x_y[1])
+        all_contradictions.append(contradictions.get_x_y()[1])
     
     x_data = np.arange(10, batch_size * (n_iter - 1) + 11, batch_size)
 
