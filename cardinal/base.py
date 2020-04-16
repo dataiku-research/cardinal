@@ -89,7 +89,7 @@ class ScoredQuerySampler(BaseQuerySampler):
 
         Args:
             X: Pool of unlabeled samples of shape (n_samples, n_features).
-            strategy: Strategy to use to select queries. Can be one oftop,
+            strategy: Strategy to use to select queries. Can be one of top,
                       linear_choice, or squared_choice.
 
         Returns:
