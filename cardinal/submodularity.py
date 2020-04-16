@@ -26,7 +26,7 @@ class SubmodularSampler(BaseQuerySampler):
         self.n_jobs = n_jobs
 
     def fit(self, X: np.array, y: np.array = None) -> 'SubmodularSampler':
-        """Fit linear model with Stochastic Gradient Descent.
+        """Does nothing.
         
         Args:
             X: Labeled samples of shape (n_samples, n_features).
