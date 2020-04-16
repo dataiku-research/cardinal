@@ -11,8 +11,8 @@ def _get_probability_classes(
     """Returns classifier.predict_proba(X)
 
     Args:
-        classifier (BaseEstimator): The classifier for which probabilities are to be queried.
-        X (np.ndarray): Samples to classify.
+        classifier: The classifier for which probabilities are to be queried.
+        X: Samples to classify.
 
     Returns:
         The probability of each class for each sample.
@@ -95,9 +95,9 @@ class ConfidenceSampler(ScoredQuerySampler):
         verbose: The verbosity level. Defaults to 0.
     
     Attributes:
-        classifier_ (sklearn.BaseEstimator): The fitted classifier.
+        classifier_: The fitted classifier.
     """
-    def __init__(self, classifier: BaseEstimator, batch_size: int,
+    def __init__(self, classifier, batch_size: int,
                  strategy: str = 'top', assume_fitted: bool = False,
                  verbose: int = 0):
         super().__init__(batch_size, strategy=strategy)
@@ -151,9 +151,9 @@ class MarginSampler(ScoredQuerySampler):
         verbose: The verbosity level. Defaults to 0.
     
     Attributes:
-        classifier_ (sklearn.BaseEstimator): The fitted classifier.
+        classifier_: The fitted classifier.
     """
-    def __init__(self, classifier: BaseEstimator, batch_size: int,
+    def __init__(self, classifier, batch_size: int,
                  strategy: str = 'top', assume_fitted: bool = False,
                  verbose: int = 0):
         super().__init__(batch_size, strategy=strategy)
@@ -206,9 +206,9 @@ class EntropySampler(ScoredQuerySampler):
         verbose: The verbosity level. Defaults to 0.
     
     Attributes:
-        classifier_ (sklearn.BaseEstimator): The fitted classifier.
+        classifier_: The fitted classifier.
     """
-    def __init__(self, classifier: BaseEstimator, batch_size: int,
+    def __init__(self, classifier, batch_size: int,
                  strategy: str = 'top', assume_fitted: bool = False,
                  verbose: int = 0):
         super().__init__(batch_size, strategy=strategy)
