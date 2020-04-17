@@ -75,3 +75,22 @@ class KMeansSampler(KCentroidSampler):
                 'batch_size.'.format(kmeans_args['n_clusters']))
         kmeans_args['n_clusters'] = batch_size
         super().__init__(KMeans(**kmeans_args), batch_size)
+
+
+class MiniBatchKMeansSampler(KCentroidSampler):
+    """Select samples as closest sample to MiniBatchKMeans centroids.
+
+    Args:
+        batch_size: Number of samples to draw when predicting.
+    """
+    def __init__(self, batch_size, **kmeans_args):
+        check_modules('sklearn', 'clustering.MiniBatchKmeansSampler')
+        from sklearn.cluster import MiniBatchKMeans
+
+        if 'n_clusters' in kmeans_args:
+            raise ValueError(
+                'You have specified n_clusters={} when creating KMeansSampler.'
+                ' This is not supported since n_clusters is overridden using '
+                'batch_size.'.format(kmeans_args['n_clusters']))
+        kmeans_args['n_clusters'] = batch_size
+        super().__init__(MiniBatchKMeans(**kmeans_args), batch_size)

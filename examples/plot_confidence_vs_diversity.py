@@ -23,6 +23,7 @@ from cardinal.uncertainty import ConfidenceSampler
 from cardinal.clustering import KMeansSampler
 from cardinal.batch import RankedBatchSampler
 from cardinal.random import RandomSampler
+from cardinal.zhdanov2019 import TwoStepKMeansSampler
 
 np.random.seed(7)
 
@@ -118,7 +119,7 @@ def plot(a, b, score, selected):
 samplers = [
     ('Lowest confidence', ConfidenceSampler(model, batch_size)),
     ('KMeans', KMeansSampler(batch_size)),
-    ('WKMeans', KMeansSampler(batch_size)),
+    ('Weighted KMeans', KMeansSampler(batch_size)),
     ('Batch', RankedBatchSampler(batch_size)),
     ('Random', RandomSampler(batch_size))
 ]
