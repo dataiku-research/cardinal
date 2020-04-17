@@ -82,7 +82,8 @@ class KMeansClassSampler(BaseQuerySampler):
             mask[self.clustering.labels_ == label] = True
             selected = self.confidence_sampler.select_samples(X[mask])
             all_samples.update(indices[mask][selected])
-        return pad_with_random(np.asarray(list(all_samples)), self.batch_size, 0, X.shape[0])
+        return pad_with_random(np.asarray(list(all_samples)), self.batch_size,
+                               0, X.shape[0])
 
 
 class_sampler = KMeansClassSampler(model, 15, 45)
