@@ -144,7 +144,7 @@ for i, (sampler_name, sampler) in enumerate(samplers):
             weights[mask] = -1
             selected = sampler.select_samples(X, samples_weights=weights)
             mask[selected] = True
-        elif sampler_name == 'WKmeans':
+        elif sampler_name == 'Weighted Kmeans':
             weights = ConfidenceSampler(model, batch_size).score_samples(X[~mask])
             selected = sampler.select_samples(X[~mask], samples_weights=weights)
             mask[indices[~mask][selected]] = True
