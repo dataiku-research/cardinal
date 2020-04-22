@@ -23,7 +23,7 @@ class TwoStepKMeansSampler(BaseQuerySampler):
             KMeansSampler(batch_size, **kmeans_args)
         ]
 
-    def fit(self, X: np.array, y: np.array = None) -> 'ChainQuerySampler':
+    def fit(self, X: np.array, y: np.array = None) -> 'TwoStepKMeansSampler':
         """Fits the first query sampler
 
         Args:
