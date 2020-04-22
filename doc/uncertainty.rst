@@ -22,7 +22,7 @@ to the :math:`i`<sup>th</sup> highest class:
 
 .. math::
 
-   \forall  i,j \in [1 .. k]^2, st i > j, P(c_i|x) > P(c_j|x) 
+   \forall  i,j \in [1 .. k]^2, \quad i > j \Rightarrow P(c_i|x) > P(c_j|x) 
 
 
 Least confidence
