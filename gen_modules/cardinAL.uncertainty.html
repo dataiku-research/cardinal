@@ -27,6 +27,7 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -40,7 +41,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="cardinal.clustering" href="cardinal.clustering.html" />
-    <link rel="prev" title="cardinal.base" href="cardinal.base.html" /> 
+    <link rel="prev" title="cardinal.random" href="cardinal.random.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -111,9 +112,10 @@
               
             
             
-              <p class="caption"><span class="caption-text">Using cardinal</span></p>
+              <p class="caption"><span class="caption-text">Active learning</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to active learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../uncertainty.html">Uncertainty based query sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
@@ -125,12 +127,14 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../reference.html">cardinal’s API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cardinal.base.html">cardinal.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cardinal.random.html">cardinal.random</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">cardinal.uncertainty</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="cardinal.clustering.html">cardinal.clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cardinal.batch.html">cardinal.batch</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../changes.html">Change Log</a></li>
@@ -190,7 +194,7 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="cardinal.uncertainty.confidence_score">
-<code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">confidence_score</code><span class="sig-paren">(</span><em class="sig-param">classifier: sklearn.base.BaseEstimator</em>, <em class="sig-param">X: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../_modules/cardinal/uncertainty.html#confidence_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.confidence_score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">confidence_score</code><span class="sig-paren">(</span><em class="sig-param">classifier</em>, <em class="sig-param">X: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../_modules/cardinal/uncertainty.html#confidence_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.confidence_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Measure the confidence score of a model for a set of samples.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -207,7 +211,7 @@
 
 <div class="sphx-glr-clear"></div><dl class="function">
 <dt id="cardinal.uncertainty.entropy_score">
-<code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">entropy_score</code><span class="sig-paren">(</span><em class="sig-param">classifier: sklearn.base.BaseEstimator</em>, <em class="sig-param">X: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../_modules/cardinal/uncertainty.html#entropy_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.entropy_score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">entropy_score</code><span class="sig-paren">(</span><em class="sig-param">classifier</em>, <em class="sig-param">X: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../_modules/cardinal/uncertainty.html#entropy_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.entropy_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Entropy sampling query strategy, uses entropy of all probabilities as score.</p>
 <p>This strategy selects the samples with the highest entropy in their prediction
 probabilities.</p>
@@ -227,7 +231,7 @@ probabilities.</p>
 
 <div class="sphx-glr-clear"></div><dl class="function">
 <dt id="cardinal.uncertainty.margin_score">
-<code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">margin_score</code><span class="sig-paren">(</span><em class="sig-param">classifier: sklearn.base.BaseEstimator</em>, <em class="sig-param">X: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../_modules/cardinal/uncertainty.html#margin_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.margin_score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">margin_score</code><span class="sig-paren">(</span><em class="sig-param">classifier</em>, <em class="sig-param">X: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="../_modules/cardinal/uncertainty.html#margin_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.margin_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the difference between the two top probability classes for each sample.</p>
 <p>This strategy takes the probabilities of top two classes and uses their
 difference as a score for selection.</p>
@@ -249,7 +253,7 @@ difference as a score for selection.</p>
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cardinal.uncertainty.ConfidenceSampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">ConfidenceSampler</code><span class="sig-paren">(</span><em class="sig-param">classifier: sklearn.base.BaseEstimator</em>, <em class="sig-param">batch_size: int</em>, <em class="sig-param">strategy: str = 'top'</em>, <em class="sig-param">assume_fitted: bool = False</em>, <em class="sig-param">verbose: int = 0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#ConfidenceSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.ConfidenceSampler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">ConfidenceSampler</code><span class="sig-paren">(</span><em class="sig-param">classifier</em>, <em class="sig-param">batch_size: int</em>, <em class="sig-param">strategy: str = 'top'</em>, <em class="sig-param">assume_fitted: bool = False</em>, <em class="sig-param">verbose: int = 0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#ConfidenceSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.ConfidenceSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects samples with lowest prediction confidence.</p>
 <p>Lowest confidence sampling looks at the probability of the class predicted by
 the classifier and selects the samples where this probability is the lowest.</p>
@@ -269,11 +273,6 @@ The object must comply with scikit-learn interface and expose a
 <dt id="cardinal.uncertainty.ConfidenceSampler.classifier_">
 <code class="sig-name descname">classifier_</code><a class="headerlink" href="#cardinal.uncertainty.ConfidenceSampler.classifier_" title="Permalink to this definition">¶</a></dt>
 <dd><p>The fitted classifier.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>sklearn.BaseEstimator</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
@@ -311,7 +310,7 @@ The object must comply with scikit-learn interface and expose a
 
 <div class="sphx-glr-clear"></div><dl class="class">
 <dt id="cardinal.uncertainty.EntropySampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">EntropySampler</code><span class="sig-paren">(</span><em class="sig-param">classifier: sklearn.base.BaseEstimator</em>, <em class="sig-param">batch_size: int</em>, <em class="sig-param">strategy: str = 'top'</em>, <em class="sig-param">assume_fitted: bool = False</em>, <em class="sig-param">verbose: int = 0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#EntropySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.EntropySampler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">EntropySampler</code><span class="sig-paren">(</span><em class="sig-param">classifier</em>, <em class="sig-param">batch_size: int</em>, <em class="sig-param">strategy: str = 'top'</em>, <em class="sig-param">assume_fitted: bool = False</em>, <em class="sig-param">verbose: int = 0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#EntropySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.EntropySampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects samples with greatest entropy among all class probabilities.</p>
 <p>Greatest entropy sampling measures the uncertainty of the model over all
 classes through the entropy of the probabilites of all classes. Highest
@@ -333,11 +332,6 @@ comply with scikit-learn interface and expose a
 <dt id="cardinal.uncertainty.EntropySampler.classifier_">
 <code class="sig-name descname">classifier_</code><a class="headerlink" href="#cardinal.uncertainty.EntropySampler.classifier_" title="Permalink to this definition">¶</a></dt>
 <dd><p>The fitted classifier.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>sklearn.BaseEstimator</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
@@ -375,7 +369,7 @@ comply with scikit-learn interface and expose a
 
 <div class="sphx-glr-clear"></div><dl class="class">
 <dt id="cardinal.uncertainty.MarginSampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">MarginSampler</code><span class="sig-paren">(</span><em class="sig-param">classifier: sklearn.base.BaseEstimator</em>, <em class="sig-param">batch_size: int</em>, <em class="sig-param">strategy: str = 'top'</em>, <em class="sig-param">assume_fitted: bool = False</em>, <em class="sig-param">verbose: int = 0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#MarginSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.MarginSampler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">MarginSampler</code><span class="sig-paren">(</span><em class="sig-param">classifier</em>, <em class="sig-param">batch_size: int</em>, <em class="sig-param">strategy: str = 'top'</em>, <em class="sig-param">assume_fitted: bool = False</em>, <em class="sig-param">verbose: int = 0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#MarginSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.MarginSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects samples with greatest confusion between the top two classes.</p>
 <p>Smallest margin sampling uses the difference of predicted probability between
 the top two classes to select the samples on which the model is hesitating
@@ -397,11 +391,6 @@ comply with scikit-learn interface and expose a
 <dt id="cardinal.uncertainty.MarginSampler.classifier_">
 <code class="sig-name descname">classifier_</code><a class="headerlink" href="#cardinal.uncertainty.MarginSampler.classifier_" title="Permalink to this definition">¶</a></dt>
 <dd><p>The fitted classifier.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>sklearn.BaseEstimator</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
@@ -451,7 +440,7 @@ comply with scikit-learn interface and expose a
         <a href="cardinal.clustering.html" class="btn btn-neutral float-right" title="cardinal.clustering" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="cardinal.base.html" class="btn btn-neutral float-left" title="cardinal.base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="cardinal.random.html" class="btn btn-neutral float-left" title="cardinal.random" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

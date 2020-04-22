@@ -27,6 +27,7 @@
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -109,9 +110,10 @@
               
             
             
-              <p class="caption"><span class="caption-text">Using cardinal</span></p>
+              <p class="caption"><span class="caption-text">Active learning</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to active learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../uncertainty.html">Uncertainty based query sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
@@ -177,33 +179,33 @@
 <span></span><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">entropy</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span>
-
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">ScoredQuerySampler</span>
+<span class="kn">from</span> <span class="nn">.typeutils</span> <span class="k">import</span> <span class="n">check_proba_estimator</span>
 
 
 <span class="k">def</span> <span class="nf">_get_probability_classes</span><span class="p">(</span>
-        <span class="n">classifier</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">,</span>
+        <span class="n">classifier</span><span class="p">,</span>
         <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Returns classifier.predict_proba(X)</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        classifier (BaseEstimator): The classifier for which probabilities are to be queried.</span>
-<span class="sd">        X (np.ndarray): Samples to classify.</span>
+<span class="sd">        classifier: The classifier for which probabilities are to be queried.</span>
+<span class="sd">        X: Samples to classify.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The probability of each class for each sample.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">classifier</span> <span class="o">==</span> <span class="s1">&#39;precomputed&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">X</span>
-    <span class="k">elif</span> <span class="n">classifier</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;keras&#39;</span><span class="p">:</span>  <span class="c1"># Keras models have no predict_proba</span>
+    <span class="n">check_proba_estimator</span><span class="p">(</span><span class="n">classifier</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">classifier</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;keras&#39;</span><span class="p">:</span>  <span class="c1"># Keras models have no predict_proba</span>
         <span class="n">classwise_uncertainty</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># sklearn compatible model</span>
         <span class="n">classwise_uncertainty</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">classwise_uncertainty</span>
 
 
-<div class="viewcode-block" id="confidence_score"><a class="viewcode-back" href="../../gen_modules/cardinal.uncertainty.html#cardinal.uncertainty.confidence_score">[docs]</a><span class="k">def</span> <span class="nf">confidence_score</span><span class="p">(</span><span class="n">classifier</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<div class="viewcode-block" id="confidence_score"><a class="viewcode-back" href="../../gen_modules/cardinal.uncertainty.html#cardinal.uncertainty.confidence_score">[docs]</a><span class="k">def</span> <span class="nf">confidence_score</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Measure the confidence score of a model for a set of samples.</span>
 
 <span class="sd">    Args:</span>
@@ -218,7 +220,7 @@
     <span class="k">return</span> <span class="n">uncertainty</span></div>
 
 
-<div class="viewcode-block" id="margin_score"><a class="viewcode-back" href="../../gen_modules/cardinal.uncertainty.html#cardinal.uncertainty.margin_score">[docs]</a><span class="k">def</span> <span class="nf">margin_score</span><span class="p">(</span><span class="n">classifier</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<div class="viewcode-block" id="margin_score"><a class="viewcode-back" href="../../gen_modules/cardinal.uncertainty.html#cardinal.uncertainty.margin_score">[docs]</a><span class="k">def</span> <span class="nf">margin_score</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Compute the difference between the two top probability classes for each sample. </span>
 
 <span class="sd">    This strategy takes the probabilities of top two classes and uses their</span>
@@ -237,7 +239,7 @@
     <span class="k">return</span> <span class="n">margin</span></div>
 
 
-<div class="viewcode-block" id="entropy_score"><a class="viewcode-back" href="../../gen_modules/cardinal.uncertainty.html#cardinal.uncertainty.entropy_score">[docs]</a><span class="k">def</span> <span class="nf">entropy_score</span><span class="p">(</span><span class="n">classifier</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<div class="viewcode-block" id="entropy_score"><a class="viewcode-back" href="../../gen_modules/cardinal.uncertainty.html#cardinal.uncertainty.entropy_score">[docs]</a><span class="k">def</span> <span class="nf">entropy_score</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Entropy sampling query strategy, uses entropy of all probabilities as score.</span>
 
 <span class="sd">    This strategy selects the samples with the highest entropy in their prediction</span>
@@ -271,12 +273,13 @@
 <span class="sd">        verbose: The verbosity level. Defaults to 0.</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes:</span>
-<span class="sd">        classifier_ (sklearn.BaseEstimator): The fitted classifier.</span>
+<span class="sd">        classifier_: The fitted classifier.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classifier</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classifier</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">strategy</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">assume_fitted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">)</span>
+        <span class="n">check_proba_estimator</span><span class="p">(</span><span class="n">classifier</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">classifier_</span> <span class="o">=</span> <span class="n">classifier</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assume_fitted</span> <span class="o">=</span> <span class="n">assume_fitted</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
@@ -326,9 +329,9 @@
 <span class="sd">        verbose: The verbosity level. Defaults to 0.</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes:</span>
-<span class="sd">        classifier_ (sklearn.BaseEstimator): The fitted classifier.</span>
+<span class="sd">        classifier_: The fitted classifier.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classifier</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classifier</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">strategy</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">assume_fitted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">)</span>
@@ -381,9 +384,9 @@
 <span class="sd">        verbose: The verbosity level. Defaults to 0.</span>
 <span class="sd">    </span>
 <span class="sd">    Attributes:</span>
-<span class="sd">        classifier_ (sklearn.BaseEstimator): The fitted classifier.</span>
+<span class="sd">        classifier_: The fitted classifier.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classifier</span><span class="p">:</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classifier</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">strategy</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">assume_fitted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">)</span>

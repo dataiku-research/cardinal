@@ -27,6 +27,7 @@
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -109,9 +110,10 @@
               
             
             
-              <p class="caption"><span class="caption-text">Using cardinal</span></p>
+              <p class="caption"><span class="caption-text">Active learning</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to active learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../uncertainty.html">Uncertainty based query sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
@@ -224,8 +226,9 @@
     <span class="k">def</span> <span class="nf">_not_enough_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="n">cond</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
         <span class="k">if</span> <span class="n">cond</span><span class="p">:</span>
-            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Requested </span><span class="si">{}</span><span class="s1"> samples but data only has </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">NotEnoughSamplesWarning</span><span class="p">)</span>
+            <span class="n">warn</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;&#39;&#39;Requested </span><span class="si">{self.batch_size}</span><span class="s1"> samples but data only</span>
+<span class="s1">             has </span><span class="si">{X.shape[0]}</span><span class="s1">. All available data will be returned&#39;&#39;&#39;</span><span class="p">,</span>
+                 <span class="n">NotEnoughSamplesWarning</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cond</span></div>
 
 
@@ -238,7 +241,7 @@
 <span class="sd">    Args:</span>
 <span class="sd">        batch_size: Numbers of samples to select.</span>
 <span class="sd">        strategy: Describes how to select the samples based on scores. Can be</span>
-<span class="sd">                  &quot;top&quot;, &quot;linear_choice&quot;, &quot;squared_choice&quot;.</span>
+<span class="sd">                  &quot;top&quot;, &quot;weighted&quot;.</span>
 <span class="sd">        random_state: Random seeding</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;top&#39;</span><span class="p">,</span>
@@ -264,7 +267,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            X: Pool of unlabeled samples of shape (n_samples, n_features).</span>
-<span class="sd">            strategy: Strategy to use to select queries. Can be one oftop,</span>
+<span class="sd">            strategy: Strategy to use to select queries. Can be one of top,</span>
 <span class="sd">                      linear_choice, or squared_choice.</span>
 
 <span class="sd">        Returns:</span>
@@ -277,12 +280,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sample_scores_</span> <span class="o">=</span> <span class="n">sample_scores</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;top&#39;</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">sample_scores</span><span class="p">)[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:]</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;linear_choice&#39;</span><span class="p">:</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
-                <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">sample_scores</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sample_scores</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;squared_choice&#39;</span><span class="p">:</span>
-            <span class="n">sample_scores</span> <span class="o">=</span> <span class="n">sample_scores</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;weighted&#39;</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
                 <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">sample_scores</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sample_scores</span><span class="p">))</span>
@@ -328,7 +326,7 @@
 
         <span class="k">for</span> <span class="n">sampler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
             <span class="n">sampler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-            <span class="n">new_selected</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">selected</span><span class="p">])</span>
+            <span class="n">new_selected</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">select_samples</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">selected</span><span class="p">])</span>
             <span class="n">selected</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span><span class="n">new_selected</span><span class="p">]</span>
         
         <span class="k">return</span> <span class="n">selected</span></div></div>

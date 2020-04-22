@@ -27,6 +27,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -38,7 +39,9 @@
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="_static/theme_override.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="auto_examples/index.html" />
+    <link rel="prev" title="Introduction to active learning" href="introduction.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -109,14 +112,22 @@
               
             
             
-              <p class="caption"><span class="caption-text">Using cardinal</span></p>
-<ul>
+              <p class="caption"><span class="caption-text">Active learning</span></p>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to active learning</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Uncertainty based query sampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#notations">Notations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#least-confidence">Least confidence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#smallest-margin-sampling">Smallest margin sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#entropy-sampling">Entropy sampling</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_digits_metrics.html">Active learning on digit recognition and metrics</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul>
@@ -172,41 +183,49 @@
             
   <div class="section" id="uncertainty-based-query-sampling">
 <h1>Uncertainty based query sampling<a class="headerlink" href="#uncertainty-based-query-sampling" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference internal" href="#settles2009" id="id1"><span>[Settles2009]</span></a> summarizes the most common active learning methods and some advanced
-ones. The most common ones are known under the term of uncertainty sampling as they
-directly leverage the prediction scores of the classifier to determine the samples
-for which the prediction is the less certain.</p>
+<p><a class="reference internal" href="#settles2009" id="id1"><span>[Settles2009]</span></a> has laid the fundations of formal active learning. Uncertainty
+methods are described as the most basic ones. They assume that the most
+informational samples lie on the decision boundary of the classifier, where the
+confidence score of the model is the lowest. These methods are therefore called
+uncertainty sampling methods.</p>
+<p>Three strategies are commonly applied although most papers tend to call them all
+“uncertainty sampling”.</p>
 <dl class="citation">
 <dt class="label" id="settles2009"><span class="brackets"><a class="fn-backref" href="#id1">Settles2009</a></span></dt>
 <dd><p>Settles, B. (2009). Active learning literature survey. University
 of Wisconsin-Madison Department of Computer Sciences.</p>
 </dd>
 </dl>
-<p>Note that a lot of papers report results under the name uncertainty sampling without
-mentioning the method used. This appellation covers the three following.</p>
-<p>In the following examples, we will consider a classification problem with 4 classes
-for illustration purpose. The graph indicates the probability to be chose with regard
-to the probability score among other classes.</p>
+<div class="section" id="notations">
+<h2>Notations<a class="headerlink" href="#notations" title="Permalink to this headline">¶</a></h2>
+<p>In the following, we assume a classification problem among <span class="math notranslate nohighlight">\(k\)</span> classes. For
+a given sample <span class="math notranslate nohighlight">\(x\)</span> we define as <span class="math notranslate nohighlight">\(p(c_i|x)\)</span> its probability to belong
+to the :math:<a href="#id2"><span class="problematic" id="id3">`</span></a>i`&lt;sup&gt;th&lt;/sup&gt; highest class:</p>
+<div class="math notranslate nohighlight">
+\[\forall  i,j \in [1 .. k]^2, \quad i &gt; j \Rightarrow P(c_i|x) &gt; P(c_j|x)\]</div>
+</div>
 <div class="section" id="least-confidence">
 <h2>Least confidence<a class="headerlink" href="#least-confidence" title="Permalink to this headline">¶</a></h2>
-<p>The least confidence sampling takes the samples for which the maximum probability
+<p>The least confidence sampling selects the samples for which the maximum probability
 among all classes is the lowest. It amounts to selecting the samples for which the
-model is not certain about the class it attributed.</p>
-<p>In this schema, the probability depends only on the distance to the closest category.</p>
-<p>The problem of this method is that, in multi class cases in particular, the score of
-the majority class may not be the most significant. We would also like to look like
-at the rest of the classes.</p>
+model is not confident about the class it attributed:</p>
+<div class="math notranslate nohighlight">
+\[lc(x) = 1 - P(c_1|x)\]</div>
+<p>This method seems the most natural however, in multi-class cases, the score of
+the majority class may not be the most significant indicator. For example, the
+model may struggle between two classes.</p>
 </div>
-<div class="section" id="margin-sampling">
-<h2>Margin sampling<a class="headerlink" href="#margin-sampling" title="Permalink to this headline">¶</a></h2>
-<p>Margin sampling takes into account the difference of prediction between the first
+<div class="section" id="smallest-margin-sampling">
+<h2>Smallest margin sampling<a class="headerlink" href="#smallest-margin-sampling" title="Permalink to this headline">¶</a></h2>
+<p>Smallest margin sampling takes into account the difference of prediction between the first
 and second classes chosen by the model. This method is particularly useful when we
 expect the samples to be tied between two classes. For example, in MNIST, 3 and 5
-look alike and we may expect some samples to be inbetween.</p>
-<p>It is clear in this schema, the probability to be chosen is the ratio between the
-distance to the two closest classes.</p>
-<p>But again, we may be in cases where there are more than two classes (3, 5 and 6?) and
-in this case, we would like to take all the probabilites into account.</p>
+look alike, and we may expect some samples to be in-between:</p>
+<div class="math notranslate nohighlight">
+\[sm(x) = 1 - (P(c_1|x) - P(c_2|x))\]</div>
+<p>Note that in some papers that using support-vector-machine based classifiers, the term
+margin can be used to designate the decision boundary and so margin sampling often refers
+to least confidence sampling.</p>
 </div>
 <div class="section" id="entropy-sampling">
 <h2>Entropy sampling<a class="headerlink" href="#entropy-sampling" title="Permalink to this headline">¶</a></h2>
@@ -214,7 +233,8 @@ in this case, we would like to take all the probabilites into account.</p>
 the model has on our sample. Information theory has used Shannon’s entropy since ages
 to measure the amount of information in data. The last method proposes to use it on
 the prediction probabilities where more entropy means more chances to be selected.</p>
-<p>Now the probability to be selected depends on the distance to all the other classes.</p>
+<div class="math notranslate nohighlight">
+\[es(x) = H(c)\]</div>
 <p>Be careful though: sometimes, classes in the tail of the prediction does not make sense.
 In that case, entropy sampling may be misled.</p>
 </div>
@@ -225,6 +245,15 @@ In that case, entropy sampling may be misled.</p>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="auto_examples/index.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="introduction.html" class="btn btn-neutral float-left" title="Introduction to active learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

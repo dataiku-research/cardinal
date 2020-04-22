@@ -27,6 +27,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -110,9 +111,10 @@
               
             
             
-              <p class="caption"><span class="caption-text">Using cardinal</span></p>
+              <p class="caption"><span class="caption-text">Active learning</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to active learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uncertainty.html">Uncertainty based query sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
@@ -180,29 +182,44 @@ query sampling strategies.</p>
 <p>The code of the project is on Github: <a class="reference external" href="https://github.com/dataiku/cardinal">cardinal</a></p>
 <div class="section" id="installation">
 <span id="install"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="fetch-the-code">
-<h3>Fetch the code<a class="headerlink" href="#fetch-the-code" title="Permalink to this headline">¶</a></h3>
-<p>cardinal is still in alpha development phase and thus not available through
-the Pypi repository. In order to install cardinal, one must download its source
-code and perform the installation manually.</p>
-<p>You will also need to install the dependencies list in the requirements file.</p>
-<p>To install everything do:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/dataiku/cardinal
-$ cardinal
-$ pip install -r requirements.txt
-$ pip install -e .
+<div class="section" id="using-pypi">
+<h3>Using Pypi<a class="headerlink" href="#using-pypi" title="Permalink to this headline">¶</a></h3>
+<p>cardinal can be installed through Pypi using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install <span class="s2">&quot;cardinal[extra]&quot;</span>
 </pre></div>
 </div>
-<p>In addition, you will need the following dependencies to build the
-<code class="docutils literal notranslate"><span class="pre">sphinx-gallery</span></code> documentation:</p>
-<ul class="simple">
-<li><p>sphinx</p></li>
-<li><p>sphinx-gallery</p></li>
-</ul>
+<p>Extras bring additional features to cardinal:
+* sklearn allows to use the KMeansSampler and RankedBatchModeSampler
+* examples intalls all packages necessary to run the examples
+* submodular installs apricot-select, and allows using SubmodularSampler
+* doc installs sphinx-gallery to be able to generate the documentation
+* all is an alias on all of the above.</p>
+</div>
+<div class="section" id="installing-locally">
+<h3>Installing locally<a class="headerlink" href="#installing-locally" title="Permalink to this headline">¶</a></h3>
+<p>You can also fetch the code and install the package from your local repository.
+Again, the preferred way is to use pip.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/dataiku/cardinal
+$ <span class="nb">cd</span> cardinal
+$ pip install -e <span class="s2">&quot;.[extra]&quot;</span>
+</pre></div>
+</div>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Using cardinal</span></p>
+<p class="caption"><span class="caption-text">Active learning</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to active learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to active learning</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#use-cases-and-apparented-techniques">Use cases and apparented techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#active-learning-workflow">Active learning workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="uncertainty.html">Uncertainty based query sampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="uncertainty.html#notations">Notations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uncertainty.html#least-confidence">Least confidence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uncertainty.html#smallest-margin-sampling">Smallest margin sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uncertainty.html#entropy-sampling">Entropy sampling</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -215,8 +232,10 @@ $ pip install -e .
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">cardinal’s API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="gen_modules/cardinal.base.html">cardinal.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gen_modules/cardinal.random.html">cardinal.random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gen_modules/cardinal.uncertainty.html">cardinal.uncertainty</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gen_modules/cardinal.clustering.html">cardinal.clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gen_modules/cardinal.batch.html">cardinal.batch</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html">Change Log</a><ul>

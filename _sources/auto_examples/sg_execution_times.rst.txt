@@ -5,10 +5,10 @@
 
 Computation times
 =================
-**03:52.117** total execution time for **auto_examples** files:
+**04:54.204** total execution time for **auto_examples** files:
 
 +-----------------------------------------------------------------------------------------------------+-----------+---------+
-| :ref:`sphx_glr_auto_examples_plot_digits_metrics.py` (``plot_digits_metrics.py``)                   | 03:52.117 | 43.3 MB |
+| :ref:`sphx_glr_auto_examples_plot_digits_metrics.py` (``plot_digits_metrics.py``)                   | 04:54.204 | 42.9 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+---------+
 | :ref:`sphx_glr_auto_examples_plot_confidence_vs_diversity.py` (``plot_confidence_vs_diversity.py``) | 00:00.000 | 0.0 MB  |
 +-----------------------------------------------------------------------------------------------------+-----------+---------+

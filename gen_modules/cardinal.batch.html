@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cardinal.clustering &mdash; cardinal 0.0.2-git documentation</title>
+  <title>cardinal.batch &mdash; cardinal 0.0.2-git documentation</title>
   
 
   
@@ -27,6 +27,7 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -40,7 +41,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Change Log" href="../changes.html" />
-    <link rel="prev" title="cardinal.uncertainty" href="cardinal.uncertainty.html" /> 
+    <link rel="prev" title="cardinal.clustering" href="cardinal.clustering.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -111,9 +112,10 @@
               
             
             
-              <p class="caption"><span class="caption-text">Using cardinal</span></p>
+              <p class="caption"><span class="caption-text">Active learning</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to active learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../uncertainty.html">Uncertainty based query sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
@@ -125,8 +127,10 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../reference.html">cardinal’s API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cardinal.base.html">cardinal.base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cardinal.random.html">cardinal.random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cardinal.uncertainty.html">cardinal.uncertainty</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">cardinal.clustering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cardinal.clustering.html">cardinal.clustering</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">cardinal.batch</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
 </ul>
 </li>
@@ -171,7 +175,7 @@
       
           <li><a href="../reference.html">cardinal’s API Reference</a> &raquo;</li>
       
-    <li>cardinal.clustering</li>
+    <li>cardinal.batch</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -183,34 +187,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-cardinal.clustering">
-<span id="cardinal-clustering"></span><h1>cardinal.clustering<a class="headerlink" href="#module-cardinal.clustering" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-cardinal.batch">
+<span id="cardinal-batch"></span><h1>cardinal.batch<a class="headerlink" href="#module-cardinal.batch" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="cardinal.clustering.KCentroidSampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinal.clustering.</code><code class="sig-name descname">KCentroidSampler</code><span class="sig-paren">(</span><em class="sig-param">clustering</em>, <em class="sig-param">batch_size</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCentroidSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.clustering.KCentroidSampler" title="Permalink to this definition">¶</a></dt>
-<dd><p>KCentroid based query sampler.
-In order to increase diversity, it is possible to use a centroid based
-clustering to select samples.</p>
+<dt id="cardinal.batch.RankedBatchSampler">
+<em class="property">class </em><code class="sig-prename descclassname">cardinal.batch.</code><code class="sig-name descname">RankedBatchSampler</code><span class="sig-paren">(</span><em class="sig-param">batch_size: int</em>, <em class="sig-param">metric: str = 'euclidean'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/batch.html#RankedBatchSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.batch.RankedBatchSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects samples to label by maximizing the distance between them.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>clustering</strong> – A clustering algorithm matching the sklearn interface</p></li>
-<li><p><strong>batch_size</strong> – Number of samples to draw when predicting.</p></li>
+<li><p><strong>batch_size</strong> – Number of samples to select.</p></li>
+<li><p><strong>metric</strong> – Metric to use for distance computation.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="attribute">
-<dt id="cardinal.clustering.KCentroidSampler.clustering_">
-<code class="sig-name descname">clustering_</code><a class="headerlink" href="#cardinal.clustering.KCentroidSampler.clustering_" title="Permalink to this definition">¶</a></dt>
-<dd><p>The fitted clustering estimator.</p>
-</dd></dl>
-
 <dl class="method">
-<dt id="cardinal.clustering.KCentroidSampler.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span> &#x2192; cardinal.clustering.KCentroidSampler<a class="reference internal" href="../_modules/cardinal/clustering.html#KCentroidSampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.clustering.KCentroidSampler.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Does nothing, this method is unsupervised.</p>
+<dt id="cardinal.batch.RankedBatchSampler.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em>, <em class="sig-param">y: numpy.array = None</em><span class="sig-paren">)</span> &#x2192; cardinal.batch.RankedBatchSampler<a class="reference internal" href="../_modules/cardinal/batch.html#RankedBatchSampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.batch.RankedBatchSampler.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does nothing, RankedBatch is unsupervised.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -225,15 +221,15 @@ clustering to select samples.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="cardinal.clustering.KCentroidSampler.select_samples">
-<code class="sig-name descname">select_samples</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em>, <em class="sig-param">sample_weight: numpy.array = None</em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/clustering.html#KCentroidSampler.select_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.clustering.KCentroidSampler.select_samples" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clusters the samples and select the ones closest to centroids.</p>
+<dt id="cardinal.batch.RankedBatchSampler.select_samples">
+<code class="sig-name descname">select_samples</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em>, <em class="sig-param">samples_weights: numpy.array</em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/batch.html#RankedBatchSampler.select_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.batch.RankedBatchSampler.select_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects the samples to annotate from unlabelled data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>X</strong> – Pool of unlabeled samples of shape (n_samples, n_features).</p></li>
-<li><p><strong>sample_weight</strong> – Weight of the samples of shape (n_samples),
-optional.</p></li>
+<li><p><strong>sample_weights</strong> – Weights of the samples of shape (n_samples).
+Set labeled samples as -1.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -242,17 +238,6 @@ optional.</p></li>
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-<div class="sphx-glr-clear"></div><dl class="class">
-<dt id="cardinal.clustering.KMeansSampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinal.clustering.</code><code class="sig-name descname">KMeansSampler</code><span class="sig-paren">(</span><em class="sig-param">batch_size</em>, <em class="sig-param">**kmeans_args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#KMeansSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.clustering.KMeansSampler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Select samples as closest sample to KMeans centroids.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>batch_size</strong> – Number of samples to draw when predicting.</p>
-</dd>
-</dl>
 </dd></dl>
 
 <div class="sphx-glr-clear"></div></div>
@@ -269,7 +254,7 @@ optional.</p></li>
         <a href="../changes.html" class="btn btn-neutral float-right" title="Change Log" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="cardinal.uncertainty.html" class="btn btn-neutral float-left" title="cardinal.uncertainty" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="cardinal.clustering.html" class="btn btn-neutral float-left" title="cardinal.clustering" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

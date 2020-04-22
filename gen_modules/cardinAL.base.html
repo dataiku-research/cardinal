@@ -27,6 +27,7 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -39,7 +40,7 @@
   <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="cardinal.uncertainty" href="cardinal.uncertainty.html" />
+    <link rel="next" title="cardinal.random" href="cardinal.random.html" />
     <link rel="prev" title="cardinal’s API Reference" href="../reference.html" /> 
 </head>
 
@@ -111,9 +112,10 @@
               
             
             
-              <p class="caption"><span class="caption-text">Using cardinal</span></p>
+              <p class="caption"><span class="caption-text">Active learning</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to active learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../uncertainty.html">Uncertainty based query sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
@@ -128,8 +130,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="cardinal.random.html">cardinal.random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cardinal.uncertainty.html">cardinal.uncertainty</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cardinal.clustering.html">cardinal.clustering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cardinal.batch.html">cardinal.batch</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../changes.html">Change Log</a></li>
@@ -283,7 +287,7 @@ a scoring method is then required.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>batch_size</strong> – Numbers of samples to select.</p></li>
 <li><p><strong>strategy</strong> – Describes how to select the samples based on scores. Can be
-“top”, “linear_choice”, “squared_choice”.</p></li>
+“top”, “weighted”.</p></li>
 <li><p><strong>random_state</strong> – Random seeding</p></li>
 </ul>
 </dd>
@@ -310,7 +314,7 @@ a scoring method is then required.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>X</strong> – Pool of unlabeled samples of shape (n_samples, n_features).</p></li>
-<li><p><strong>strategy</strong> – Strategy to use to select queries. Can be one oftop,
+<li><p><strong>strategy</strong> – Strategy to use to select queries. Can be one of top,
 linear_choice, or squared_choice.</p></li>
 </ul>
 </dd>
@@ -333,7 +337,7 @@ linear_choice, or squared_choice.</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="cardinal.uncertainty.html" class="btn btn-neutral float-right" title="cardinal.uncertainty" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="cardinal.random.html" class="btn btn-neutral float-right" title="cardinal.random" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../reference.html" class="btn btn-neutral float-left" title="cardinal’s API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

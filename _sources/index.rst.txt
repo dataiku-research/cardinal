@@ -14,36 +14,41 @@ The code of the project is on Github: `cardinal <https://github.com/dataiku/card
 Installation
 ============
 
-Fetch the code
---------------
+Using Pypi
+----------
 
-cardinal is still in alpha development phase and thus not available through
-the Pypi repository. In order to install cardinal, one must download its source
-code and perform the installation manually.
+cardinal can be installed through Pypi using:
 
-You will also need to install the dependencies list in the requirements file.
+.. code-block:: bash
 
-To install everything do:
+    $ pip install "cardinal[extra]"
+
+Extras bring additional features to cardinal:
+* sklearn allows to use the KMeansSampler and RankedBatchModeSampler
+* examples intalls all packages necessary to run the examples
+* submodular installs apricot-select, and allows using SubmodularSampler
+* doc installs sphinx-gallery to be able to generate the documentation
+* all is an alias on all of the above.
+
+Installing locally
+------------------
+
+You can also fetch the code and install the package from your local repository.
+Again, the preferred way is to use pip.
 
 .. code-block:: bash
 
     $ git clone https://github.com/dataiku/cardinal
-    $ cardinal
-    $ pip install -r requirements.txt
-    $ pip install -e .
-
-In addition, you will need the following dependencies to build the
-``sphinx-gallery`` documentation:
-
-* sphinx
-* sphinx-gallery
+    $ cd cardinal
+    $ pip install -e ".[extra]"
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: Using cardinal
+   :caption: Active learning
 
    introduction
+   uncertainty
 
 .. toctree::
    :maxdepth: 2

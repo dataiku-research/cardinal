@@ -337,7 +337,7 @@ This exploration metric can be used to decide when to change method.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 3 minutes  52.117 seconds)
+   **Total running time of the script:** ( 4 minutes  54.204 seconds)
 
 **Estimated memory usage:**  43 MB
 

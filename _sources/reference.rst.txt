@@ -20,5 +20,7 @@ every module.
    :template: module.rst
 
    base
+   random
    uncertainty
    clustering
+   batch

@@ -27,6 +27,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -39,7 +40,7 @@
   <link rel="stylesheet" href="_static/theme_override.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="auto_examples/index.html" />
+    <link rel="next" title="Uncertainty based query sampling" href="uncertainty.html" />
     <link rel="prev" title="Welcome to cardinal’s documentation!" href="index.html" /> 
 </head>
 
@@ -111,14 +112,21 @@
               
             
             
-              <p class="caption"><span class="caption-text">Using cardinal</span></p>
+              <p class="caption"><span class="caption-text">Active learning</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to active learning</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to active learning</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-cases-and-apparented-techniques">Use cases and apparented techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#active-learning-workflow">Active learning workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="uncertainty.html">Uncertainty based query sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_digits_metrics.html">Active learning on digit recognition and metrics</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul>
@@ -174,6 +182,86 @@
             
   <div class="section" id="introduction-to-active-learning">
 <h1>Introduction to active learning<a class="headerlink" href="#introduction-to-active-learning" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
+<p>“Data is the new oil”. Most of people have heard this sentence at least once,
+and for sure a lot of people in various companies took it very seriously.
+As a result, many companies have started acquiring as much data as they could
+about their customers and systems, sometimes without even having a goal in mind.
+The reason is simple: data collection is tedious and once data can come in handy,
+we need a learning set, and therefore historical logs. As a result, a lot of data
+is sitting in servers, sometimes unlabelled.</p>
+<p>Labeling data can be a costly task. Indeed, with the raise of deep learning,
+models require more and more data to achieve good accuracy. And annotation can be
+particularly difficult or tedious in complex imaging tasks, such as medical imaging,
+or text analysis. Since budget is a limited resource, people are looking into ways
+to maximize a given metric on their model, usually accuracy, at fixed budget.</p>
+<p>Active learning hold the promise of making the most out of a given budget by carefully
+selecting the samples to be given to the annotators. The intuition behind active
+learning is indeed very natural. Imagine that you are learning a new language from a
+set of predetermined sentences that you have to translate with a dictionary. If you
+are given the sentences “The sky is light blue”, “The sky is blue”, and “The firemen
+saved the baby”, you may want to start with a first sentence, skip the second one,
+because it is very close to the first one and does not bring new information, and then
+do the third one. The strategy behind active learning is the same: We want to be able
+to select the samples that will bring the most information to the model.</p>
+</div>
+<div class="section" id="use-cases-and-apparented-techniques">
+<h2>Use cases and apparented techniques<a class="headerlink" href="#use-cases-and-apparented-techniques" title="Permalink to this headline">¶</a></h2>
+<p>Use cases around active learning are numerous. We have already cited medical imaging
+where, for example, we want to ask a radiologist to segment cancer from histological
+data in order to train a model to do it automatically, and we also took the example
+of text translation where labelling can be asking a translator to perform translation.
+But active learning has been under the spotlights recently with the rise of deep
+learning and in particular the labeling of images and the rise of Amazon mechanical
+turk.</p>
+<p>But active learning is not the only way to get information out of unlabelled data.
+Unsupervised learning, obviously, tries to make sense out of the data based solely on
+its underlying structure. Weak supervision uses noisy or incomplete labels to learn to
+avoid the burden of having to label precisely the data. Self supervised learning uses
+the data itself to supervise itself.</p>
+</div>
+<div class="section" id="active-learning-workflow">
+<h2>Active learning workflow<a class="headerlink" href="#active-learning-workflow" title="Permalink to this headline">¶</a></h2>
+<img alt="Active learning workflow" src="_images/al_workflow.svg" /><p>The typical active learning workflow consists in:</p>
+<dl class="simple">
+<dt>Data gathering - Queries selection</dt><dd><p>Acquire the data you need. For the first selectionof samples to label,
+an unsupervised sampling approach is used. The most common
+is random but density based approach can be used too.</p>
+</dd>
+<dt>Data Labeling</dt><dd><p>Send the selected samples – also called queries – to an annotator that will add their label.</p>
+</dd>
+<dt>Predictive model</dt><dd><p>Integrate this new data into the model. If the model is an online one, one can seemlessly add
+the new samples. Otherwise, the model can be learned again on the full labeled data. Note that
+using the information from the previous iteration can be used through warm starting if the model
+supports it.</p>
+</dd>
+<dt>Stop or continue</dt><dd><p>The accuracy of the model can be tested on the training set through cross-validation or one can use
+any metric linked to the task they are trying to accomplish. For example, in the case of anomaly detection,
+all abnormal samples are sent to labelling and one can stop when the model is able to spot accurately the
+anomalies. At each iteration, one must decide if the model is good enough of if it requires more training.</p>
+</dd>
+<dt>Examine uncertainty and select the next queries</dt><dd><p>If the model is not good enough, one can look at prediction scores of the model and see which samples could
+improve it the most. These samples become the queries of the next iteration.</p>
+</dd>
+</dl>
+<p>So how do we decide which samples are the most likely to improve the model? There are several intuitions that
+we can follow, and they have given birth to the strategies that are used today:
+- Model confusion. Samples on which the model fails to do the right prediction are very likely to bring information.
+- Diversity. A model can be seen as a summary of the samples used to train it. The samples</p>
+<blockquote>
+<div><p>that are very different from the training ones must therefore bring information.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Representativeness. Sample prototypes that are representative of the most common
+structures of the problem.</p></li>
+</ul>
+<p>Not convinced? Check out the following example that illustrate how a simple active learning strategy improves
+the accuracy of a model faster than random sample selection on a simple binary classification task:</p>
+<div class="figure align-center">
+<a class="reference external image-reference" href="./auto_examples/plot_random_vs_confidence.html"><img alt="_images/sphx_glr_plot_random_vs_confidence_0011.png" src="_images/sphx_glr_plot_random_vs_confidence_0011.png" /></a>
+</div>
+</div>
 </div>
 
 
@@ -184,7 +272,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="auto_examples/index.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="uncertainty.html" class="btn btn-neutral float-right" title="Uncertainty based query sampling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to cardinal’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

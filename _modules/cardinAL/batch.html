@@ -27,6 +27,7 @@
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -199,13 +200,13 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">metric</span>
 
-<div class="viewcode-block" id="RankedBatchSampler.fit"><a class="viewcode-back" href="../../gen_modules/cardinal.batch.html#cardinal.batch.RankedBatchSampler.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="RankedBatchSampler.fit"><a class="viewcode-back" href="../../gen_modules/cardinal.batch.html#cardinal.batch.RankedBatchSampler.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;RankedBatchSampler&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Does nothing, RankedBatch is unsupervised.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            X: Labeled samples of shape (n_samples, n_features).</span>
 <span class="sd">            y: Labels of shape (n_samples).</span>
-<span class="sd">        </span>
+<span class="sd">       </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            The object itself</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -217,8 +218,8 @@
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
 <span class="sd">            X: Pool of unlabeled samples of shape (n_samples, n_features).</span>
-<span class="sd">            sample_weights: shape (n_samples, Weights of the</span>
-<span class="sd">                samples. Set labeled samples as -1.</span>
+<span class="sd">            sample_weights: Weights of the samples of shape (n_samples).</span>
+<span class="sd">                Set labeled samples as -1.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Indices of the selected samples of shape (batch_size).</span>
