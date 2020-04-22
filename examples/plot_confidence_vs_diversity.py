@@ -23,7 +23,7 @@ from cardinal.uncertainty import ConfidenceSampler
 from cardinal.clustering import KMeansSampler
 from cardinal.batch import RankedBatchSampler
 from cardinal.random import RandomSampler
-from cardinal.zhdanov2019 import TwoStepKMeansSampler
+
 
 np.random.seed(7)
 
