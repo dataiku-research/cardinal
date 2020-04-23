@@ -101,12 +101,13 @@ class ConfidenceSampler(ScoredQuerySampler):
                  strategy: str = 'top', assume_fitted: bool = False,
                  verbose: int = 0):
         super().__init__(batch_size, strategy=strategy)
-        check_proba_estimator(classifier)
         self.classifier_ = classifier
         self.assume_fitted = assume_fitted
         self.verbose = verbose
         if self.classifier_ == 'precomputed':
             self.assume_fitted = True
+        else:
+            check_proba_estimator(classifier)
 
     def fit(self, X: np.array, y: np.array) -> 'ConfidenceSampler':
         """Fit the estimator on labeled samples.
@@ -162,6 +163,8 @@ class MarginSampler(ScoredQuerySampler):
         self.verbose = verbose
         if self.classifier_ == 'precomputed':
             self.assume_fitted = True
+        else:
+            check_proba_estimator(classifier)
 
     def fit(self, X: np.array, y: np.array) -> 'MarginSampler':
         """Fit the estimator on labeled samples.
@@ -217,6 +220,8 @@ class EntropySampler(ScoredQuerySampler):
         self.verbose = verbose
         if self.classifier_ == 'precomputed':
             self.assume_fitted = True
+        else:
+            check_proba_estimator(classifier)
 
     def fit(self, X: np.array, y: np.array) -> 'EntropySampler':
         """Fit the estimator on labeled samples.
