@@ -86,8 +86,9 @@ def compute_exploration(X_selected, X_test):
 # an exploitation mode where we fine tune our model using UncertaintySampler.
 # We define an Adaptive Sampler that does exactly this.
 #
-# As a heuristic, let us say that we keep exploring until we have explored 10%
-# of our test set.
+# As a heuristic, let us say that 5 examples per class should be enough
+# exploration. We set the sampler to explore until it has 50 samples and
+# then switch to exploitation.
 
 
 class AdaptiveQuerySampler(BaseQuerySampler):
