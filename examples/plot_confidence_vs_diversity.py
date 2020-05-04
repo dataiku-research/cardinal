@@ -106,7 +106,7 @@ def plot(a, b, score, selected):
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
 # As presented in the introduction, this loop is the core of the active learning
-# experiment. At each iteration, the model learn on all labeled data to
+# experiment. At each iteration, the model learns on all labeled data to
 # measure its performance. The model is then inspected to find out the samples
 # on which its confidence is the lowest. This is done through cardinal samplers.
 #
