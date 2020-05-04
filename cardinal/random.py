@@ -1,8 +1,7 @@
 import numpy as np
-from sklearn.utils import check_random_state
 
 from .base import ScoredQuerySampler
-from .typeutils import RandomStateType
+from .typeutils import RandomStateType, check_random_state
 
 
 class RandomSampler(ScoredQuerySampler):
