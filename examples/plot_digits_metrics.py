@@ -236,11 +236,21 @@ plt.show()
 # Contradictions
 # ^^^^^^^^^^^^^^
 #
-# We now want to know if contradictions are a good proxy for performance. We
-# observe that it indeed looks related to the speed (gradient)
-# of the accuracy curves. In the end of the experiment in particular,
-# uncertainty and adaptive the ones increasing faster and their contradictions
-# are also the highest.
+# Contradictions measures how well the model agrees with itself given some new
+# samples. A perfect model should not contradict itself given new samples so
+# we expect this measure to converge toward 0. Looking at the red Random curve
+# and the green clustering, it seems like contradictions are inversely
+# proportional to accuracy. However, we notice an interesting trend when the
+# adaptive model switches from exploration to exploitation. In fact, the number
+# of contradictions seems to stall a bit and join the orange Uncertainty curve.
+#
+# This effect is probably due to that are "far" from the training set. If the
+# Uncertainty focuses on a given part of the sample space, it is likely that
+# the samples far from these areas will be subject to more variability. By
+# exploring better the space, KMeans sampling is less sensitive to these
+# changes. In the end, contradictions seems related to accuracy but 
+# contradictions weighted by exploration may be a better proxy for accuracy.
+# This subject remains opened to research.
 #
 # Exploration Scores
 # ^^^^^^^^^^^^^^^^^^
