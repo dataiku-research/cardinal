@@ -9,11 +9,11 @@ class RandomSampler(ScoredQuerySampler):
 
     Args:
         batch_size : Number of samples to select.
-        random_state : The seed of the pseudo random number generator to use when
-            shuffling the data.  If int, random_state is the seed used by the
-            random number generator; If RandomState instance, random_state is the
-            random number generator; If None (defdault), the random number
-            generator is the RandomState instance used by `np.random`.
+        random_state : The seed of the pseudo random number generator to use
+            when shuffling the data.  If int, random_state is the seed used by
+            the random number generator; If RandomState instance, random_state
+            is the random number generator; If None (defdault), the random
+            number generator is the RandomState instance used by `np.random`.
 
     Attributes:
         random_state : The random state used by the sampler.
