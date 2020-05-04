@@ -24,6 +24,7 @@ from cardinal.clustering import KMeansSampler
 from cardinal.batch import RankedBatchSampler
 from cardinal.random import RandomSampler
 
+
 np.random.seed(7)
 
 ##############################################################################
@@ -119,7 +120,7 @@ def plot(a, b, score, selected):
 samplers = [
     ('Lowest confidence', ConfidenceSampler(model, batch_size)),
     ('KMeans', KMeansSampler(batch_size)),
-    ('WKMeans', KMeansSampler(batch_size)),
+    ('Weighted KMeans', KMeansSampler(batch_size)),
     ('Batch', RankedBatchSampler(batch_size)),
     ('Random', RandomSampler(batch_size))
 ]
@@ -144,7 +145,7 @@ for i, (sampler_name, sampler) in enumerate(samplers):
             weights[mask] = -1
             selected = sampler.select_samples(X, samples_weights=weights)
             mask[selected] = True
-        elif sampler_name == 'WKmeans':
+        elif sampler_name == 'Weighted Kmeans':
             weights = ConfidenceSampler(model, batch_size).score_samples(X[~mask])
             selected = sampler.select_samples(X[~mask], samples_weights=weights)
             mask[indices[~mask][selected]] = True
