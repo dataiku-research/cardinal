@@ -84,9 +84,9 @@ def compute_exploration(X_selected, X_test):
 # that context, it seems reasonable to first explore the sample
 # space, say by using a KMeansSampler, and at some point shift to
 # an exploitation mode where we fine tune our model using UncertaintySampler.
-# We define an Adaptive Sampler that does exactly this.
+# We define an Adaptive sampler that does exactly this.
 #
-# As a heuristic, let us say that 5 examples per class should be enough
+# As a heuristic, let us say that 5 samples per class should be enough
 # exploration. We set the sampler to explore until it has 50 samples and
 # then switch to exploitation.
 
@@ -237,21 +237,21 @@ plt.show()
 # Contradictions
 # ^^^^^^^^^^^^^^
 #
-# Contradictions measures how well the model agrees with itself given some new
-# samples. A perfect model should not contradict itself given new samples so
-# we expect this measure to converge toward 0. Looking at the red Random curve
-# and the green clustering, it seems like contradictions are inversely
-# proportional to accuracy. However, we notice an interesting trend when the
-# adaptive model switches from exploration to exploitation. In fact, the number
+# Contradictions measures how much, when trained on new samples, a model agrees with
+# its past predictions. A perfectly stable model should have consistent predictions 
+# given new samples so we expect this measure to converge toward 0 over time. Looking 
+# at the red Random curve and the green Clustering, it seems like contradictions are
+# inversely proportional to accuracy. However, we notice an interesting trend when
+# the adaptive model switches from exploration to exploitation. In fact, the number
 # of contradictions seems to stall a bit and join the orange Uncertainty curve.
 #
-# This effect is probably due to that are "far" from the training set. If the
-# Uncertainty focuses on a given part of the sample space, it is likely that
-# the samples far from these areas will be subject to more variability. By
-# exploring better the space, KMeans sampling is less sensitive to these
-# changes. In the end, contradictions seems related to accuracy but 
+# This effect is probably due to samples that are "far" from the training set. 
+# If the Uncertainty focuses on a given region of the sample space, it is likely that
+# the samples far from those regions will be subject to more variability. By better
+# exploring the space, KMeans sampling is less sensitive to these changes.
+# In the end, contradictions seems related to accuracy but 
 # contradictions weighted by exploration may be a better proxy for accuracy.
-# This subject remains opened to research.
+# This subject remains opened to further research.
 #
 # Exploration Scores
 # ^^^^^^^^^^^^^^^^^^
