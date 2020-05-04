@@ -249,9 +249,9 @@ plt.show()
 # If the Uncertainty focuses on a given region of the sample space, it is likely that
 # the samples far from those regions will be subject to more variability. By better
 # exploring the space, KMeans sampling is less sensitive to these changes.
-# In the end, contradictions seems related to accuracy but 
-# contradictions weighted by exploration may be a better proxy for accuracy.
-# This subject remains opened to further research.
+# In the end, contradictions seems related to accuracy but contradictions weighted
+# by exploration may be a better proxy for accuracy. This subject remains opened
+# to further research.
 #
 # Exploration Scores
 # ^^^^^^^^^^^^^^^^^^
