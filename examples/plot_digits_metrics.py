@@ -1,11 +1,11 @@
 """
-Active learning on digit recognition and metrics
+Active Learning on Digit Recognition and Metrics
 ================================================
 
 In this example, we run an experiment on real data and show how active
-learning can be monitored, given that in real life there is no access
+learning can be monitored, given that in real life scenario there is no access
 to the ground truth of the test set. Based on these metrics, we
-identify two phases during our active learning experiment and we define
+identify two phases during this active learning experiment and define
 a custom query sampler that takes advantage of this.
 """
 
@@ -30,12 +30,13 @@ from cardinal.base import BaseQuerySampler
 np.random.seed(7)
 
 ##############################################################################
-# Parameters of our experiment:
-# * _batch_size_ is the number of samples that will be annotated and added to
-#   the training set at each iteration
-# * _n_iter_ is the number of iterations in our simulation
+# The parameters of this experiment are:  
 #
-# We use the digits dataset and a RandomForestClassifier.
+# * `batch_size` is the number of samples that will be annotated and added to
+#   the training set at each iteration,
+# * `n_iter` is the number of iterations in our simulation
+#
+# We use the digits dataset and a RandomForestClassifier as model.
 
 batch_size = 20
 n_iter = 20
@@ -47,7 +48,7 @@ model = RandomForestClassifier()
 
 
 ##############################################################################
-# Experimental metrics
+# Experimental Metrics
 # --------------------
 #
 # We define a first metric based on contradictions. It has been observed that
@@ -65,23 +66,24 @@ def compute_contradiction(previous_proba, current_proba):
 # samples and our test set. The goal of this metric is measure how well our
 # test set has been explored by our query sampling method so far. We expect
 # uncertainty sampling to explore the sample space located *nearby* the
-# decision boundary so to have poor exploration.
+# decision boundary and show poor exploration property.
 
 def compute_exploration(X_selected, X_test):
     return pairwise_distances(X_selected, X_test).mean()
 
 ##############################################################################
-# A new custom sampler
+# A New Custom Sampler
 # --------------------
 #
-# Let us foresee the future a little bit and imagine an ideal query sampler.
+# Let's imagine what an ideal query sampler could look like by making the
+# best of the samplers we already know.  
 # Uncertainty sampling is certainly an appealing method but in a previous
 # example we have shown that it lacks exploration and can stay stuck in a
 # local minimum for a while. On the other hand, K-Means sampling explore the
 # space well but will probably fail at fine tuning our prediction model. In
-# that context, it seems reasonable to say that we want to explore the sample
-# space first, say by using a KMeansSampler, and at some point shift to
-# an exploitation mode where we fine tune our model using UncertaintySampker.
+# that context, it seems reasonable to first explore the sample
+# space, say by using a KMeansSampler, and at some point shift to
+# an exploitation mode where we fine tune our model using UncertaintySampler.
 # We define an Adaptive Sampler that does exactly this.
 #
 # As a heuristic, let us say that we keep exploring until we have explored 10%
@@ -113,12 +115,12 @@ adaptive_sampler = AdaptiveQuerySampler(
 )
 
 ##############################################################################
-# Core active learning experiment
+# Core Active Learning Experiment
 # -------------------------------
 #
-# We now perform our experiment. We compare our adaptive model to random,
-# pure exploration, and pure exploitation. We also monitor the metrics that
-# we defined before.
+# We now perform the experiment. We compare our adaptive model to random,
+# pure exploration, and pure exploitation. We also monitor the metrics
+# defined above.
 
 samplers = [
     ('Adaptive', adaptive_sampler),
@@ -220,27 +222,27 @@ plt.show()
 # Accuracies
 # ^^^^^^^^^^
 #
-# In all our figures, the vertical red line indicates when the adaptive
+# In all the figures above, the vertical red line indicates when the adaptive
 # method switches from exploration to exploitation.
 #
-# We first look at our accuracy. As expected, KMeansSampler, our exploration
+# We first look at accuracy. As expected, KMeansSampler, a purely exploration
 # method is the best at the beginning but becomes as performant as random
-# with time. Uncertainty sampling also behaves as expected by starting bad and
+# with time. Uncertainty sampling also behaves as expected by starting poorly and
 # then becoming the best method.
 #
-# Our Adaptive sampler combines the performance of both approaches to have the
+# Our AdaptiveQuerySampler combines the performance of both approaches to have the
 # best performance!
 #
 # Contradictions
 # ^^^^^^^^^^^^^^
 #
-# Now, we want to know if contradictions are a good proxy for performance. We
-# observe with bare eyes that it indeed looks related to the speed (gradient)
+# We now want to know if contradictions are a good proxy for performance. We
+# observe that it indeed looks related to the speed (gradient)
 # of the accuracy curves. In the end of the experiment in particular,
 # uncertainty and adaptive the ones increasing faster and their contradictions
 # are also the highest.
 #
-# Exploration scores
+# Exploration Scores
 # ^^^^^^^^^^^^^^^^^^
 #
 # The exploration curve also displays interesting trends. Since those are
