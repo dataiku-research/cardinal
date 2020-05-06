@@ -1,8 +1,14 @@
+![](doc/_static/cardinal.png)
+
 # cardinal
 
 cardinal is a Python package for active learning. It proposes a framework to
 perform active learning experiments along with query sampling methods and
 metrics.
+
+It is currently maintained by the research team of [Dataiku](https://www.dataiku.com/).
+
+[cardinal's website](https://dataiku.github.io/cardinal/).
 
 ## Installation
 
@@ -25,7 +31,7 @@ Additional features are available in cardinal through different options:
 * `all` includes all of the above.
 
 
-### Installation
+### Installing with pip
 
 The easiest way to install cardinal is to use `pip`. For a vanilla install, simply type:
 
@@ -33,6 +39,15 @@ The easiest way to install cardinal is to use `pip`. For a vanilla install, simp
 
 Optional dependencies are also handled by `pip` in the following way:
 
-    pip install -U cardinal[option]
+    pip install -U 'cardinal[option]'
 
-*option* can be one of *sklearn*, *submodular*, *examples*, or *all*.
+*option* can be one of:
+- *sklearn* to enable scikit-learn related samplers such as clustering based ones
+- *submodular* to install apricot-select to run the submodular sampler
+- *examples* to install all required dependencies to run the examples
+- *doc* to install the required dependencies to generate the sphinx-based documentation
+- *all* to install all of the above
+
+## Contributing
+
+Contributions are welcome. Check out our [contributing guidelines](CONTRIBUTING.md).
