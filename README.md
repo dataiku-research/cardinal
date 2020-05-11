@@ -1,4 +1,4 @@
-![](doc/_static/cardinal.png)
+<img src="doc/_static/cardinal.png" width="300">
 
 ## Introduction
 
