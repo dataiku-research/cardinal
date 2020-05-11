@@ -1,14 +1,19 @@
 ![](doc/_static/cardinal.png)
 
-# cardinal
+## Introduction
 
-cardinal is a Python package for active learning. It proposes a framework to
-perform active learning experiments along with query sampling methods and
-metrics.
+cardinal is a Python package to perform and monitor Active Learning experiments
+leveraging various query sampling methods and metrics. 
 
-It is currently maintained by the research team of [Dataiku](https://www.dataiku.com/).
+The project is currently maintained by [Dataiku's](https://www.dataiku.com/) research team.
 
-[cardinal's website](https://dataiku.github.io/cardinal/).
+## Getting started
+
+Cardinal extensive [documentation](https://dataiku.github.io/cardinal/) features some examples helping you getting started with Active Learning:
+* [Lowest confidence vs. Random sampling](https://dataiku.github.io/cardinal/auto_examples/plot_random_vs_confidence.html) presents a basic active learning pipeline and explains why it is better than random
+* [Lowest confidence vs. KMeans sampling](https://dataiku.github.io/cardinal/auto_examples/plot_confidence_vs_diversity.html) presents more advanced techniques
+* [Active learning on digit recognition and metrics](https://dataiku.github.io/cardinal/auto_examples/plot_digits_metrics.html) presents an experiment on MNIST dataset and proposes some metrics to estimate the accuracy uplift during an experiment
+
 
 ## Installation
 
@@ -47,13 +52,6 @@ Optional dependencies are also handled by `pip` in the following way:
 - *examples* to install all required dependencies to run the examples
 - *doc* to install the required dependencies to generate the sphinx-based documentation
 - *all* to install all of the above
-
-## Getting started
-
-Our website features some examples helping you getting started with Active Learning:
-* [Lowest confidence vs. Random sampling](https://dataiku.github.io/cardinal/auto_examples/plot_random_vs_confidence.html) presents a basic active learning pipeline and explains why it is better than random
-* [Lowest confidence vs. KMeans sampling](https://dataiku.github.io/cardinal/auto_examples/plot_confidence_vs_diversity.html) presents more advanced techniques
-* [Active learning on digit recognition and metrics](https://dataiku.github.io/cardinal/auto_examples/plot_digits_metrics.html) presents an experiment on MNIST dataset and proposes some metrics to estimate the accuracy uplift during an experiment
 
 ## Contributing
 
