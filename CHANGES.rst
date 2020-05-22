@@ -5,6 +5,7 @@ v0.0.2
 ------
 
 Adds:
+
 * Documentation
 * Examples
 * Diversity based methods
