@@ -33,6 +33,14 @@ cardinal.clustering
    .. raw:: html
 
 	       <div class="sphx-glr-clear"></div>
+   .. autoclass:: MiniBatchKMeansSampler
+      :members:
+
+   .. include:: backreferences/cardinal.clustering.MiniBatchKMeansSampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
    
    
 

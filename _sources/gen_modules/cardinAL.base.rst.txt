@@ -25,14 +25,6 @@ cardinal.base
    .. raw:: html
 
 	       <div class="sphx-glr-clear"></div>
-   .. autoclass:: ChainQuerySampler
-      :members:
-
-   .. include:: backreferences/cardinal.base.ChainQuerySampler.examples
-
-   .. raw:: html
-
-	       <div class="sphx-glr-clear"></div>
    .. autoclass:: ScoredQuerySampler
       :members:
 

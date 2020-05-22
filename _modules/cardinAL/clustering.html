@@ -121,7 +121,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_clustering.html">Active learning on digit recognition using clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_digits_metrics.html">Active Learning on Digit Recognition and Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_digits_metrics_weighted.html">Active Learning on Digit Recognition and Metrics</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul>
@@ -257,7 +256,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">KMeans</span><span class="p">(</span><span class="o">**</span><span class="n">kmeans_args</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">)</span></div>
 
 
-<span class="k">class</span> <span class="nc">MiniBatchKMeansSampler</span><span class="p">(</span><span class="n">KCentroidSampler</span><span class="p">):</span>
+<div class="viewcode-block" id="MiniBatchKMeansSampler"><a class="viewcode-back" href="../../gen_modules/cardinal.clustering.html#cardinal.clustering.MiniBatchKMeansSampler">[docs]</a><span class="k">class</span> <span class="nc">MiniBatchKMeansSampler</span><span class="p">(</span><span class="n">KCentroidSampler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Select samples as closest sample to MiniBatchKMeans centroids.</span>
 
 <span class="sd">    Args:</span>
@@ -274,7 +273,7 @@
                 <span class="s1">&#39;n_clusters is overridden using &#39;</span>
                 <span class="s1">&#39;batch_size.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kmeans_args</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">]))</span>
         <span class="n">kmeans_args</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch_size</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">MiniBatchKMeans</span><span class="p">(</span><span class="o">**</span><span class="n">kmeans_args</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">MiniBatchKMeans</span><span class="p">(</span><span class="o">**</span><span class="n">kmeans_args</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

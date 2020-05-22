@@ -123,7 +123,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_clustering.html">Active learning on digit recognition using clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_digits_metrics.html">Active Learning on Digit Recognition and Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_digits_metrics_weighted.html">Active Learning on Digit Recognition and Metrics</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul class="current">
@@ -254,6 +253,17 @@ optional.</p></li>
 <dt id="cardinal.clustering.KMeansSampler">
 <em class="property">class </em><code class="sig-prename descclassname">cardinal.clustering.</code><code class="sig-name descname">KMeansSampler</code><span class="sig-paren">(</span><em class="sig-param">batch_size</em>, <em class="sig-param">**kmeans_args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#KMeansSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.clustering.KMeansSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select samples as closest sample to KMeans centroids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>batch_size</strong> – Number of samples to draw when predicting.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="sphx-glr-clear"></div><dl class="class">
+<dt id="cardinal.clustering.MiniBatchKMeansSampler">
+<em class="property">class </em><code class="sig-prename descclassname">cardinal.clustering.</code><code class="sig-name descname">MiniBatchKMeansSampler</code><span class="sig-paren">(</span><em class="sig-param">batch_size</em>, <em class="sig-param">**kmeans_args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#MiniBatchKMeansSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.clustering.MiniBatchKMeansSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select samples as closest sample to MiniBatchKMeans centroids.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>batch_size</strong> – Number of samples to draw when predicting.</p>
