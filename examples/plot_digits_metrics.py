@@ -43,6 +43,7 @@ n_iter = 20
 
 X, y = load_digits(return_X_y=True)
 X /= 255.
+n_classes = 10
 
 model = RandomForestClassifier()
 
@@ -92,27 +93,28 @@ def compute_exploration(X_selected, X_test):
 
 
 class AdaptiveQuerySampler(BaseQuerySampler):
-    def __init__(self, exploration_sampler, exploitation_sampler):
+    def __init__(self, exploration_sampler, exploitation_sampler,
+                 exploration_budget):
         self.exploration_sampler = exploration_sampler
         self.exploitation_sampler = exploitation_sampler
-        self._X_train_size = None
+        self.exploration_budget = exploration_budget
+        self.sampler = None
     
     def fit(self, X_train, y_train):
-        self._X_train_size = X_train.shape[0]
-        self.exploration_sampler.fit(X_train, y_train)
-        self.exploitation_sampler.fit(X_train, y_train)
+        if X_train.shape[0] <= self.exploration_budget:
+            self.sampler = self.exploration_sampler.fit(X_train, y_train)
+        else:
+            self.sampler = self.exploitation_sampler.fit(X_train, y_train)
         return self
     
     def select_samples(self, X):
-        if self._X_train_size <= 50:
-            return self.exploration_sampler.select_samples(X)
-        else:
-            return self.exploitation_sampler.select_samples(X)
+        return self.sampler.select_samples(X)
 
 
 adaptive_sampler = AdaptiveQuerySampler(
     KMeansSampler(batch_size),  # Exploration
-    ConfidenceSampler(model, batch_size)  # Exploitation
+    ConfidenceSampler(model, batch_size),  # Exploitation
+    n_classes * 5
 )
 
 ##############################################################################
