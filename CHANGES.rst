@@ -1,7 +1,15 @@
 Change Log
 ==========
 
-v0.0.1
----------------
+v0.0.2
+------
 
-Hello world!
+Adds:
+* Documentation
+* Examples
+* Diversity based methods
+
+v0.0.1
+------
+
+First prototype of cardinal
