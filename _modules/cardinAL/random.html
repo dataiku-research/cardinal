@@ -112,14 +112,16 @@
             
               <p class="caption"><span class="caption-text">Active learning</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to active learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../uncertainty.html">Uncertainty based query sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to Active Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../uncertainty.html">Uncertainty-based Query Sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_clustering.html">Active learning on digit recognition using clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_digits_metrics.html">Active learning on digit recognition and metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_digits_metrics.html">Active Learning on Digit Recognition and Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_digits_metrics_weighted.html">Active Learning on Digit Recognition and Metrics</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul>
@@ -177,10 +179,9 @@
             
   <h1>Source code for cardinal.random</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="k">import</span> <span class="n">check_random_state</span>
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">ScoredQuerySampler</span>
-<span class="kn">from</span> <span class="nn">.typeutils</span> <span class="k">import</span> <span class="n">RandomStateType</span>
+<span class="kn">from</span> <span class="nn">.typeutils</span> <span class="k">import</span> <span class="n">RandomStateType</span><span class="p">,</span> <span class="n">check_random_state</span>
 
 
 <div class="viewcode-block" id="RandomSampler"><a class="viewcode-back" href="../../gen_modules/cardinal.random.html#cardinal.random.RandomSampler">[docs]</a><span class="k">class</span> <span class="nc">RandomSampler</span><span class="p">(</span><span class="n">ScoredQuerySampler</span><span class="p">):</span>
@@ -188,11 +189,11 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        batch_size : Number of samples to select.</span>
-<span class="sd">        random_state : The seed of the pseudo random number generator to use when</span>
-<span class="sd">            shuffling the data.  If int, random_state is the seed used by the</span>
-<span class="sd">            random number generator; If RandomState instance, random_state is the</span>
-<span class="sd">            random number generator; If None (defdault), the random number</span>
-<span class="sd">            generator is the RandomState instance used by `np.random`.</span>
+<span class="sd">        random_state : The seed of the pseudo random number generator to use</span>
+<span class="sd">            when shuffling the data.  If int, random_state is the seed used by</span>
+<span class="sd">            the random number generator; If RandomState instance, random_state</span>
+<span class="sd">            is the random number generator; If None (defdault), the random</span>
+<span class="sd">            number generator is the RandomState instance used by `np.random`.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        random_state : The random state used by the sampler.</span>

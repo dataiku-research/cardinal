@@ -2,7 +2,7 @@
 Lowest confidence vs. KMeans sampling
 =====================================
 
-In this example, we show the usefulness of diversity-based approaches using a
+This example shows the importance of diversity-based approaches using a
 toy example where a very unlucky initialization makes lowest confidence
 approach underperform.
 
@@ -24,20 +24,22 @@ from cardinal.clustering import KMeansSampler
 from cardinal.batch import RankedBatchSampler
 from cardinal.random import RandomSampler
 
+
 np.random.seed(7)
 
 ##############################################################################
-# Parameters of our experiment:
-# * _n_ is the number of points in the sumulated data
-# * _batch_size_ is the number of samples that will be annotated and added to
-#   the training set at each iteration
-# * _n_iter_ is the number of iterations in our simulation
-#
-# We simulate data where the samples of one of the class are scattered in 3
+# We simulate data where samples of one of the class are scattered in 3
 # blobs, one of them being far away from the two others. We also select an
 # initialization index where no sample from the far-away sample is initially
 # selected. This will force the decision boundary to stay far from that cluster
 # and thus "trick" the lowest confidence method.
+#
+# The parameters of this experiment are :  
+#
+# * `n` is the number of points in the simulated data,
+# * `batch_size` is the number of samples that will be annotated and added to
+#   the training set at each iteration,
+# * `n_iter` is the number of iterations in our simulation.
 
 n = 28
 batch_size = 4
@@ -101,13 +103,13 @@ def plot(a, b, score, selected):
 
 
 ##############################################################################
-# Core active learning experiment
+# Core Active Learning Experiment
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# As presented in the introduction, this loop represents the active learning
-# experiment. At each iteration, the model is learned on all labeled data to
-# measure its performance. Then, the model is inspected to find out the samples
-# on which its confidence is low. This is done through cardinal samplers.
+# As presented in the introduction, this loop is the core of the active learning
+# experiment. At each iteration, the model learns on all labeled data to
+# measure its performance. The model is then inspected to find out the samples
+# on which its confidence is the lowest. This is done through cardinal samplers.
 #
 # In this experiment, we see that lowest confidence will explore the far-away
 # cluster only once all other samples have been labeled. KMeans uses a more
@@ -118,7 +120,7 @@ def plot(a, b, score, selected):
 samplers = [
     ('Lowest confidence', ConfidenceSampler(model, batch_size)),
     ('KMeans', KMeansSampler(batch_size)),
-    ('WKMeans', KMeansSampler(batch_size)),
+    ('Weighted KMeans', KMeansSampler(batch_size)),
     ('Batch', RankedBatchSampler(batch_size)),
     ('Random', RandomSampler(batch_size))
 ]
@@ -143,7 +145,7 @@ for i, (sampler_name, sampler) in enumerate(samplers):
             weights[mask] = -1
             selected = sampler.select_samples(X, samples_weights=weights)
             mask[selected] = True
-        elif sampler_name == 'WKmeans':
+        elif sampler_name == 'Weighted Kmeans':
             weights = ConfidenceSampler(model, batch_size).score_samples(X[~mask])
             selected = sampler.select_samples(X[~mask], samples_weights=weights)
             mask[indices[~mask][selected]] = True

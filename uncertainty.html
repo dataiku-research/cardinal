@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Uncertainty based query sampling &mdash; cardinal 0.0.2-git documentation</title>
+  <title>Uncertainty-based Query Sampling &mdash; cardinal 0.0.2-git documentation</title>
   
 
   
@@ -41,7 +41,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="&lt;no title&gt;" href="auto_examples/index.html" />
-    <link rel="prev" title="Introduction to active learning" href="introduction.html" /> 
+    <link rel="prev" title="Introduction to Active Learning" href="introduction.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -114,20 +114,22 @@
             
               <p class="caption"><span class="caption-text">Active learning</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to active learning</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Uncertainty based query sampling</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to Active Learning</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Uncertainty-based Query Sampling</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#notations">Notations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#least-confidence">Least confidence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#smallest-margin-sampling">Smallest margin sampling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#entropy-sampling">Entropy sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#least-confidence">Least Confidence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#smallest-margin-sampling">Smallest Margin Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#entropy-sampling">Entropy Sampling</a></li>
 </ul>
 </li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_clustering.html">Active learning on digit recognition using clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_digits_metrics.html">Active learning on digit recognition and metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_digits_metrics.html">Active Learning on Digit Recognition and Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/plot_digits_metrics_weighted.html">Active Learning on Digit Recognition and Metrics</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul>
@@ -169,7 +171,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Uncertainty based query sampling</li>
+    <li>Uncertainty-based Query Sampling</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -182,14 +184,14 @@
            <div itemprop="articleBody">
             
   <div class="section" id="uncertainty-based-query-sampling">
-<h1>Uncertainty based query sampling<a class="headerlink" href="#uncertainty-based-query-sampling" title="Permalink to this headline">¶</a></h1>
+<h1>Uncertainty-based Query Sampling<a class="headerlink" href="#uncertainty-based-query-sampling" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference internal" href="#settles2009" id="id1"><span>[Settles2009]</span></a> has laid the fundations of formal active learning. Uncertainty
 methods are described as the most basic ones. They assume that the most
 informational samples lie on the decision boundary of the classifier, where the
 confidence score of the model is the lowest. These methods are therefore called
 uncertainty sampling methods.</p>
-<p>Three strategies are commonly applied although most papers tend to call them all
-“uncertainty sampling”.</p>
+<p>Three strategies are commonly applied although most papers tend to call under the
+umbrella term “uncertainty sampling”.</p>
 <dl class="citation">
 <dt class="label" id="settles2009"><span class="brackets"><a class="fn-backref" href="#id1">Settles2009</a></span></dt>
 <dd><p>Settles, B. (2009). Active learning literature survey. University
@@ -198,45 +200,47 @@ of Wisconsin-Madison Department of Computer Sciences.</p>
 </dl>
 <div class="section" id="notations">
 <h2>Notations<a class="headerlink" href="#notations" title="Permalink to this headline">¶</a></h2>
-<p>In the following, we assume a classification problem among <span class="math notranslate nohighlight">\(k\)</span> classes. For
-a given sample <span class="math notranslate nohighlight">\(x\)</span> we define as <span class="math notranslate nohighlight">\(p(c_i|x)\)</span> its probability to belong
-to the :math:<a href="#id2"><span class="problematic" id="id3">`</span></a>i`&lt;sup&gt;th&lt;/sup&gt; highest class:</p>
+<p>In the following, we assume a classification task among <span class="math notranslate nohighlight">\(k\)</span> classes. For
+a given sample <span class="math notranslate nohighlight">\(x\)</span>, we order the <span class="math notranslate nohighlight">\(k\)</span> classes such that <span class="math notranslate nohighlight">\(p(c_i|x)\)</span>
+denotes its probability of belonging to the <span class="math notranslate nohighlight">\(i\)</span>-th highest class.
+In other words, we have:</p>
 <div class="math notranslate nohighlight">
 \[\forall  i,j \in [1 .. k]^2, \quad i &gt; j \Rightarrow P(c_i|x) &gt; P(c_j|x)\]</div>
+<p>This ordering of the classes depends on the sample <span class="math notranslate nohighlight">\(x\)</span> and it is only used for
+simplicity of notations.</p>
 </div>
 <div class="section" id="least-confidence">
-<h2>Least confidence<a class="headerlink" href="#least-confidence" title="Permalink to this headline">¶</a></h2>
-<p>The least confidence sampling selects the samples for which the maximum probability
+<h2>Least Confidence<a class="headerlink" href="#least-confidence" title="Permalink to this headline">¶</a></h2>
+<p>Least confidence sampling selects the samples for which the maximum probability
 among all classes is the lowest. It amounts to selecting the samples for which the
-model is not confident about the class it attributed:</p>
+model is not confident on its class attribution:</p>
 <div class="math notranslate nohighlight">
 \[lc(x) = 1 - P(c_1|x)\]</div>
-<p>This method seems the most natural however, in multi-class cases, the score of
+<p>If this method seems the most natural, in multi-class cases, the score of
 the majority class may not be the most significant indicator. For example, the
 model may struggle between two classes.</p>
 </div>
 <div class="section" id="smallest-margin-sampling">
-<h2>Smallest margin sampling<a class="headerlink" href="#smallest-margin-sampling" title="Permalink to this headline">¶</a></h2>
+<h2>Smallest Margin Sampling<a class="headerlink" href="#smallest-margin-sampling" title="Permalink to this headline">¶</a></h2>
 <p>Smallest margin sampling takes into account the difference of prediction between the first
 and second classes chosen by the model. This method is particularly useful when we
 expect the samples to be tied between two classes. For example, in MNIST, 3 and 5
-look alike, and we may expect some samples to be in-between:</p>
+look alike, and we may expect some samples to fall in-between:</p>
 <div class="math notranslate nohighlight">
 \[sm(x) = 1 - (P(c_1|x) - P(c_2|x))\]</div>
-<p>Note that in some papers that using support-vector-machine based classifiers, the term
+<p>Note that in some papers using support-vector-machine based classifiers, the term
 margin can be used to designate the decision boundary and so margin sampling often refers
 to least confidence sampling.</p>
 </div>
 <div class="section" id="entropy-sampling">
-<h2>Entropy sampling<a class="headerlink" href="#entropy-sampling" title="Permalink to this headline">¶</a></h2>
+<h2>Entropy Sampling<a class="headerlink" href="#entropy-sampling" title="Permalink to this headline">¶</a></h2>
 <p>In the end, the real sense of uncertainty method is to determine how much information
-the model has on our sample. Information theory has used Shannon’s entropy since ages
-to measure the amount of information in data. The last method proposes to use it on
-the prediction probabilities where more entropy means more chances to be selected.</p>
+the model has on our sample. Information theory classicaly uses Shannon’s entropy
+to measure the amount of information in data. Entropy sampling select samples with the highest predicted probabilities entropy.</p>
 <div class="math notranslate nohighlight">
 \[es(x) = H(c)\]</div>
 <p>Be careful though: sometimes, classes in the tail of the prediction does not make sense.
-In that case, entropy sampling may be misled.</p>
+In that case, entropy sampling may be misleading.</p>
 </div>
 </div>
 
@@ -251,7 +255,7 @@ In that case, entropy sampling may be misled.</p>
         <a href="auto_examples/index.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="introduction.html" class="btn btn-neutral float-left" title="Introduction to active learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="introduction.html" class="btn btn-neutral float-left" title="Introduction to Active Learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

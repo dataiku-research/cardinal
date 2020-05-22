@@ -114,14 +114,16 @@
             
               <p class="caption"><span class="caption-text">Active learning</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to active learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../uncertainty.html">Uncertainty based query sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to Active Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../uncertainty.html">Uncertainty-based Query Sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_clustering.html">Active learning on digit recognition using clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_digits_metrics.html">Active learning on digit recognition and metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_digits_metrics.html">Active Learning on Digit Recognition and Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/plot_digits_metrics_weighted.html">Active Learning on Digit Recognition and Metrics</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul class="current">
@@ -235,47 +237,7 @@ samples and use knowledge from them to selected the most informative ones.</p>
 
 </dd></dl>
 
-<div class="sphx-glr-clear"></div><dl class="class">
-<dt id="cardinal.base.ChainQuerySampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinal.base.</code><code class="sig-name descname">ChainQuerySampler</code><span class="sig-paren">(</span><em class="sig-param">*sampler_list: List[cardinal.base.BaseQuerySampler]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/base.html#ChainQuerySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ChainQuerySampler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows to chain query sampling methods
-This strategy is usually used to chain a simple query sampler with a
-more complex one. The first query sampler is used to reduce the
-dimensionality.</p>
-<dl class="method">
-<dt id="cardinal.base.ChainQuerySampler.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em>, <em class="sig-param">y: numpy.array = None</em><span class="sig-paren">)</span> &#x2192; cardinal.base.ChainQuerySampler<a class="reference internal" href="../_modules/cardinal/base.html#ChainQuerySampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ChainQuerySampler.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fits the first query sampler</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> – Labeled samples of shape [n_samples, n_features].</p></li>
-<li><p><strong>y</strong> – Labels of shape [n_samples].</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The object itself</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="cardinal.base.ChainQuerySampler.select_samples">
-<code class="sig-name descname">select_samples</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/base.html#ChainQuerySampler.select_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ChainQuerySampler.select_samples" title="Permalink to this definition">¶</a></dt>
-<dd><p>Selects the samples by chaining samplers.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X</strong> – Pool of unlabeled samples of shape (n_samples, n_features).</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Indices of the selected samples of shape (batch_size).</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<div class="sphx-glr-clear"></div><dl class="class">
+<div class="sphx-glr-clear"></div><div class="sphx-glr-clear"></div><dl class="class">
 <dt id="cardinal.base.ScoredQuerySampler">
 <em class="property">class </em><code class="sig-prename descclassname">cardinal.base.</code><code class="sig-name descname">ScoredQuerySampler</code><span class="sig-paren">(</span><em class="sig-param">batch_size: int</em>, <em class="sig-param">strategy: str = 'top'</em>, <em class="sig-param">random_state: Union[numpy.random.mtrand.RandomState</em>, <em class="sig-param">int</em>, <em class="sig-param">None] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/base.html#ScoredQuerySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ScoredQuerySampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract Base Class handling query samplers relying on a total order.

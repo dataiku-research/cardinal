@@ -43,7 +43,6 @@ n_iter = 20
 
 X, y = load_digits(return_X_y=True)
 X /= 255.
-n_classes = 10
 
 model = RandomForestClassifier()
 
@@ -58,8 +57,10 @@ model = RandomForestClassifier()
 # want to verify this. Since the number of label prediction changes can be
 # coarse, we use the absolute difference in prediction probabilities.
 
-def compute_contradiction(previous_proba, current_proba):
-    return np.abs(current_proba - previous_proba).mean()
+def compute_contradiction(previous_proba, current_proba, weights=None):
+    print(np.average(np.abs(current_proba - previous_proba).mean(axis=1), weights=None))
+    print(np.average(np.abs(current_proba - previous_proba).mean(axis=1), weights=weights))
+    return np.average(np.abs(current_proba - previous_proba).mean(axis=1), weights=weights)
 
 
 ##############################################################################
@@ -71,6 +72,10 @@ def compute_contradiction(previous_proba, current_proba):
 
 def compute_exploration(X_selected, X_test):
     return pairwise_distances(X_selected, X_test).mean()
+
+
+def compute_exploration_2(X_selected, X_test):
+    return pairwise_distances(X_selected, X_test).min(axis=0).mean()
 
 ##############################################################################
 # A New Custom Sampler
@@ -85,36 +90,34 @@ def compute_exploration(X_selected, X_test):
 # that context, it seems reasonable to first explore the sample
 # space, say by using a KMeansSampler, and at some point shift to
 # an exploitation mode where we fine tune our model using UncertaintySampler.
-# We define an Adaptive sampler that does exactly this.
+# We define an Adaptive Sampler that does exactly this.
 #
-# As a heuristic, let us say that 5 samples per class should be enough
-# exploration. We set the sampler to explore until it has 50 samples and
-# then switch to exploitation.
+# As a heuristic, let us say that we keep exploring until we have explored 10%
+# of our test set.
 
 
 class AdaptiveQuerySampler(BaseQuerySampler):
-    def __init__(self, exploration_sampler, exploitation_sampler,
-                 exploration_budget):
+    def __init__(self, exploration_sampler, exploitation_sampler):
         self.exploration_sampler = exploration_sampler
         self.exploitation_sampler = exploitation_sampler
-        self.exploration_budget = exploration_budget
-        self.sampler = None
+        self._X_train_size = None
     
     def fit(self, X_train, y_train):
-        if X_train.shape[0] <= self.exploration_budget:
-            self.sampler = self.exploration_sampler.fit(X_train, y_train)
-        else:
-            self.sampler = self.exploitation_sampler.fit(X_train, y_train)
+        self._X_train_size = X_train.shape[0]
+        self.exploration_sampler.fit(X_train, y_train)
+        self.exploitation_sampler.fit(X_train, y_train)
         return self
     
     def select_samples(self, X):
-        return self.sampler.select_samples(X)
+        if self._X_train_size <= 50:
+            return self.exploration_sampler.select_samples(X)
+        else:
+            return self.exploitation_sampler.select_samples(X)
 
 
 adaptive_sampler = AdaptiveQuerySampler(
     KMeansSampler(batch_size),  # Exploration
-    ConfidenceSampler(model, batch_size),  # Exploitation
-    n_classes * 5
+    ConfidenceSampler(model, batch_size)  # Exploitation
 )
 
 ##############################################################################
@@ -170,9 +173,15 @@ for i, (sampler_name, sampler) in enumerate(samplers):
 
             # Contradictions depend on the previous iteration
             current_proba = model.predict_proba(X_test)
+
+
+            ddd = 1/pairwise_distances(X_train[mask], X_test).mean(axis=0)
+            print(ddd.min(), ddd.max())
+
+
             if previous_proba is not None:
                 contradictions.append(compute_contradiction(
-                    previous_proba, current_proba))
+                    previous_proba, current_proba, weights=ddd ** 2))
             previous_proba = current_proba
 
             sampler.fit(X_train[mask], y_train[mask])
@@ -239,21 +248,11 @@ plt.show()
 # Contradictions
 # ^^^^^^^^^^^^^^
 #
-# Contradictions measures how much, when trained on new samples, a model agrees with
-# its past predictions. A perfectly stable model should have consistent predictions 
-# given new samples so we expect this measure to converge toward 0 over time. Looking 
-# at the red Random curve and the green Clustering, it seems like contradictions are
-# inversely proportional to accuracy. However, we notice an interesting trend when
-# the adaptive model switches from exploration to exploitation. In fact, the number
-# of contradictions seems to stall a bit and join the orange Uncertainty curve.
-#
-# This effect is probably due to samples that are "far" from the training set. 
-# If the Uncertainty focuses on a given region of the sample space, it is likely that
-# the samples far from those regions will be subject to more variability. By better
-# exploring the space, KMeans sampling is less sensitive to these changes.
-# In the end, contradictions seems related to accuracy but contradictions weighted
-# by exploration may be a better proxy for accuracy. This subject remains opened
-# to further research.
+# We now want to know if contradictions are a good proxy for performance. We
+# observe that it indeed looks related to the speed (gradient)
+# of the accuracy curves. In the end of the experiment in particular,
+# uncertainty and adaptive the ones increasing faster and their contradictions
+# are also the highest.
 #
 # Exploration Scores
 # ^^^^^^^^^^^^^^^^^^

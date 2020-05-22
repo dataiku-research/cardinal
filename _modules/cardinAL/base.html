@@ -112,14 +112,16 @@
             
               <p class="caption"><span class="caption-text">Active learning</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to active learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../uncertainty.html">Uncertainty based query sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to Active Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../uncertainty.html">Uncertainty-based Query Sampling</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_clustering.html">Active learning on digit recognition using clustering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_digits_metrics.html">Active learning on digit recognition and metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_digits_metrics.html">Active Learning on Digit Recognition and Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/plot_digits_metrics_weighted.html">Active Learning on Digit Recognition and Metrics</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul>
@@ -288,48 +290,6 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown sample selection strategy </span><span class="si">{}</span><span class="s1">&#39;</span>
                              <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">index</span></div></div>
-
-
-<div class="viewcode-block" id="ChainQuerySampler"><a class="viewcode-back" href="../../gen_modules/cardinal.base.html#cardinal.base.ChainQuerySampler">[docs]</a><span class="k">class</span> <span class="nc">ChainQuerySampler</span><span class="p">(</span><span class="n">BaseQuerySampler</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Allows to chain query sampling methods</span>
-<span class="sd">    This strategy is usually used to chain a simple query sampler with a</span>
-<span class="sd">    more complex one. The first query sampler is used to reduce the</span>
-<span class="sd">    dimensionality.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">sampler_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseQuerySampler</span><span class="p">]):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sampler_list</span> <span class="o">=</span> <span class="n">sampler_list</span>
-
-<div class="viewcode-block" id="ChainQuerySampler.fit"><a class="viewcode-back" href="../../gen_modules/cardinal.base.html#cardinal.base.ChainQuerySampler.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ChainQuerySampler&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Fits the first query sampler</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            X: Labeled samples of shape [n_samples, n_features].</span>
-<span class="sd">            y: Labels of shape [n_samples].</span>
-<span class="sd">        </span>
-<span class="sd">        Returns:</span>
-<span class="sd">            The object itself</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sampler_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span></div>
-    
-<div class="viewcode-block" id="ChainQuerySampler.select_samples"><a class="viewcode-back" href="../../gen_modules/cardinal.base.html#cardinal.base.ChainQuerySampler.select_samples">[docs]</a>    <span class="k">def</span> <span class="nf">select_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Selects the samples by chaining samplers.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            X: Pool of unlabeled samples of shape (n_samples, n_features).</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Indices of the selected samples of shape (batch_size).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">selected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">select_samples</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">sampler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler_list</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-            <span class="n">sampler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-            <span class="n">new_selected</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">select_samples</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">selected</span><span class="p">])</span>
-            <span class="n">selected</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span><span class="n">new_selected</span><span class="p">]</span>
-        
-        <span class="k">return</span> <span class="n">selected</span></div></div>
 </pre></div>
 
            </div>

@@ -9,7 +9,7 @@
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The simplest way ton convince ourselves that active learning actually works is to first test it...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The simplest way to convince ourselves that active learning actually works is to first test it ...">
 
 .. only:: html
 
@@ -29,7 +29,27 @@
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we show the usefulness of diversity-based approaches using a toy example where...">
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we want to compare several clustering approaches and in particular explore the...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_clustering_thumb.png
+
+     :ref:`sphx_glr_auto_examples_plot_clustering.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_clustering
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows the importance of diversity-based approaches using a toy example where a ver...">
 
 .. only:: html
 
@@ -66,6 +86,26 @@
    :hidden:
 
    /auto_examples/plot_digits_metrics
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we run an experiment on real data and show how active learning can be monitore...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_digits_metrics_weighted_thumb.png
+
+     :ref:`sphx_glr_auto_examples_plot_digits_metrics_weighted.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_digits_metrics_weighted
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

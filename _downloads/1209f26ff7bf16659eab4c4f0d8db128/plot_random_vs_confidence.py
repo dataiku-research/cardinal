@@ -2,10 +2,10 @@
 Lowest confidence vs. Random sampling
 =====================================
 
-The simplest way ton convince ourselves that active learning actually
+The simplest way to convince ourselves that active learning actually
 works is to first test it on simulated data. In this example, we will
 generate a simple classification task and see how active learning allows
-ont to converge faster toward the best result.
+to converge faster toward the best result.
 
 """
 
@@ -26,14 +26,15 @@ from cardinal.uncertainty import ConfidenceSampler
 np.random.seed(8)
 
 ##############################################################################
-# Parameters of our experiment:
-# * _n_ is the number of points in the sumulated data
-# * _batch_size_ is the number of samples that will be annotated and added to
-#   the training set at each iteration
-# * _n_iter_ is the number of iterations in our simulation
-#
 # Our simulated data is composed of 2 clusters that are very close to each other
-# but linearly separable. We use as simple SVM classifier as it is a basic classifer.
+# but linearly separable. We use as simple SVM classifier as it is a basic classifer. 
+#
+# The parameters of this experiment are:  
+#
+# * `n` is the number of points in the sumulated data,
+# * `batch_size` is the number of samples that will be annotated and added to
+#   the training set at each iteration,
+# * `n_iter is the number of iterations in our simulation
 
 
 n = 30
@@ -66,13 +67,13 @@ def plot(a, b, score, selected):
 
 
 ##############################################################################
-# Core active learning experiment
+# Core Active Learning Experiment
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
 # As presented in the introduction, this loop represents the active learning
-# experiment. At each iteration, the model is learned on all labeled data to
-# measure its performance. Then, the model is inspected to find out the samples
-# on which its confidence is low. This is done through cardinal samplers.
+# experiment. At each iteration, the model learn on all labeled data to
+# measure its performance. The model is then inspected to find out the samples
+# on which its confidence is the lowest. This is done through cardinal samplers.
 
 samplers = [
     ('Random', RandomSampler(batch_size=batch_size, random_state=0)),
