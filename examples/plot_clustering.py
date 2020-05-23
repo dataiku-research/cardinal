@@ -1,12 +1,13 @@
 """
 Active Learning on Digit Recognition with Clustering-based Sampling
-=====================================================
+===================================================================
 
 We here compare several clustering-based Active Learning approaches and
 in particular explore the trade-off between speed and performance.
 For this purpose, we use two standard clustering: a simple KMeans and a MiniBatchKMeans.
-We compare both of them to Zhdanov's approach proposed in Diverse mini-batch Active Learning
-(https://arxiv.org/abs/1901.05954). The author introduced a two-step procedure that
+We compare both of them to Zhdanov's approach proposed in
+`Diverse mini-batch Active Learning <https://arxiv.org/abs/1901.05954>`_.
+The author introduced a two-step procedure that
 first select samples using uncertainty and then performs a KMeans.
 """
 
@@ -54,7 +55,7 @@ model = RandomForestClassifier()
 # A new Custom Sampler
 # --------------------
 #
-# Zhdanov preselects `beta * batch_size` samples using uncertainty sampling
+# Zhdanov preselects ``beta * batch_size`` samples using uncertainty sampling
 # and then uses KMeans to cluster the data in `batch_size clusters and select
 # the samples closest to the cluster centers. By doing this, a diverse set of
 # sample with high uncertainty is selected.
