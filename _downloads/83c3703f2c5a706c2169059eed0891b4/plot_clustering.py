@@ -1,13 +1,14 @@
 """
-Active learning on digit recognition using clustering
-=====================================================
+Active Learning on Digit Recognition with Clustering-based Sampling
+===================================================================
 
-In this example, we want to compare several clustering approaches and in
-particular explore the trade-off between speed and performance. For this
-purpose, we compare a simple KMeans to a MiniBatchKMeans, and we compare
-both of them to the approach proposed by Zhdanov that uses a two-step
-procedure by first selecting samples using uncertainty and then performing
-a KMeans.
+We here compare several clustering-based Active Learning approaches and
+in particular explore the trade-off between speed and performance.
+For this purpose, we use two standard clustering: a simple KMeans and a MiniBatchKMeans.
+We compare both of them to Zhdanov's approach proposed in
+`Diverse mini-batch Active Learning <https://arxiv.org/abs/1901.05954>`_.
+The author introduced a two-step procedure that
+first select samples using uncertainty and then performs a KMeans.
 """
 
 
@@ -34,10 +35,11 @@ from cardinal.utils import pad_with_random
 np.random.seed(7)
 
 ##############################################################################
-# Parameters of our experiment:
-# * _batch_size_ is the number of samples that will be annotated and added to
-#   the training set at each iteration
-# * _n_iter_ is the number of iterations in our simulation
+# The parameters of this experiment are:
+#
+# * ``batch_size`` is the number of samples that will be annotated and added to
+#   the training set at each iteration,
+# * ``n_iter`` is the number of iterations in the simulation.
 #
 # We use the digits dataset and a RandomForestClassifier.
 
@@ -50,17 +52,17 @@ X /= 255.
 model = RandomForestClassifier()
 
 ##############################################################################
-# A new custom sampler
+# A new Custom Sampler
 # --------------------
 #
-# Zhdanov preselects beta * batch_size samples using uncertainty sampling
-# and then uses KMeans to cluster the data in batch_size clusters and select
+# Zhdanov preselects ``beta * batch_size`` samples using uncertainty sampling
+# and then uses KMeans to cluster the data in `batch_size clusters and select
 # the samples closest to the cluster centers. By doing this, a diverse set of
 # sample with high uncertainty is selected.
 #
-# We hypothgetize that maybe inversing these steps can also be an interesting
-# approach. For that, we perform first a KMeans clustering, and then we select
-# in each cluster the most uncertain samples.
+# We hypothetize that inversing these steps can also be an interesting
+# approach. For that, we first perform a KMeans clustering, and then select
+# within each cluster the most uncertain samples.
 
 
 class KMeansClassSampler(BaseQuerySampler):
@@ -89,13 +91,12 @@ class KMeansClassSampler(BaseQuerySampler):
 class_sampler = KMeansClassSampler(model, 15, 45)
 
 ##############################################################################
-# Core active learning experiment
+# Core Active Learning Experiment
 # -------------------------------
 #
-# We now perform our experiment. We compare our class sampler to Zhdanov, a
-# simpler KMeans approach and, of course, random. For each method, we measure
-# the time spent at each iteration and we will plot the accuracy depending on
-# the size but also time spent.
+# We now compare our class sampler to Zhdanov, a simpler KMeans approach and, 
+# of course, random. For each method, we measure the time spent at each iteration 
+# and we plot the accuracy depending on the size of the labeled pool but also time spent.
 
 samplers = [
     ('ClassSampler', class_sampler),
@@ -177,21 +178,21 @@ plt.show()
 # Accuracies
 # ^^^^^^^^^^
 #
-# For now, let us focus on the figure showing accuracy depending on the number
-# of labeled samples. We observe that the regular KMeans is slightly better
+# Let's start by focusing on the figure showing accuracy depending on the number
+# of labeled samples. We observe that regular KMeans is slightly better
 # at the beginning, probably because it is pure diversity and that exploration
-# is best at the beginning. After that, Zhdanov's method takes clearly over
+# is best at the beginning. After that, Zhdanov's method clearly takes over
 # the other methods.
 #
-# Execution times
+# Execution Times
 # ^^^^^^^^^^^^^^^
 #
-# Execution time is usually not critical in active learning because the query
+# Execution time is usually not critical in active learning as the query
 # sampling time is negligible compared to labeling time. However, a significant
 # decrease of query sampling time could allow to train more often and thus
-# increase the accuracy of the model even faster.
+# increase the accuracy of the model faster.
 #
-# In the plot showing accuracy depending on execution time, we see first a red
+# In the plot showing accuracy depending on execution time, we first see a red
 # bar which is the random sampling. This method is almost instantaneous. We
 # also see that the domination of Zhdanov is even more clear. It is because
 # the two-step approach allows to greatly reduce the number of samples on which

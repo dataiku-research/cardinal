@@ -40,8 +40,8 @@
   <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Active learning on digit recognition using clustering" href="plot_clustering.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="index.html" /> 
+    <link rel="next" title="Active Learning on Digit Recognition with Clustering-based Sampling" href="plot_clustering.html" />
+    <link rel="prev" title="Examples" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -119,13 +119,16 @@
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Lowest confidence vs. Random sampling</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#core-active-learning-experiment">Core Active Learning Experiment</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Lowest confidence vs. Random sampling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#core-active-learning-experiment">Core Active Learning Experiment</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="plot_clustering.html">Active learning on digit recognition using clustering</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plot_digits_metrics.html">Active Learning on Digit Recognition and Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_clustering.html">Active Learning on Digit Recognition with Clustering-based Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_digits_metrics.html">Active Learning on Digit Recognition and Metrics</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul>
@@ -167,7 +170,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="index.html">&lt;no title&gt;</a> &raquo;</li>
+          <li><a href="index.html">Examples</a> &raquo;</li>
       
     <li>Lowest confidence vs. Random sampling</li>
       <li class="wy-breadcrumbs-aside">
@@ -214,10 +217,10 @@ to converge faster toward the best result.</p>
 but linearly separable. We use as simple SVM classifier as it is a basic classifer.</p>
 <p>The parameters of this experiment are:</p>
 <ul class="simple">
-<li><p><cite>n</cite> is the number of points in the sumulated data,</p></li>
-<li><p><cite>batch_size</cite> is the number of samples that will be annotated and added to
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of points in the sumulated data,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">batch_size</span></code> is the number of samples that will be annotated and added to
 the training set at each iteration,</p></li>
-<li><p><a href="#id1"><span class="problematic" id="id2">`</span></a>n_iter is the number of iterations in our simulation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_iter</span></code> is the number of iterations in our simulation</p></li>
 </ul>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="View documentation for builtins.int"><span class="n">n</span></a> <span class="o">=</span> <span class="mi">30</span>
 <a href="https://docs.python.org/3/library/functions.html#int" title="View documentation for builtins.int"><span class="n">batch_size</span></a> <span class="o">=</span> <span class="mi">2</span>
@@ -294,7 +297,7 @@ on which its confidence is the lowest. This is done through cardinal samplers.</
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_random_vs_confidence_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_random_vs_confidence_001.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.365 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.358 seconds)</p>
 <p><strong>Estimated memory usage:</strong>  19 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-random-vs-confidence-py">
 <div class="sphx-glr-download docutils container">
@@ -316,10 +319,10 @@ on which its confidence is the lowest. This is done through cardinal samplers.</
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_clustering.html" class="btn btn-neutral float-right" title="Active learning on digit recognition using clustering" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_clustering.html" class="btn btn-neutral float-right" title="Active Learning on Digit Recognition with Clustering-based Sampling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

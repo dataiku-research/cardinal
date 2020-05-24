@@ -220,9 +220,9 @@ properties.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  6.650 seconds)
+   **Total running time of the script:** ( 0 minutes  1.472 seconds)
 
-**Estimated memory usage:**  16 MB
+**Estimated memory usage:**  15 MB
 
 
 .. _sphx_glr_download_auto_examples_plot_confidence_vs_diversity.py:

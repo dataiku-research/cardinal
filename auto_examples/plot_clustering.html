@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Active learning on digit recognition using clustering &mdash; cardinal 0.0.2-git documentation</title>
+  <title>Active Learning on Digit Recognition with Clustering-based Sampling &mdash; cardinal 0.0.2-git documentation</title>
   
 
   
@@ -119,19 +119,22 @@
 </ul>
 <p class="caption"><span class="caption-text">Example galleries</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Active learning on digit recognition using clustering</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#a-new-custom-sampler">A new custom sampler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#core-active-learning-experiment">Core active learning experiment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#discussion">Discussion</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#accuracies">Accuracies</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#execution-times">Execution times</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Active Learning on Digit Recognition with Clustering-based Sampling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#a-new-custom-sampler">A new Custom Sampler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core-active-learning-experiment">Core Active Learning Experiment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#discussion">Discussion</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#accuracies">Accuracies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#execution-times">Execution Times</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plot_digits_metrics.html">Active Learning on Digit Recognition and Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_digits_metrics.html">Active Learning on Digit Recognition and Metrics</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">API and developer reference</span></p>
 <ul>
@@ -173,9 +176,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="index.html">&lt;no title&gt;</a> &raquo;</li>
+          <li><a href="index.html">Examples</a> &raquo;</li>
       
-    <li>Active learning on digit recognition using clustering</li>
+    <li>Active Learning on Digit Recognition with Clustering-based Sampling</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -191,14 +194,15 @@
 <p class="admonition-title">Note</p>
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-clustering-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="active-learning-on-digit-recognition-using-clustering">
-<span id="sphx-glr-auto-examples-plot-clustering-py"></span><h1>Active learning on digit recognition using clustering<a class="headerlink" href="#active-learning-on-digit-recognition-using-clustering" title="Permalink to this headline">¶</a></h1>
-<p>In this example, we want to compare several clustering approaches and in
-particular explore the trade-off between speed and performance. For this
-purpose, we compare a simple KMeans to a MiniBatchKMeans, and we compare
-both of them to the approach proposed by Zhdanov that uses a two-step
-procedure by first selecting samples using uncertainty and then performing
-a KMeans.</p>
+<div class="sphx-glr-example-title section" id="active-learning-on-digit-recognition-with-clustering-based-sampling">
+<span id="sphx-glr-auto-examples-plot-clustering-py"></span><h1>Active Learning on Digit Recognition with Clustering-based Sampling<a class="headerlink" href="#active-learning-on-digit-recognition-with-clustering-based-sampling" title="Permalink to this headline">¶</a></h1>
+<p>We here compare several clustering-based Active Learning approaches and
+in particular explore the trade-off between speed and performance.
+For this purpose, we use two standard clustering: a simple KMeans and a MiniBatchKMeans.
+We compare both of them to Zhdanov’s approach proposed in
+<a class="reference external" href="https://arxiv.org/abs/1901.05954">Diverse mini-batch Active Learning</a>.
+The author introduced a two-step procedure that
+first select samples using uncertainty and then performs a KMeans.</p>
 <p>Those are the necessary imports and initializations</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -220,13 +224,11 @@ a KMeans.</p>
 <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Parameters of our experiment:
-* _batch_size_ is the number of samples that will be annotated and added to</p>
-<blockquote>
-<div><p>the training set at each iteration</p>
-</div></blockquote>
+<p>The parameters of this experiment are:</p>
 <ul class="simple">
-<li><p>_n_iter_ is the number of iterations in our simulation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">batch_size</span></code> is the number of samples that will be annotated and added to
+the training set at each iteration,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_iter</span></code> is the number of iterations in the simulation.</p></li>
 </ul>
 <p>We use the digits dataset and a RandomForestClassifier.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="View documentation for builtins.int"><span class="n">batch_size</span></a> <span class="o">=</span> <span class="mi">45</span>
@@ -239,14 +241,14 @@ a KMeans.</p>
 </pre></div>
 </div>
 <div class="section" id="a-new-custom-sampler">
-<h2>A new custom sampler<a class="headerlink" href="#a-new-custom-sampler" title="Permalink to this headline">¶</a></h2>
-<p>Zhdanov preselects beta * batch_size samples using uncertainty sampling
-and then uses KMeans to cluster the data in batch_size clusters and select
+<h2>A new Custom Sampler<a class="headerlink" href="#a-new-custom-sampler" title="Permalink to this headline">¶</a></h2>
+<p>Zhdanov preselects <code class="docutils literal notranslate"><span class="pre">beta</span> <span class="pre">*</span> <span class="pre">batch_size</span></code> samples using uncertainty sampling
+and then uses KMeans to cluster the data in <a href="#id1"><span class="problematic" id="id2">`</span></a>batch_size clusters and select
 the samples closest to the cluster centers. By doing this, a diverse set of
 sample with high uncertainty is selected.</p>
-<p>We hypothgetize that maybe inversing these steps can also be an interesting
-approach. For that, we perform first a KMeans clustering, and then we select
-in each cluster the most uncertain samples.</p>
+<p>We hypothetize that inversing these steps can also be an interesting
+approach. For that, we first perform a KMeans clustering, and then select
+within each cluster the most uncertain samples.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">KMeansClassSampler</span><span class="p">(</span><span class="n">BaseQuerySampler</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">model</span></a><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="View documentation for builtins.int"><span class="n">batch_size</span></a><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clustering</span> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans" title="View documentation for sklearn.cluster.KMeans"><span class="n">KMeans</span></a><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">n_classes</span><span class="p">)</span>
@@ -275,11 +277,10 @@ in each cluster the most uncertain samples.</p>
 </div>
 </div>
 <div class="section" id="core-active-learning-experiment">
-<h2>Core active learning experiment<a class="headerlink" href="#core-active-learning-experiment" title="Permalink to this headline">¶</a></h2>
-<p>We now perform our experiment. We compare our class sampler to Zhdanov, a
-simpler KMeans approach and, of course, random. For each method, we measure
-the time spent at each iteration and we will plot the accuracy depending on
-the size but also time spent.</p>
+<h2>Core Active Learning Experiment<a class="headerlink" href="#core-active-learning-experiment" title="Permalink to this headline">¶</a></h2>
+<p>We now compare our class sampler to Zhdanov, a simpler KMeans approach and,
+of course, random. For each method, we measure the time spent at each iteration
+and we plot the accuracy depending on the size of the labeled pool but also time spent.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="View documentation for builtins.list"><span class="n">samplers</span></a> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="s1">&#39;ClassSampler&#39;</span><span class="p">,</span> <span class="n">class_sampler</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;Zhdanov&#39;</span><span class="p">,</span> <span class="n">TwoStepKMeansSampler</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">model</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="View documentation for builtins.int"><span class="n">batch_size</span></a><span class="p">)),</span>
@@ -365,27 +366,27 @@ the size but also time spent.</p>
 <h2>Discussion<a class="headerlink" href="#discussion" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="accuracies">
 <h3>Accuracies<a class="headerlink" href="#accuracies" title="Permalink to this headline">¶</a></h3>
-<p>For now, let us focus on the figure showing accuracy depending on the number
-of labeled samples. We observe that the regular KMeans is slightly better
+<p>Let’s start by focusing on the figure showing accuracy depending on the number
+of labeled samples. We observe that regular KMeans is slightly better
 at the beginning, probably because it is pure diversity and that exploration
-is best at the beginning. After that, Zhdanov’s method takes clearly over
+is best at the beginning. After that, Zhdanov’s method clearly takes over
 the other methods.</p>
 </div>
 <div class="section" id="execution-times">
-<h3>Execution times<a class="headerlink" href="#execution-times" title="Permalink to this headline">¶</a></h3>
-<p>Execution time is usually not critical in active learning because the query
+<h3>Execution Times<a class="headerlink" href="#execution-times" title="Permalink to this headline">¶</a></h3>
+<p>Execution time is usually not critical in active learning as the query
 sampling time is negligible compared to labeling time. However, a significant
 decrease of query sampling time could allow to train more often and thus
-increase the accuracy of the model even faster.</p>
-<p>In the plot showing accuracy depending on execution time, we see first a red
+increase the accuracy of the model faster.</p>
+<p>In the plot showing accuracy depending on execution time, we first see a red
 bar which is the random sampling. This method is almost instantaneous. We
 also see that the domination of Zhdanov is even more clear. It is because
 the two-step approach allows to greatly reduce the number of samples on which
 the KMeans is performed. The difference is small here because we have a small
 dataset but on a bigger one, the win can be significant. One can also
 consider using mini-batch KMeans from scikit-learn that is faster.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 5 minutes  53.856 seconds)</p>
-<p><strong>Estimated memory usage:</strong>  14 MB</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 3 minutes  8.745 seconds)</p>
+<p><strong>Estimated memory usage:</strong>  25 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-clustering-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/83c3703f2c5a706c2169059eed0891b4/plot_clustering.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_clustering.py</span></code></a></p>

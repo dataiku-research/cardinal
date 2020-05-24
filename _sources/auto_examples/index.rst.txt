@@ -4,6 +4,11 @@
 
 .. _sphx_glr_auto_examples:
 
+Examples
+========
+
+Those examples show basic usage of cardinal as well as how to craft
+custom query samplers and use them in advanced experiments.
 
 
 
@@ -29,7 +34,7 @@
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we want to compare several clustering approaches and in particular explore the...">
+    <div class="sphx-glr-thumbcontainer" tooltip="We here compare several clustering-based Active Learning approaches and in particular explore t...">
 
 .. only:: html
 

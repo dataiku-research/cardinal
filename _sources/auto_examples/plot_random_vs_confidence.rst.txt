@@ -55,10 +55,10 @@ but linearly separable. We use as simple SVM classifier as it is a basic classif
 
 The parameters of this experiment are:  
 
-* `n` is the number of points in the sumulated data,
-* `batch_size` is the number of samples that will be annotated and added to
+* ``n`` is the number of points in the sumulated data,
+* ``batch_size`` is the number of samples that will be annotated and added to
   the training set at each iteration,
-* `n_iter is the number of iterations in our simulation
+* ``n_iter`` is the number of iterations in our simulation
 
 
 .. code-block:: python3
@@ -174,7 +174,7 @@ on which its confidence is the lowest. This is done through cardinal samplers.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.365 seconds)
+   **Total running time of the script:** ( 0 minutes  2.358 seconds)
 
 **Estimated memory usage:**  19 MB
 
