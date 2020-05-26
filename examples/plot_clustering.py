@@ -37,9 +37,9 @@ np.random.seed(7)
 ##############################################################################
 # The parameters of this experiment are:
 #
-# * _batch_size_ is the number of samples that will be annotated and added to
+# * ``batch_size`` is the number of samples that will be annotated and added to
 #   the training set at each iteration,
-# * _n_iter_ is the number of iterations in the simulation.
+# * ``n_iter`` is the number of iterations in the simulation.
 #
 # We use the digits dataset and a RandomForestClassifier.
 

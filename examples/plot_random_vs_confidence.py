@@ -31,10 +31,10 @@ np.random.seed(8)
 #
 # The parameters of this experiment are:  
 #
-# * `n` is the number of points in the sumulated data,
-# * `batch_size` is the number of samples that will be annotated and added to
+# * ``n`` is the number of points in the sumulated data,
+# * ``batch_size`` is the number of samples that will be annotated and added to
 #   the training set at each iteration,
-# * `n_iter is the number of iterations in our simulation
+# * ``n_iter`` is the number of iterations in our simulation
 
 
 n = 30
