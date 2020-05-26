@@ -14,6 +14,92 @@ Cardinal extensive [documentation](https://dataiku.github.io/cardinal/) features
 * [Lowest confidence vs. KMeans sampling](https://dataiku.github.io/cardinal/auto_examples/plot_confidence_vs_diversity.html) presents more advanced techniques
 * [Active learning on digit recognition and metrics](https://dataiku.github.io/cardinal/auto_examples/plot_digits_metrics.html) presents an experiment on MNIST dataset and proposes some metrics to estimate the accuracy uplift during an experiment
 
+## cardinal taking off  
+
+Let `X_unlabeled` the pool of unlabeled data to be labeled and `(X_labeled, y_labeled)` the original labeled data to train our model.
+One iteration of Active Learning can be written as:
+
+```python
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from cardinal.uncertainty import ConfidenceSampler
+
+model = RandomForestClassifier()
+batch_size = 20
+sampler = ConfidenceSampler(model, batch_size)
+
+model.fit(X_labelled, y_labelled)  
+sampler.fit(X_labelled, y_labelled)
+selected = sampler.select_samples(X_unlabelled)
+
+#Updating the labeled and unlabeled pool
+X_labelled = np.concatenate([X_labelled, selected])
+#The selected samples are sent to be labeled as y_selected
+y_labelled = np.concatenate([y_labelled, y_selected])
+```
+
+But how to evaluate the performance of the Active Learning process ?
+
+Active Learning comes in two flavors: with *fixed testing set* and with *incremental testing set*. The former is almost always the only one proposed in the fixed environement of the Active Learning literature while the latter is most common in the wild.  
+
+* In the *fixed testing set*, there is already a large enough and representative testing set for the task at hand. This corresponds to the situation where a model has already been trained and tested, perhaps even deployed. As new data comes in, the machine learning practitioner can both score it with the existing model or manually label it. The same testing set will be used to evaluate potential additional performance gain.   
+
+Let `(X_test, y_test)` denote the fixed testing set. The above then becomes:
+
+```python
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from cardinal.uncertainty import ConfidenceSampler
+
+model = RandomForestClassifier()
+batch_size = 20
+sampler = ConfidenceSampler(model, batch_size)
+accuracies = []
+
+model.fit(X_labelled, y_labelled)  
+sampler.fit(X_labelled, y_labelled)
+selected = sampler.select_samples(X_unlabelled)
+
+#Evaluating performance
+accuracies.append(model.score(X_test, y_test))
+
+#Updating the labeled and unlabeled pool
+X_labelled = np.concatenate([X_labelled, selected])
+#The selected samples are sent to be labeled as y_selected
+y_labelled = np.concatenate([y_labelled, y_selected])
+```
+
+* When starting a new machine learning project and data has to be collected and labeled, we are in the *incremental testing set* settings. There is no ground truth labelled set to start with and part of the new labeled data will make the testing set at each labeling iteration.
+This is the corresponding Active Learning iteration:
+
+```python
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from cardinal.uncertainty import ConfidenceSampler
+from sklearn.model_selection import train_test_split
+
+model = RandomForestClassifier()
+batch_size = 20
+sampler = ConfidenceSampler(model, batch_size)
+accuracies = []
+
+X_train, X_test, y_train, y_test =  train_test_split(X_labelled, y_labelled, test_size=0.2, random_state=123)
+model.fit(X_train, y_train)  
+sampler.fit(X_train, y_train)
+selected = sampler.select_samples(X_unlabelled)
+
+#Evaluating performance
+accuracies.append(model.score(X_test, y_test))
+
+#Updating the labeled and unlabeled pool
+X_labelled = np.concatenate([X_labelled, selected])
+#The selected samples are sent to be labeled as y_selected
+y_labelled = np.concatenate([y_labelled, y_selected])
+```
+
+Here it is important to note that contrary to the beautiful learning curves from the literature or our documentation, in this setting
+it can be non-monotonic when using small sample sizes ¯\_(ツ)_/¯.
+
 
 ## Installation
 
