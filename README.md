@@ -3,7 +3,7 @@
 ## Introduction
 
 cardinal is a Python package to perform and monitor Active Learning experiments
-leveraging various query sampling methods and metrics. 
+leveraging various query sampling methods and metrics.
 
 The project is currently maintained by [Dataiku's](https://www.dataiku.com/) research team.
 
@@ -14,9 +14,32 @@ Cardinal extensive [documentation](https://dataiku.github.io/cardinal/) features
 * [Lowest confidence vs. KMeans sampling](https://dataiku.github.io/cardinal/auto_examples/plot_confidence_vs_diversity.html) presents more advanced techniques
 * [Active learning on digit recognition and metrics](https://dataiku.github.io/cardinal/auto_examples/plot_digits_metrics.html) presents an experiment on MNIST dataset and proposes some metrics to estimate the accuracy uplift during an experiment
 
-## cardinal taking off  
+## Active learning
 
-Let `X_unlabeled` the pool of unlabeled data to be labeled and `(X_labeled, y_labeled)` the original labeled data to train our model.
+Active learning is a labeling experimental design. Given a set of unlabeled samples to label,
+active learning is the process of selecting samples to give to an oracle while maximizing
+model accuracy at a given cost.
+
+The typical active learning workflow is as follows:
+* Unlabeled data is gathered
+* From these unlabeled data, the experimenter selects samples to annotate
+* The samples are given to an oracle that label them
+* A model is trained based on the new and previous labels
+* If the model is considered good enough or if there is no more budget, the model is shipped to production
+* Otherwise, the experimenter uses knowledge about the model to select the next samples to annotate
+
+![Active learning workflow](doc/_static/al_flow.png)
+
+The main challenges in active learning are:
+* **Extracting information from the model.** The method can change depending on the model and the use case.
+* **Selecting multiple samples at once.** It is irrealistic to assume that the model can be re-trained after
+  each labeling.
+* **Make the most out of unlabeled information.** In the active learning setting, the experimenter is usually
+  faced with a large amount of unlabeled data compared to the labeling capacities.
+
+## Taking off with cardinal
+
+Let `X_unlabeled` be the pool of unlabeled data to be labeled and `(X_labeled, y_labeled)` the original labeled data to train our model.
 One iteration of Active Learning can be written as:
 
 ```python
@@ -60,12 +83,12 @@ model.fit(X_labelled, y_labelled)
 sampler.fit(X_labelled, y_labelled)
 selected = sampler.select_samples(X_unlabelled)
 
-#Evaluating performance
+# Evaluating performance
 accuracies.append(model.score(X_test, y_test))
 
-#Updating the labeled and unlabeled pool
+# Updating the labeled and unlabeled pool
 X_labelled = np.concatenate([X_labelled, selected])
-#The selected samples are sent to be labeled as y_selected
+# The selected samples are sent to be labeled as y_selected
 y_labelled = np.concatenate([y_labelled, y_selected])
 ```
 
@@ -88,18 +111,38 @@ model.fit(X_train, y_train)
 sampler.fit(X_train, y_train)
 selected = sampler.select_samples(X_unlabelled)
 
-#Evaluating performance
+# Evaluating performance
 accuracies.append(model.score(X_test, y_test))
 
-#Updating the labeled and unlabeled pool
+# Updating the labeled and unlabeled pool
 X_labelled = np.concatenate([X_labelled, selected])
-#The selected samples are sent to be labeled as y_selected
+# The selected samples are sent to be labeled as y_selected
 y_labelled = np.concatenate([y_labelled, y_selected])
 ```
 
 Here it is important to note that contrary to the beautiful learning curves from the literature or our documentation, in this setting
 it can be non-monotonic when using small sample sizes ¯\_(ツ)_/¯.
 
+## Yet another active learning package?
+
+Several great active learning packages already exist, and you can find our take on them
+[in this blog post](https://medium.com/data-from-the-trenches/a-proactive-look-at-active-learning-packages-8845fb6541e9).
+As of today, cardinal is very similar to most of them, so why adding a new package to the ecosystem?
+
+Our goal in cardinal is to grant maximum control to the user in a real-life setting. In cardinal, we aim not at providing
+the latest and trendiest methods but simple methods that have been proven useful in a wide variety of cases. We have for
+example decided to propose the recent Zdhanov's Diverse Mini-Batch Active Learning method because it relies a clustering
+which is an idea already evocked in reference active learning papers (Xu2007), it is based on the well known KMeans
+algorithm, and [we were able to replicate most of the findings in small and big datasets](https://medium.com/data-from-the-trenches/diverse-mini-batch-active-learning-a-reproduction-exercise-2396cfee61df).
+
+In the future, we aim at addressing problems that are not covered, as far as we know, by other packages:
+* **Varying batch size.** Most of other packages always assume that the batch size is the same across all iterations
+  which contradicts our experience on the matter. We are currently working on metrics designed to provide the
+  best insights even though the batch size changes during the experiment.
+* **Mixing of several methods.** Active learning methods most often consists in getting the most out of diverse
+  sources of information. Several recent papers use a combination of 
+  [semi-supervision](https://medium.com/data-from-the-trenches/re-discovering-semi-supervised-learning-a18bb46116e3)
+  and self-training. We want to enable this in our package.
 
 ## Installation
 
