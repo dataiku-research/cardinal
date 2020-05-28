@@ -26,7 +26,7 @@ from cardinal.clustering import KMeansSampler
 from cardinal.random import RandomSampler
 from cardinal.plotting import plot_confidence_interval
 from cardinal.base import BaseQuerySampler
-from cardinal.metrics import ContradictionMetric
+from cardinal.metrics import ContradictionMonitor
 
 np.random.seed(7)
 
@@ -143,7 +143,7 @@ for i, (sampler_name, sampler) in enumerate(samplers):
             train_test_split(X, y, test_size=500, random_state=k)
 
         accuracies = []
-        contradictions = ContradictionMetric()
+        contradictions = ContradictionMonitor()
         explorations = []
 
         previous_proba = None
@@ -172,7 +172,7 @@ for i, (sampler_name, sampler) in enumerate(samplers):
 
         all_accuracies.append(accuracies)
         all_explorations.append(explorations)
-        all_contradictions.append(contradictions.get_x_y()[1])
+        all_contradictions.append(contradictions.get()['contradictions'])
     
     x_data = np.arange(10, batch_size * (n_iter - 1) + 11, batch_size)
 
