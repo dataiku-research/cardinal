@@ -14,13 +14,11 @@ Cardinal extensive [documentation](https://dataiku.github.io/cardinal/) features
 * [Lowest confidence vs. KMeans sampling](https://dataiku.github.io/cardinal/auto_examples/plot_confidence_vs_diversity.html) presents more advanced techniques
 * [Active learning on digit recognition and metrics](https://dataiku.github.io/cardinal/auto_examples/plot_digits_metrics.html) presents an experiment on MNIST dataset and proposes some metrics to estimate the accuracy uplift during an experiment
 
-## Active learning
+## Active Learning
 
-Active learning is a labeling experimental design. Given a set of unlabeled samples to label,
-active learning is the process of selecting samples to give to an oracle while maximizing
-model accuracy at a given cost.
+Active Learning aims at optimizing the labeling of unlabeled samples at a given cost.
 
-The typical active learning workflow is as follows:
+The typical Active Learning workflow is as follows:
 * Unlabeled data is gathered
 * From these unlabeled data, the experimenter selects samples to annotate
 * The samples are given to an oracle that label them
@@ -28,9 +26,9 @@ The typical active learning workflow is as follows:
 * If the model is considered good enough or if there is no more budget, the model is shipped to production
 * Otherwise, the experimenter uses knowledge about the model to select the next samples to annotate
 
-![Active learning workflow](doc/_static/al_flow.png)
+![Active Learning Workflow](doc/_static/al_flow.png)
 
-The main challenges in active learning are:
+The main challenges in Active Mearning are:
 * **Extracting information from the model.** The method can change depending on the model and the use case.
 * **Selecting multiple samples at once.** It is irrealistic to assume that the model can be re-trained after
   each labeling.
