@@ -1,4 +1,4 @@
-<img src="doc/_static/cardinal.png" width="300">
+<img src="https://raw.githubusercontent.com/dataiku/cardinal/master/doc/_static/cardinal.png" width="300">
 
 ## Introduction
 
