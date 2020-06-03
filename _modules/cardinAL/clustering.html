@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cardinal.clustering &mdash; cardinal 0.0.2-git documentation</title>
+  <title>cardinal.clustering &mdash; cardinal 0.0.3-git documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.0.2
+                0.0.3
               </div>
             
           
@@ -175,10 +175,10 @@
             
   <h1>Source code for cardinal.clustering</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">linear_sum_assignment</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">linear_sum_assignment</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">BaseQuerySampler</span>
-<span class="kn">from</span> <span class="nn">.version</span> <span class="k">import</span> <span class="n">check_modules</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">BaseQuerySampler</span>
+<span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">check_modules</span>
 
 
 <div class="viewcode-block" id="KCentroidSampler"><a class="viewcode-back" href="../../gen_modules/cardinal.clustering.html#cardinal.clustering.KCentroidSampler">[docs]</a><span class="k">class</span> <span class="nc">KCentroidSampler</span><span class="p">(</span><span class="n">BaseQuerySampler</span><span class="p">):</span>
@@ -193,7 +193,7 @@
 <span class="sd">    Attributes:</span>
 <span class="sd">        clustering_ : The fitted clustering estimator.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clustering</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clustering</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clustering_</span> <span class="o">=</span> <span class="n">clustering</span>
 
@@ -240,9 +240,9 @@
 <span class="sd">    Args:</span>
 <span class="sd">        batch_size: Number of samples to draw when predicting.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="o">**</span><span class="n">kmeans_args</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="o">**</span><span class="n">kmeans_args</span><span class="p">):</span>
         <span class="n">check_modules</span><span class="p">(</span><span class="s1">&#39;sklearn&#39;</span><span class="p">,</span> <span class="s1">&#39;clustering.KmeansSampler&#39;</span><span class="p">)</span>
-        <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">KMeans</span>
+        <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
 
         <span class="k">if</span> <span class="s1">&#39;n_clusters&#39;</span> <span class="ow">in</span> <span class="n">kmeans_args</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -259,9 +259,9 @@
 <span class="sd">    Args:</span>
 <span class="sd">        batch_size: Number of samples to draw when predicting.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="o">**</span><span class="n">kmeans_args</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="o">**</span><span class="n">kmeans_args</span><span class="p">):</span>
         <span class="n">check_modules</span><span class="p">(</span><span class="s1">&#39;sklearn&#39;</span><span class="p">,</span> <span class="s1">&#39;clustering.MiniBatchKmeansSampler&#39;</span><span class="p">)</span>
-        <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <span class="n">MiniBatchKMeans</span>
+        <span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">MiniBatchKMeans</span>
 
         <span class="k">if</span> <span class="s1">&#39;n_clusters&#39;</span> <span class="ow">in</span> <span class="n">kmeans_args</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>

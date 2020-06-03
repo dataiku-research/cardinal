@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cardinal.random &mdash; cardinal 0.0.2-git documentation</title>
+  <title>cardinal.random &mdash; cardinal 0.0.3-git documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.0.2
+                0.0.3
               </div>
             
           
@@ -176,8 +176,8 @@
   <h1>Source code for cardinal.random</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">ScoredQuerySampler</span>
-<span class="kn">from</span> <span class="nn">.typeutils</span> <span class="k">import</span> <span class="n">RandomStateType</span><span class="p">,</span> <span class="n">check_random_state</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">ScoredQuerySampler</span>
+<span class="kn">from</span> <span class="nn">.typeutils</span> <span class="kn">import</span> <span class="n">RandomStateType</span><span class="p">,</span> <span class="n">check_random_state</span>
 
 
 <div class="viewcode-block" id="RandomSampler"><a class="viewcode-back" href="../../gen_modules/cardinal.random.html#cardinal.random.RandomSampler">[docs]</a><span class="k">class</span> <span class="nc">RandomSampler</span><span class="p">(</span><span class="n">ScoredQuerySampler</span><span class="p">):</span>
@@ -195,7 +195,7 @@
 <span class="sd">        random_state : The random state used by the sampler.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">random_state</span><span class="p">:</span> <span class="n">RandomStateType</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">random_state</span><span class="p">:</span> <span class="n">RandomStateType</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
 

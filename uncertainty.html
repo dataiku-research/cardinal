@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Uncertainty-based Query Sampling &mdash; cardinal 0.0.2-git documentation</title>
+  <title>Uncertainty-based Query Sampling &mdash; cardinal 0.0.3-git documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.0.2
+                0.0.3
               </div>
             
           
@@ -234,7 +234,7 @@ to least confidence sampling.</p>
 the model has on our sample. Information theory classicaly uses Shannon’s entropy
 to measure the amount of information in data. Entropy sampling select samples with the highest predicted probabilities entropy.</p>
 <div class="math notranslate nohighlight">
-\[es(x) = H(c)\]</div>
+\[es(x) = H(c) = -\sum_{i}P(c_i|x) \log(P(c_i|x))\]</div>
 <p>Be careful though: sometimes, classes in the tail of the prediction does not make sense.
 In that case, entropy sampling may be misleading.</p>
 </div>

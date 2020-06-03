@@ -24,11 +24,12 @@ cardinal can be installed through Pypi using:
     $ pip install "cardinal[extra]"
 
 Extras bring additional features to cardinal:
-* sklearn allows to use the KMeansSampler and RankedBatchModeSampler
-* examples intalls all packages necessary to run the examples
-* submodular installs apricot-select, and allows using SubmodularSampler
-* doc installs sphinx-gallery to be able to generate the documentation
-* all is an alias on all of the above.
+
+* ``sklearn`` allows to use the KMeansSampler and RankedBatchModeSampler
+* ``examples`` intalls all packages necessary to run the examples
+* ``submodular`` installs apricot-select, and allows using SubmodularSampler
+* ``doc`` installs sphinx-gallery to be able to generate the documentation
+* ``all`` is an alias on all of the above.
 
 Installing locally
 ------------------

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Lowest confidence vs. KMeans sampling &mdash; cardinal 0.0.2-git documentation</title>
+  <title>Lowest confidence vs. KMeans sampling &mdash; cardinal 0.0.3-git documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.0.2
+                0.0.3
               </div>
             
           
@@ -194,17 +194,17 @@
 toy example where a very unlucky initialization makes lowest confidence
 approach underperform.</p>
 <p>Those are the necessary imports and initializations</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="k">import</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.patches.Polygon.html#matplotlib.patches.Polygon" title="View documentation for matplotlib.patches.Polygon"><span class="n">Polygon</span></a>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.patches.Polygon.html#matplotlib.patches.Polygon" title="View documentation for matplotlib.patches.Polygon"><span class="n">Polygon</span></a>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.datasets.samples_generator</span> <span class="k">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_blobs.html#sklearn.datasets.make_blobs" title="View documentation for sklearn.datasets.make_blobs"><span class="n">make_blobs</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="View documentation for sklearn.svm.SVC"><span class="n">SVC</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.datasets.samples_generator</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_blobs.html#sklearn.datasets.make_blobs" title="View documentation for sklearn.datasets.make_blobs"><span class="n">make_blobs</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" title="View documentation for sklearn.svm.SVC"><span class="n">SVC</span></a>
 
-<span class="kn">from</span> <span class="nn">cardinal.uncertainty</span> <span class="k">import</span> <span class="n">ConfidenceSampler</span>
-<span class="kn">from</span> <span class="nn">cardinal.clustering</span> <span class="k">import</span> <span class="n">KMeansSampler</span>
-<span class="kn">from</span> <span class="nn">cardinal.batch</span> <span class="k">import</span> <span class="n">RankedBatchSampler</span>
-<span class="kn">from</span> <span class="nn">cardinal.random</span> <span class="k">import</span> <span class="n">RandomSampler</span>
+<span class="kn">from</span> <span class="nn">cardinal.uncertainty</span> <span class="kn">import</span> <span class="n">ConfidenceSampler</span>
+<span class="kn">from</span> <span class="nn">cardinal.clustering</span> <span class="kn">import</span> <span class="n">KMeansSampler</span>
+<span class="kn">from</span> <span class="nn">cardinal.batch</span> <span class="kn">import</span> <span class="n">RankedBatchSampler</span>
+<span class="kn">from</span> <span class="nn">cardinal.random</span> <span class="kn">import</span> <span class="n">RandomSampler</span>
 
 
 <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
@@ -346,8 +346,8 @@ properties.</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_confidence_vs_diversity_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_confidence_vs_diversity_001.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.472 seconds)</p>
-<p><strong>Estimated memory usage:</strong>  15 MB</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.925 seconds)</p>
+<p><strong>Estimated memory usage:</strong>  16 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-confidence-vs-diversity-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/2e3e67d9e2e171f96cda30dc9543beb9/plot_confidence_vs_diversity.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_confidence_vs_diversity.py</span></code></a></p>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cardinal.base &mdash; cardinal 0.0.2-git documentation</title>
+  <title>cardinal.base &mdash; cardinal 0.0.3-git documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.0.2
+                0.0.3
               </div>
             
           
@@ -174,13 +174,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for cardinal.base</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
-<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.typeutils</span> <span class="k">import</span> <span class="p">(</span><span class="n">RandomStateType</span><span class="p">,</span> <span class="n">check_random_state</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">.typeutils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">RandomStateType</span><span class="p">,</span> <span class="n">check_random_state</span><span class="p">,</span>
                         <span class="n">NotEnoughSamplesWarning</span><span class="p">)</span>
 
 
@@ -193,7 +193,7 @@
 <span class="sd">    Args:</span>
 <span class="sd">        batch_size: Numbers of samples to select.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
 
 <div class="viewcode-block" id="BaseQuerySampler.fit"><a class="viewcode-back" href="../../gen_modules/cardinal.base.html#cardinal.base.BaseQuerySampler.fit">[docs]</a>    <span class="nd">@abstractmethod</span>
@@ -224,8 +224,8 @@
     <span class="k">def</span> <span class="nf">_not_enough_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="n">cond</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
         <span class="k">if</span> <span class="n">cond</span><span class="p">:</span>
-            <span class="n">warn</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;&#39;&#39;Requested </span><span class="si">{self.batch_size}</span><span class="s1"> samples but data only</span>
-<span class="s1">             has </span><span class="si">{X.shape[0]}</span><span class="s1">. All available data will be returned&#39;&#39;&#39;</span><span class="p">,</span>
+            <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&#39;&#39;Requested </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="si">}</span><span class="s1"> samples but data only</span>
+<span class="s1">             has </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">. All available data will be returned&#39;&#39;&#39;</span><span class="p">,</span>
                  <span class="n">NotEnoughSamplesWarning</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cond</span></div>
 
@@ -242,7 +242,7 @@
 <span class="sd">                  &quot;top&quot;, &quot;weighted&quot;.</span>
 <span class="sd">        random_state: Random seeding</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;top&#39;</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;top&#39;</span><span class="p">,</span>
                  <span class="n">random_state</span><span class="p">:</span> <span class="n">RandomStateType</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">strategy</span>

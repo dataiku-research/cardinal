@@ -261,9 +261,9 @@ consider using mini-batch KMeans from scikit-learn that is faster.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 3 minutes  8.745 seconds)
+   **Total running time of the script:** ( 3 minutes  33.100 seconds)
 
-**Estimated memory usage:**  25 MB
+**Estimated memory usage:**  19 MB
 
 
 .. _sphx_glr_download_auto_examples_plot_clustering.py:

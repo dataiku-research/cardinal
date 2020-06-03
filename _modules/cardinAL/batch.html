@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cardinal.batch &mdash; cardinal 0.0.2-git documentation</title>
+  <title>cardinal.batch &mdash; cardinal 0.0.3-git documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.0.2
+                0.0.3
               </div>
             
           
@@ -179,12 +179,12 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.version</span> <span class="k">import</span> <span class="n">check_modules</span>
+<span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">check_modules</span>
 <span class="n">check_modules</span><span class="p">(</span><span class="s1">&#39;sklearn&#39;</span><span class="p">,</span> <span class="s1">&#39;batch&#39;</span><span class="p">)</span>  <span class="c1"># noqa</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">pairwise_distances</span><span class="p">,</span> <span class="n">pairwise_distances_argmin_min</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">pairwise_distances</span><span class="p">,</span> <span class="n">pairwise_distances_argmin_min</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">BaseQuerySampler</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">BaseQuerySampler</span>
 
 
 <div class="viewcode-block" id="RankedBatchSampler"><a class="viewcode-back" href="../../gen_modules/cardinal.batch.html#cardinal.batch.RankedBatchSampler">[docs]</a><span class="k">class</span> <span class="nc">RankedBatchSampler</span><span class="p">(</span><span class="n">BaseQuerySampler</span><span class="p">):</span>
@@ -194,7 +194,7 @@
 <span class="sd">        batch_size: Number of samples to select.</span>
 <span class="sd">        metric: Metric to use for distance computation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">metric</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;euclidean&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">metric</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;euclidean&#39;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">metric</span>
 

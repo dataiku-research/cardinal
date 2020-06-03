@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Active Learning on Digit Recognition with Clustering-based Sampling &mdash; cardinal 0.0.2-git documentation</title>
+  <title>Active Learning on Digit Recognition with Clustering-based Sampling &mdash; cardinal 0.0.3-git documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.0.2
+                0.0.3
               </div>
             
           
@@ -204,22 +204,22 @@ We compare both of them to Zhdanov’s approach proposed in
 The author introduced a two-step procedure that
 first select samples using uncertainty and then performs a KMeans.</p>
 <p>Those are the necessary imports and initializations</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="View documentation for time.time"><span class="n">time</span></a>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="View documentation for time.time"><span class="n">time</span></a>
 
-<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">load_digits</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">RandomForestClassifier</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
-<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="k">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans" title="View documentation for sklearn.cluster.KMeans"><span class="n">KMeans</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html#sklearn.datasets.load_digits" title="View documentation for sklearn.datasets.load_digits"><span class="n">load_digits</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">RandomForestClassifier</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="View documentation for sklearn.model_selection.train_test_split"><span class="n">train_test_split</span></a>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans" title="View documentation for sklearn.cluster.KMeans"><span class="n">KMeans</span></a>
 
-<span class="kn">from</span> <span class="nn">cardinal.uncertainty</span> <span class="k">import</span> <span class="n">MarginSampler</span>
-<span class="kn">from</span> <span class="nn">cardinal.clustering</span> <span class="k">import</span> <span class="n">KMeansSampler</span>
-<span class="kn">from</span> <span class="nn">cardinal.random</span> <span class="k">import</span> <span class="n">RandomSampler</span>
-<span class="kn">from</span> <span class="nn">cardinal.plotting</span> <span class="k">import</span> <span class="n">plot_confidence_interval</span>
-<span class="kn">from</span> <span class="nn">cardinal.base</span> <span class="k">import</span> <span class="n">BaseQuerySampler</span>
-<span class="kn">from</span> <span class="nn">cardinal.zhdanov2019</span> <span class="k">import</span> <span class="n">TwoStepKMeansSampler</span>
-<span class="kn">from</span> <span class="nn">cardinal.utils</span> <span class="k">import</span> <span class="n">pad_with_random</span>
+<span class="kn">from</span> <span class="nn">cardinal.uncertainty</span> <span class="kn">import</span> <span class="n">MarginSampler</span>
+<span class="kn">from</span> <span class="nn">cardinal.clustering</span> <span class="kn">import</span> <span class="n">KMeansSampler</span>
+<span class="kn">from</span> <span class="nn">cardinal.random</span> <span class="kn">import</span> <span class="n">RandomSampler</span>
+<span class="kn">from</span> <span class="nn">cardinal.plotting</span> <span class="kn">import</span> <span class="n">plot_confidence_interval</span>
+<span class="kn">from</span> <span class="nn">cardinal.base</span> <span class="kn">import</span> <span class="n">BaseQuerySampler</span>
+<span class="kn">from</span> <span class="nn">cardinal.zhdanov2019</span> <span class="kn">import</span> <span class="n">TwoStepKMeansSampler</span>
+<span class="kn">from</span> <span class="nn">cardinal.utils</span> <span class="kn">import</span> <span class="n">pad_with_random</span>
 
 <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
 </pre></div>
@@ -250,7 +250,7 @@ sample with high uncertainty is selected.</p>
 approach. For that, we first perform a KMeans clustering, and then select
 within each cluster the most uncertain samples.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">KMeansClassSampler</span><span class="p">(</span><span class="n">BaseQuerySampler</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">model</span></a><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="View documentation for builtins.int"><span class="n">batch_size</span></a><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">model</span></a><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="View documentation for builtins.int"><span class="n">batch_size</span></a><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clustering</span> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans" title="View documentation for sklearn.cluster.KMeans"><span class="n">KMeans</span></a><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">n_classes</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">confidence_sampler</span> <span class="o">=</span> <span class="n">MarginSampler</span><span class="p">(</span><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier" title="View documentation for sklearn.ensemble.RandomForestClassifier"><span class="n">model</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="View documentation for builtins.int"><span class="n">batch_size</span></a> <span class="o">//</span> <span class="n">n_classes</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="View documentation for builtins.int"><span class="n">batch_size</span></a><span class="p">)</span>
@@ -385,8 +385,8 @@ the two-step approach allows to greatly reduce the number of samples on which
 the KMeans is performed. The difference is small here because we have a small
 dataset but on a bigger one, the win can be significant. One can also
 consider using mini-batch KMeans from scikit-learn that is faster.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 3 minutes  8.745 seconds)</p>
-<p><strong>Estimated memory usage:</strong>  25 MB</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 3 minutes  33.100 seconds)</p>
+<p><strong>Estimated memory usage:</strong>  19 MB</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-clustering-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/83c3703f2c5a706c2169059eed0891b4/plot_clustering.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_clustering.py</span></code></a></p>

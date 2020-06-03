@@ -5,14 +5,14 @@
 
 Computation times
 =================
-**07:28.091** total execution time for **auto_examples** files:
+**04:22.337** total execution time for **auto_examples** files:
 
 +-----------------------------------------------------------------------------------------------------+-----------+---------+
-| :ref:`sphx_glr_auto_examples_plot_digits_metrics.py` (``plot_digits_metrics.py``)                   | 04:15.516 | 9.9 MB  |
+| :ref:`sphx_glr_auto_examples_plot_digits_metrics.py` (``plot_digits_metrics.py``)                   | 04:22.337 | 42.1 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+---------+
-| :ref:`sphx_glr_auto_examples_plot_clustering.py` (``plot_clustering.py``)                           | 03:08.745 | 25.3 MB |
+| :ref:`sphx_glr_auto_examples_plot_clustering.py` (``plot_clustering.py``)                           | 00:00.000 | 0.0 MB  |
 +-----------------------------------------------------------------------------------------------------+-----------+---------+
-| :ref:`sphx_glr_auto_examples_plot_random_vs_confidence.py` (``plot_random_vs_confidence.py``)       | 00:02.358 | 18.5 MB |
+| :ref:`sphx_glr_auto_examples_plot_confidence_vs_diversity.py` (``plot_confidence_vs_diversity.py``) | 00:00.000 | 0.0 MB  |
 +-----------------------------------------------------------------------------------------------------+-----------+---------+
-| :ref:`sphx_glr_auto_examples_plot_confidence_vs_diversity.py` (``plot_confidence_vs_diversity.py``) | 00:01.472 | 15.5 MB |
+| :ref:`sphx_glr_auto_examples_plot_random_vs_confidence.py` (``plot_random_vs_confidence.py``)       | 00:00.000 | 0.0 MB  |
 +-----------------------------------------------------------------------------------------------------+-----------+---------+

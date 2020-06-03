@@ -74,10 +74,10 @@ Examine uncertainty and select the next queries
 
 So how do we decide which samples are the most likely to improve the model? There are several intuitions thatwe can follow, and they have given birth to the strategies that are used today:  
 
-- Model confusion. Samples on which the model fails to do the right prediction are very likely to bring information.
-- Diversity. A model can be seen as a summary of the samples used to train it. The samples
+- **Model confusion.** Samples on which the model fails to do the right prediction are very likely to bring information.
+- **Diversity.** A model can be seen as a summary of the samples used to train it. The samples
   that are very different from the training ones must therefore bring information.
-- Representativeness. Sample prototypes that are representative of the most common 
+- **Representativeness.** Sample prototypes that are representative of the most common 
   structures of the problem.  
 
 Not convinced? Check out the following example that illustrate how a simple Active Learning strategy improves

@@ -70,7 +70,7 @@ to measure the amount of information in data. Entropy sampling select samples wi
 
 .. math::
 
-   es(x) = H(c)
+   es(x) = H(c) = -\sum_{i}P(c_i|x) \log(P(c_i|x))
 
 Be careful though: sometimes, classes in the tail of the prediction does not make sense.
 In that case, entropy sampling may be misleading.
