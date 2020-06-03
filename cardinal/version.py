@@ -20,7 +20,7 @@ cardinal version, required package versions, and utilities for checking
 # Dev branch marker is: 'X.Y.dev' or 'X.Y.devN' where N is an integer.
 # 'X.Y.dev0' is the canonical version of 'X.Y.dev'
 #
-__version__ = '0.0.2'
+__version__ = '0.0.4.dev'
 
 # This is a tuple to preserve order, so that dependencies are checked
 # in some meaningful order (more => less 'core').
