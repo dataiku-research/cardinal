@@ -48,7 +48,7 @@ class KCentroidSampler(BaseQuerySampler):
         if self._not_enough_samples(X):
             return np.arange(X.shape[0])
 
-        kwargs = dict(sample_weight=sample_weight) if sample_weight else dict()
+        kwargs = dict(sample_weight=sample_weight) if (sample_weight is not None) else dict()
         model = self.clustering_.fit(X, **kwargs)
         distances = model.transform(X)
 
