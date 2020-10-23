@@ -2,13 +2,11 @@
 Replay and experiment
 =====================
 
-Active Learning experiments can be long and costly. For this reason,
-it is useful to be able to resume an experiment if an error happened.
-To achieve that, cardinal allows to store intermediate variables,
-such as selected samples, in a cache. Users can therefore resume
-an interrupted experiment, using the ResumeCache, or replay an entire
-experiment to perform additional computation such as metric using the
-ReplayCache.
+In a previous example, we have shown how experiments can be resumed.
+Cardinal also allows for experiments to be replayed, meaning that
+one can save intermediate data to be able to run analysis on the
+experiment without having to retrain all the models. Let us now
+see how the ReplayCache allows it.
 """
 
 import shutil
@@ -55,9 +53,8 @@ n_iter = 10
 
 model = SVC(probability=True)
 
-samplers = [
-    ('margin', MarginSampler(model, batch_size))
-]
+sampler = MarginSampler(model, batch_size)
+config = dict(sampler='margin')
 
 #############################################################################
 # We define our experiment in a dedicated function since we want to run it
@@ -68,78 +65,62 @@ samplers = [
 # indices in an active learning experiment.
 
 
-class ExampleError(Exception):
-    pass
+with ReplayCache('./cache', './cache.db', keys=config) as cache:
+
+    index = GrowingIndex(X_train.shape[0])
+
+    # Add at least one sample from each class
+    index.add_to_selected([np.where(y_train == i)[0][0] for i in np.unique(y)])
+
+    selected = cache.variable('selected', index.selected)
+    predictions = cache.variable('prediction', None)
+
+    for j, prev_selected, prev_predictions in cache.iter(range(n_iter), selected.previous(), predictions.previous()):
+        print('Computing iteration {}'.format(j))
+        index.resume(prev_selected)
+
+        model.fit(X_train[prev_selected], y_train[prev_selected])
+        sampler.fit(X_train[prev_selected], y_train[prev_selected])
+        index.add_to_selected(sampler.select_samples(X_train[index.non_selected]))
+        selected.set(index.selected)
+        predictions.set(model.predict(X_test))
 
 
-def run(force_failure=False, compute_metric=None):
-
-    for sampler_name, sampler in samplers:
-
-        config = dict(sampler=sampler_name)
-
-        with ReplayCache('./cache', './cache.db', keys=config) as cache:
-
-            index = GrowingIndex(X_train.shape[0])
-
-            # Add at least one sample from each class
-            index.add_to_selected([np.where(y_train == i)[0][0] for i in np.unique(y)])
-
-            selected = cache.variable('selected', index.selected)
-
-            for j, prev_selected in cache.iter(range(n_iter), selected.previous()):
-                print('Computing iteration {}'.format(j))
-                index.resume(prev_selected)
-
-                model.fit(X_train[prev_selected], y_train[prev_selected])
-                sampler.fit(X_train[prev_selected], y_train[prev_selected])
-                index.add_to_selected(sampler.select_samples(X_train[index.non_selected]))
-                selected.set(index.selected)
-
-                if force_failure and j == 5:
-                    raise ExampleError('Simulated Error')
-
-            if compute_metric is not None:
-                cache.compute_metric('metric', compute_metric, selected.previous(), selected.current())
-
-
-#############################################################################
-# We run this function and force an error to happen. We then see how the
-# cache stores these values in a human readable way.
-#
-# We see that all selected indices have been kept up until the 4th iteration
-# (since an error happened at iteration 5).
-
-try:
-    run(force_failure=True)
-except ExampleError as e:
-    print('ExempleError raised: ' + str(e))
-print_folder_tree('./cache')
 
 #############################################################################
 # We run the same function without error. In this case, we see that the 4
 # first iterations are skipped. The code is not even executed. Afterward,
 # the cache contains the data for all iterations.
 
-run()
-print_folder_tree('./cache')
+    print_folder_tree('./cache')
+
 
 #############################################################################
 # Being a bit paranoid, we would like to check what cardinal does. For that,
 # we compute the batch size of each iteration. Fortunately, we have cached
 # the variable `selected` and therefore, we can replay the experiment.
 
+    def compute_contradictions(previous_prediction, current_prediction):
+        if previous_prediction is None:
+            return 0
+        return (previous_prediction != current_prediction).sum()
 
-def calc_batch_size(previous, current):
-    return current.sum() - previous.sum()
+    cache.compute_metric('contradictions', compute_contradictions, predictions.previous(), predictions.current())
 
+    from matplotlib import pyplot as plt
 
-run(compute_metric=calc_batch_size)
+    iteration = []
+    contradictions = []
 
-for r in dataset.connect('sqlite:///cache.db')['metric'].all():
-    if r['id'] == 1:
-        print('\t'.join(r.keys()))
-    print('\t'.join(map(str, r.values())))
+    for r in dataset.connect('sqlite:///cache.db')['contradictions'].all():
+        iteration.append(r['iteration'])
+        contradictions.append(r['value'])
+
+    plt.plot(iteration, contradictions)
+    plt.xlabel('Iteration')
+    plt.ylabel('Contradictions')
+    plt.title('Evolution of Contradictions during active learning experiment on Iris dataset')
+    plt.show()
 
 
 #############################################################################

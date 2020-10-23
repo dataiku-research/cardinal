@@ -13,6 +13,8 @@ import time
 
 class ResumeCache:
 
+    _clear_outdated_variables = True
+
     def __init__(self, cache_dir, db_file, keys={}):
         self.cache_dir = Path(cache_dir).joinpath(*[Path(k) / Path(str(v)) for k, v in keys.items()])
         self._db_conn = dataset.connect('sqlite:///' + db_file)
@@ -27,7 +29,7 @@ class ResumeCache:
         ReplayCache.cache = None
 
     def variable(self, name, init_value):
-        return Variable(name, init_value, cache=self.cache_dir, clear_outdated=True)
+        return Variable(name, init_value, cache=self.cache_dir, clear_outdated=self._clear_outdated_variables)
 
     def log_value(self, key, value, iteration='auto', **kwargs):
         if type(value).__module__ == np.__name__:
@@ -37,7 +39,7 @@ class ResumeCache:
         if iteration == 'auto' and self._current_iter >= 0:
             log_keys['iteration'] = self._current_iter
         elif iteration is not None:
-            log_keys['iter'] = iteration
+            log_keys['iteration'] = iteration
         table.upsert(dict(value=value, **log_keys, **kwargs), log_keys.keys())
 
     def iter(self, iterator, *variables):
@@ -82,6 +84,8 @@ class ResumeCache:
 
 
 class ReplayCache(ResumeCache):
+
+    _clear_outdated_variables = False
 
     def variable(self, name, init_value):
         return Variable(name, init_value, cache=self.cache_dir, clear_outdated=False)
