@@ -1,15 +1,15 @@
 """
-Running and replaying an experiment
-===================================
+Replay and experiment
+=====================
 
 Active Learning experiments can be long and costly. For this reason,
 it is useful to be able to resume an experiment if an error happened.
-Cardinal also allows to compute the values of a metric after an
-experiment has been run thanks to its ReplayCache.
+To achieve that, cardinal allows to store intermediate variables,
+such as selected samples, in a cache. Users can therefore resume
+an interrupted experiment, using the ResumeCache, or replay an entire
+experiment to perform additional computation such as metric using the
+ReplayCache.
 """
-
-##############################################################################
-# Those are the necessary imports and initializations
 
 import shutil
 import os
@@ -29,7 +29,7 @@ from cardinal.utils import GrowingIndex
 # Since we will be looking at the cache, we need a utility function to display
 # a tree folder.
 
-def list_files(startpath):
+def print_folder_tree(startpath):
     for root, dirs, files in os.walk(startpath):
         level = root.replace(startpath, '').count(os.sep)
         indent = ' ' * 4 * (level)
@@ -60,13 +60,19 @@ samplers = [
 ]
 
 #############################################################################
-# This function runs an experiment and optionally generate an error to test
-# the resuming capability.
+# We define our experiment in a dedicated function since we want to run it
+# several times. We also create a dedicated exception that we will rise to
+# simulate an interruption in the experiment.
 #
 # Note the use of the GrowingIndex utils that facilitate the handing of
 # indices in an active learning experiment.
 
-def test_run(with_error=False, compute_metric=None):
+
+class ExampleError(Exception):
+    pass
+
+
+def run(force_failure=False, compute_metric=None):
 
     for sampler_name, sampler in samplers:
 
@@ -90,8 +96,8 @@ def test_run(with_error=False, compute_metric=None):
                 index.add_to_selected(sampler.select_samples(X_train[index.non_selected]))
                 selected.set(index.selected)
 
-                if with_error and j == 5:
-                    raise ValueError('Simulated Error')
+                if force_failure and j == 5:
+                    raise ExampleError('Simulated Error')
 
             if compute_metric is not None:
                 cache.compute_metric('metric', compute_metric, selected.previous(), selected.current())
@@ -105,18 +111,18 @@ def test_run(with_error=False, compute_metric=None):
 # (since an error happened at iteration 5).
 
 try:
-    test_run(with_error=True)
-except ValueError as e:
-    print('ValueError raised: ' + str(e))
-list_files('./cache')
+    run(force_failure=True)
+except ExampleError as e:
+    print('ExempleError raised: ' + str(e))
+print_folder_tree('./cache')
 
 #############################################################################
 # We run the same function without error. In this case, we see that the 4
 # first iterations are skipped. The code is not even executed. Afterward,
 # the cache contains the data for all iterations.
 
-test_run()
-list_files('./cache')
+run()
+print_folder_tree('./cache')
 
 #############################################################################
 # Being a bit paranoid, we would like to check what cardinal does. For that,
@@ -128,7 +134,7 @@ def calc_batch_size(previous, current):
     return current.sum() - previous.sum()
 
 
-test_run(compute_metric=calc_batch_size)
+run(compute_metric=calc_batch_size)
 
 for r in dataset.connect('sqlite:///cache.db')['metric'].all():
     if r['id'] == 1:
