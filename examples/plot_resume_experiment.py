@@ -20,7 +20,7 @@ from sklearn.model_selection import train_test_split
 
 from cardinal.uncertainty import MarginSampler
 from cardinal.cache import ResumeCache
-from cardinal.utils import GrowingIndex
+from cardinal.utils import SampleSelector
 
 ##############################################################################
 # Since we will be looking at the cache, we need a utility function to display
@@ -57,6 +57,9 @@ samplers = [
     ('margin', MarginSampler(model, batch_size))
 ]
 
+CACHE_PATH = './cache'
+DATABASE_PATH = './cache.db'
+
 #############################################################################
 # We define our experiment in a dedicated function since we want to run it
 # several times. We also create a dedicated exception that we will rise to
@@ -74,25 +77,23 @@ def run(force_failure=False):
 
     for sampler_name, sampler in samplers:
 
-        config = dict(sampler=sampler_name)
+        experiment_config = dict(sampler=sampler_name)
 
-        with ResumeCache('./cache', './cache.db', keys=config) as cache:
+        with ResumeCache(CACHE_PATH, DATABASE_PATH, keys=experiment_config) as cache:
 
-            index = GrowingIndex(X_train.shape[0])
+            # Create a selector with one sample from each class and persist it
+            init_selector = SampleSelector(X_train.shape[0])
+            init_selector.add_to_selected([np.where(y_train == i)[0][0] for i in np.unique(y)])
+            selector = cache.persisted_value('selector', init_selector)
 
-            # Add at least one sample from each class
-            index.add_to_selected([np.where(y_train == i)[0][0] for i in np.unique(y)])
-
-            selected = cache.persisted_value('selected', index.selected)
-
-            for j, prev_selected in cache.iter(range(n_iter), selected.previous()):
+            for j, prev_selector in cache.iter(range(n_iter), selector.previous()):
                 print('Computing iteration {}'.format(j))
-                index.resume(prev_selected)
 
-                model.fit(X_train[prev_selected], y_train[prev_selected])
-                sampler.fit(X_train[prev_selected], y_train[prev_selected])
-                index.add_to_selected(sampler.select_samples(X_train[index.non_selected]))
-                selected.set(index.selected)
+                model.fit(X_train[prev_selector.selected], y_train[prev_selector.selected])
+                sampler.fit(X_train[prev_selector.selected], y_train[prev_selector.selected])
+                prev_selector.add_to_selected(sampler.select_samples(X_train[prev_selector.non_selected]))
+
+                selector.set(prev_selector)
 
                 cache.log_value('accuracy', model.score(X_test, y_test))
 
@@ -144,5 +145,5 @@ plt.show()
 #############################################################################
 # We clean all the cache folder.
 
-shutil.rmtree('./cache')
-os.remove('./cache.db')
+shutil.rmtree(CACHE_PATH)
+os.remove(DATABASE_PATH)

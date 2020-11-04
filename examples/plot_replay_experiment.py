@@ -21,7 +21,7 @@ from sklearn.model_selection import train_test_split
 from cardinal.random import RandomSampler
 from cardinal.uncertainty import MarginSampler
 from cardinal.cache import ReplayCache
-from cardinal.utils import GrowingIndex
+from cardinal.utils import SampleSelector
 
 ##############################################################################
 # Since we will be looking at the cache, we need a utility function to display
@@ -54,7 +54,10 @@ n_iter = 10
 model = SVC(probability=True)
 
 sampler = MarginSampler(model, batch_size)
-config = dict(sampler='margin')
+experiment_config = dict(sampler='margin')
+
+CACHE_PATH = './cache'
+DATABASE_PATH = './cache.db'
 
 #############################################################################
 # We define our experiment in a dedicated function since we want to run it
@@ -65,14 +68,13 @@ config = dict(sampler='margin')
 # indices in an active learning experiment.
 
 
-with ReplayCache('./cache', './cache.db', keys=config) as cache:
+with ReplayCache(CACHE_PATH, DATABASE_PATH, keys=experiment_config) as cache:
 
-    index = GrowingIndex(X_train.shape[0])
-
-    # Add at least one sample from each class
-    index.add_to_selected([np.where(y_train == i)[0][0] for i in np.unique(y)])
-
-    selected = cache.persisted_value('selected', index.selected)
+    # Create a selector with one sample from each class and persist it
+    init_selector = SampleSelector(X_train.shape[0])
+    init_selector.add_to_selected([np.where(y_train == i)[0][0] for i in np.unique(y)])
+    selector = cache.persisted_value('selector', init_selector)
+            
     predictions = cache.persisted_value('prediction', None)
 
     for j, prev_selected, prev_predictions in cache.iter(range(n_iter), selected.previous(), predictions.previous()):
@@ -124,5 +126,5 @@ with ReplayCache('./cache', './cache.db', keys=config) as cache:
 #############################################################################
 # We clean all the cache folder.
 
-shutil.rmtree('./cache')
-os.remove('./cache.db')
+shutil.rmtree(CACHE_PATH)
+os.remove(DATABASE_PATH)

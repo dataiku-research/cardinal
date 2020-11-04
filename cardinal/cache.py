@@ -28,7 +28,7 @@ class ResumeCache:
     def __exit__(self, type, value, traceback):
         ReplayCache.cache = None
 
-    def presisted_value(self, name, init_value):
+    def persisted_value(self, name, init_value):
         """Value persisted in cache for resuming or replaying
 
         A persisted value is kept in memory and on disk for a short duration to allow
@@ -100,7 +100,7 @@ class ReplayCache(ResumeCache):
 
     _clear_outdated_variables = False
 
-    def variable(self, name, init_value):
+    def persisted_value(self, name, init_value):
         return Variable(name, init_value, cache=self.cache_dir, clear_outdated=False)
 
     def _is_variable(self, v):
