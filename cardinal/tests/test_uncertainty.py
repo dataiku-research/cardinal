@@ -8,7 +8,7 @@ from cardinal.uncertainty import ConfidenceSampler, MarginSampler, EntropySample
 def test_all_uncertainty():
 
     proba = np.array([[0.10, 0.20, 0.30, 0.40],
-                      [0.00, 0.05, 0.55, 0.60],
+                      [0.00, 0.05, 0.45, 0.50],
                       [0.15, 0.45, 0.20, 0.20]])
 
     # Confidence sampling choses the first sample
