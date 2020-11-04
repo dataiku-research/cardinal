@@ -72,8 +72,8 @@ with ReplayCache('./cache', './cache.db', keys=config) as cache:
     # Add at least one sample from each class
     index.add_to_selected([np.where(y_train == i)[0][0] for i in np.unique(y)])
 
-    selected = cache.variable('selected', index.selected)
-    predictions = cache.variable('prediction', None)
+    selected = cache.persisted_value('selected', index.selected)
+    predictions = cache.persisted_value('prediction', None)
 
     for j, prev_selected, prev_predictions in cache.iter(range(n_iter), selected.previous(), predictions.previous()):
         print('Computing iteration {}'.format(j))
@@ -88,17 +88,15 @@ with ReplayCache('./cache', './cache.db', keys=config) as cache:
 
 
 #############################################################################
-# We run the same function without error. In this case, we see that the 4
-# first iterations are skipped. The code is not even executed. Afterward,
-# the cache contains the data for all iterations.
+# All values for all iterations are kept. The cache structure is human
+# readable and can be shared for better reproducibility.
 
     print_folder_tree('./cache')
 
 
 #############################################################################
-# Being a bit paranoid, we would like to check what cardinal does. For that,
-# we compute the batch size of each iteration. Fortunately, we have cached
-# the variable `selected` and therefore, we can replay the experiment.
+# If we forgot to compute contradictions during the experiment, we can do it
+# now.
 
     def compute_contradictions(previous_prediction, current_prediction):
         if previous_prediction is None:

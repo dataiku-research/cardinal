@@ -16,16 +16,22 @@ def pad_with_random(array, size, min, max, random_state=None):
     return np.concatenate([array, padding])
 
 
-class GrowingIndex():
+class SampleSelector():
 
-    def __init__(self, size):
-        super()
+    def __init__(self, size, init=None, cache=None, cache_name='selected'):
         self.size = size
         self._mask = np.zeros((size,), dtype=np.bool)
         self._indices = np.arange(size)
+        if init:
+            self.add_to_selected(init)
+        self._persisted_value = None
+        if cache:
+            self._persisted_value = cache._persisted_value(name, self._mask)
 
     def add_to_selected(self, indices):
         self._mask[self._indices[~self._mask][indices]] = True
+        if self._persisted_value:
+            self._persisted_value.set(self._mask)
 
     @property
     def selected(self):
