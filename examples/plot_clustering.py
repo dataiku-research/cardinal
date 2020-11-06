@@ -121,8 +121,6 @@ for sampler_name, sampler in samplers:
         accuracies = []
         execution_times = []
 
-        previous_proba = None
-
         # For simplicity, we start with one sample of each class
         _, selected = np.unique(y_train, return_index=True)
 
