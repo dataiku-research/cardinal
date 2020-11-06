@@ -109,7 +109,7 @@ figure_accuracies = plt.figure().number
 figure_execution_times = plt.figure().number
 
 
-for i, (sampler_name, sampler) in enumerate(samplers):
+for sampler_name, sampler in samplers:
     
     all_accuracies = []
     all_execution_times = []
