@@ -152,7 +152,7 @@ for sampler_name, sampler in samplers:
     plot_confidence_interval(x_data, all_accuracies, label=sampler_name)
 
     plt.figure(figure_execution_times)
-    plot_confidence_interval(x_time, all_accuracies, label=sampler_name)
+    plot_confidence_interval(x_time, all_execution_times, label=sampler_name)
 
 
 plt.figure(figure_accuracies)
