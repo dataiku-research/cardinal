@@ -118,4 +118,9 @@ plt.show()
 ##############################################################################
 # Discussion
 # ----------
-
+#
+# From this experiment on a subset of MNIST, we confirm the observation of the
+# original work: Selecting the first batch of samples using a K-Means sampler
+# increases the accuracy for the first few batches but does not improve the
+# final result, at least on this dataset and with the query strategies we
+# explore.
