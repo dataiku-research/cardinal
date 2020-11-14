@@ -77,16 +77,14 @@ with ReplayCache(CACHE_PATH, DATABASE_PATH, keys=experiment_config) as cache:
             
     predictions = cache.persisted_value('prediction', None)
 
-    for j, prev_selected, prev_predictions in cache.iter(range(n_iter), selected.previous(), predictions.previous()):
+    for j, prev_selector, prev_predictions in cache.iter(range(n_iter), selector.previous(), predictions.previous()):
         print('Computing iteration {}'.format(j))
-        index.resume(prev_selected)
 
-        model.fit(X_train[prev_selected], y_train[prev_selected])
-        sampler.fit(X_train[prev_selected], y_train[prev_selected])
-        index.add_to_selected(sampler.select_samples(X_train[index.non_selected]))
-        selected.set(index.selected)
+        model.fit(X_train[prev_selector.selected], y_train[prev_selector.selected])
+        sampler.fit(X_train[prev_selector.selected], y_train[prev_selector.selected])
+        prev_selector.add_to_selected(sampler.select_samples(X_train[prev_selector.non_selected]))
+        selector.set(prev_selector)
         predictions.set(model.predict(X_test))
-
 
 
 #############################################################################
