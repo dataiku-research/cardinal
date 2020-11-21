@@ -25,14 +25,14 @@ class HashableDict(dict):
         return self.__key() == other.__key()
 
 
-class ValueBackend(ABC):
+class ValueStore(ABC):
 
     @abstractmethod
     def __init__(self, filename):
         pass
 
     @abstractmethod
-    def store(self, name, value, keys):
+    def _store(self, name, value, keys):
         pass
 
     @abstractmethod
@@ -44,7 +44,7 @@ class ValueBackend(ABC):
         pass
 
 
-class ShelveBackend(ValueBackend):
+class ShelveStore(ValueStore):
 
     def __init__(self, filename):
         import shelve
@@ -52,7 +52,7 @@ class ShelveBackend(ValueBackend):
             raise ValueError('File extension must be .db with shelve backend')
         self._conn = shelve.open(os.path.splitext(filename)[0], writeback=True)
 
-    def store(self, name, value, **keys):
+    def _store(self, name, value, **keys):
         keys = HashableDict(keys)
         if name not in self._conn:
             self._conn[name] = dict()
@@ -67,13 +67,13 @@ class ShelveBackend(ValueBackend):
         self._conn.close()
 
 
-class SqliteBackend(ValueBackend):
+class SqliteStore(ValueStore):
 
     def __init__(self, filename):
         import dataset
         self._conn = dataset.connect('sqlite:///' + filename)
 
-    def store(self, name, value, **keys):
+    def _store(self, name, value, **keys):
         table = self._conn[name]
         table.upsert(dict(value=value, **keys), list(keys.keys()))
 
@@ -90,14 +90,9 @@ class ResumeCache:
 
     _clear_outdated_variables = True
 
-    def __init__(self, cache_dir, db_file, db_backend='shelve', keys={}):
+    def __init__(self, cache_dir, value_store, keys={}):
         self.cache_dir = Path(cache_dir).joinpath(*[Path(k) / Path(str(v)) for k, v in keys.items()])
-        if db_backend == 'shelve':
-            self._db = ShelveBackend(db_file)
-        elif db_backend == 'sqlite':
-            self._db = SqliteBackend(db_file)
-        else:
-            raise ValueError('Backend if shelve or sqlite')
+        self.value_store = value_store
         self.keys = keys
         self._current_iter = -1
 
@@ -133,7 +128,7 @@ class ResumeCache:
         elif iteration is not None:
             log_keys['iteration'] = iteration
         log_keys.update(kwargs)
-        self._db.store(key, value, **log_keys)
+        self.value_store._store(key, value, **log_keys)
 
     def iter(self, iterator, *variables):
 

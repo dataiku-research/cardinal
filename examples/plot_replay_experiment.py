@@ -20,7 +20,7 @@ from sklearn.model_selection import train_test_split
 
 from cardinal.random import RandomSampler
 from cardinal.uncertainty import MarginSampler
-from cardinal.cache import ReplayCache
+from cardinal.cache import ReplayCache, ShelveStore
 from cardinal.utils import SampleSelector
 
 ##############################################################################
@@ -59,6 +59,8 @@ experiment_config = dict(sampler='margin')
 CACHE_PATH = './cache'
 DATABASE_PATH = './cache.db'
 
+value_store = ShelveStore(DATABASE_PATH)
+
 #############################################################################
 # We define our experiment in a dedicated function since we want to run it
 # several times. We also create a dedicated exception that we will rise to
@@ -68,7 +70,7 @@ DATABASE_PATH = './cache.db'
 # indices in an active learning experiment.
 
 
-with ReplayCache(CACHE_PATH, DATABASE_PATH, keys=experiment_config) as cache:
+with ReplayCache(CACHE_PATH, value_store, keys=experiment_config) as cache:
 
     # Create a selector with one sample from each class and persist it
     init_selector = SampleSelector(X_train.shape[0])
@@ -107,14 +109,10 @@ with ReplayCache(CACHE_PATH, DATABASE_PATH, keys=experiment_config) as cache:
 
     from matplotlib import pyplot as plt
 
-    iteration = []
-    contradictions = []
 
-    for r in dataset.connect('sqlite:///cache.db')['contradictions'].all():
-        iteration.append(r['iteration'])
-        contradictions.append(r['value'])
+    contradictions = value_store.get('contradictions')
 
-    plt.plot(iteration, contradictions)
+    plt.plot(contradictions['iteration'], contradictions['value'])
     plt.xlabel('Iteration')
     plt.ylabel('Contradictions')
     plt.title('Evolution of Contradictions during active learning experiment on Iris dataset')

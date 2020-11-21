@@ -19,7 +19,7 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 
 from cardinal.uncertainty import MarginSampler
-from cardinal.cache import ResumeCache
+from cardinal.cache import ResumeCache, ShelveStore
 from cardinal.utils import SampleSelector
 
 ##############################################################################
@@ -60,6 +60,8 @@ samplers = [
 CACHE_PATH = './cache'
 DATABASE_PATH = './cache.db'
 
+value_store = ShelveStore(DATABASE_PATH)
+
 #############################################################################
 # We define our experiment in a dedicated function since we want to run it
 # several times. We also create a dedicated exception that we will rise to
@@ -79,7 +81,7 @@ def run(force_failure=False):
 
         experiment_config = dict(sampler=sampler_name)
 
-        with ResumeCache(CACHE_PATH, DATABASE_PATH, keys=experiment_config) as cache:
+        with ResumeCache(CACHE_PATH, value_store, keys=experiment_config) as cache:
 
             # Create a selector with one sample from each class and persist it
             init_selector = SampleSelector(X_train.shape[0])
@@ -128,14 +130,10 @@ print_folder_tree('./cache')
 
 from matplotlib import pyplot as plt
 
-iteration = []
-accuracy = []
 
-for r in dataset.connect('sqlite:///cache.db')['accuracy'].all():
-    iteration.append(r['iteration'])
-    accuracy.append(r['value'])
+accuracy = value_store.get('accuracy')
 
-plt.plot(iteration, accuracy)
+plt.plot(accuracy['iteration'], accuracy['value'])
 plt.xlabel('Iteration')
 plt.ylabel('Accuracy')
 plt.title('Evolution of accuracy during active learning experiment on Iris dataset')
@@ -145,5 +143,5 @@ plt.show()
 #############################################################################
 # We clean all the cache folder.
 
-shutil.rmtree(CACHE_PATH)
-os.remove(DATABASE_PATH)
+#hutil.rmtree(CACHE_PATH)
+#os.remove(DATABASE_PATH)
