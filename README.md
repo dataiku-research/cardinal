@@ -28,9 +28,9 @@ The typical Active Learning workflow is as follows:
 
 ![Active Learning Workflow](doc/_static/al_flow.png)
 
-The main challenges in Active Mearning are:
+The main challenges in Active Learning are:
 * **Extracting information from the model.** The method can change depending on the model and the use case.
-* **Selecting multiple samples at once.** It is irrealistic to assume that the model can be re-trained after
+* **Selecting multiple samples at once.** It is unrealistic to assume that the model can be re-trained after
   each labeling.
 * **Make the most out of unlabeled information.** In the active learning setting, the experimenter is usually
   faced with a large amount of unlabeled data compared to the labeling capacities.
@@ -130,7 +130,7 @@ As of today, cardinal is very similar to most of them, so why adding a new packa
 Our goal in cardinal is to grant maximum control to the user in a real-life setting. In cardinal, we aim not at providing
 the latest and trendiest methods but simple methods that have been proven useful in a wide variety of cases. We have for
 example decided to propose the recent Zdhanov's Diverse Mini-Batch Active Learning method because it relies a clustering
-which is an idea already evocked in reference active learning papers (Xu2007), it is based on the well known KMeans
+which is an idea already evoked in reference active learning papers (Xu2007), it is based on the well known KMeans
 algorithm, and [we were able to replicate most of the findings in small and big datasets](https://medium.com/data-from-the-trenches/diverse-mini-batch-active-learning-a-reproduction-exercise-2396cfee61df).
 
 In the future, we aim at addressing problems that are not covered, as far as we know, by other packages:

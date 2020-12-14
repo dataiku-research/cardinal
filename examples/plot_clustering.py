@@ -109,7 +109,7 @@ figure_accuracies = plt.figure().number
 figure_execution_times = plt.figure().number
 
 
-for i, (sampler_name, sampler) in enumerate(samplers):
+for sampler_name, sampler in samplers:
     
     all_accuracies = []
     all_execution_times = []
@@ -120,8 +120,6 @@ for i, (sampler_name, sampler) in enumerate(samplers):
 
         accuracies = []
         execution_times = []
-
-        previous_proba = None
 
         # For simplicity, we start with one sample of each class
         _, selected = np.unique(y_train, return_index=True)
@@ -154,7 +152,7 @@ for i, (sampler_name, sampler) in enumerate(samplers):
     plot_confidence_interval(x_data, all_accuracies, label=sampler_name)
 
     plt.figure(figure_execution_times)
-    plot_confidence_interval(x_time, all_accuracies, label=sampler_name)
+    plot_confidence_interval(x_time, all_execution_times, label=sampler_name)
 
 
 plt.figure(figure_accuracies)
