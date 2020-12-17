@@ -36,6 +36,10 @@ class ValueStore(ABC):
         pass
 
     @abstractmethod
+    def _sync(self):
+        pass
+
+    @abstractmethod
     def get(self, name):
         pass
 
@@ -46,25 +50,38 @@ class ValueStore(ABC):
 
 class ShelveStore(ValueStore):
 
-    def __init__(self, filename):
+    def __init__(self, filename, writeback=False):
+        self.writeback = writeback
         import shelve
         if not filename.endswith('.db'):
             raise ValueError('File extension must be .db with shelve backend')
-        self._conn = shelve.open(os.path.splitext(filename)[0], writeback=True)
+        self._conn = shelve.open(os.path.splitext(filename)[0], writeback=writeback)
 
     def _store(self, name, value, **keys):
         keys = HashableDict(keys)
-        if name not in self._conn:
-            self._conn[name] = dict()
-        self._conn[name][keys] = value
+        if self.writeback:
+            if not name in self._conn:
+                self._conn[name] = dict()
+            self._conn[name][keys] = value
+        else: 
+            d = dict()
+            if name in self._conn:
+                d = self._conn[name]
+            d[keys] = value
+            self._conn[name] = d
 
     def get(self, name):
+        self._conn.sync()
         if name not in self._conn:
             return pd.DataFrame([])
         return pd.DataFrame.from_records([dict(value=v, **k) for k, v in self._conn[name].items()])
 
+    def _sync(self):
+        self._conn.sync()
+
     def close(self):
         self._conn.close()
+
 
 
 class SqliteStore(ValueStore):
@@ -167,6 +184,8 @@ class ResumeCache:
 
             for variable, _ in variables:
                 variable._clear(i)
+            
+            self.value_store._sync()
         
         self._current_iter = -2
 
@@ -202,7 +221,8 @@ class ReplayCache(ResumeCache):
             for k in var_kwargs:
                 ckwargs[k] = kwargs[k][0]._get(kwargs[k][1] + i)
                 ckwargs[k]._clear(i)
-            self.log_value(name, func(*cargs, **ckwargs), iteration=i)
+            v = func(*cargs, **ckwargs)
+            self.log_value(name, v, iteration=i)
 
 
 class Variable():

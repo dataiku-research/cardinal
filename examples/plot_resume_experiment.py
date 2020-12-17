@@ -143,5 +143,5 @@ plt.show()
 #############################################################################
 # We clean all the cache folder.
 
-#hutil.rmtree(CACHE_PATH)
-#os.remove(DATABASE_PATH)
+shutil.rmtree(CACHE_PATH)
+os.remove(DATABASE_PATH)

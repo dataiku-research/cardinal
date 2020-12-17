@@ -20,7 +20,7 @@ from sklearn.model_selection import train_test_split
 
 from cardinal.random import RandomSampler
 from cardinal.uncertainty import MarginSampler
-from cardinal.cache import ReplayCache, ShelveStore
+from cardinal.cache import ReplayCache, ShelveStore, SqliteStore
 from cardinal.utils import SampleSelector
 
 ##############################################################################
@@ -117,7 +117,9 @@ with ReplayCache(CACHE_PATH, value_store, keys=experiment_config) as cache:
     plt.ylabel('Contradictions')
     plt.title('Evolution of Contradictions during active learning experiment on Iris dataset')
     plt.show()
+    plt.close()
 
+value_store.close()
 
 #############################################################################
 # We clean all the cache folder.
