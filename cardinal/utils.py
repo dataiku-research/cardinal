@@ -14,3 +14,26 @@ def pad_with_random(array, size, min, max, random_state=None):
     choices = choices[mask]
     padding = random_state.choice(choices, n_missing)
     return np.concatenate([array, padding])
+
+
+class SampleSelector():
+
+    def __init__(self, size):
+        self.size = size
+        self._mask = np.zeros((size,), dtype=np.bool)
+        self._indices = np.arange(size)
+
+    def add_to_selected(self, indices):
+        self._mask[self._indices[~self._mask][indices]] = True
+
+    @property
+    def selected(self):
+        v = self._mask.view()
+        v.setflags(write=False)
+        return v
+
+    @property
+    def non_selected(self):
+        v = (~self._mask).view()
+        v.setflags(write=False)
+        return v

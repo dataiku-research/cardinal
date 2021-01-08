@@ -46,6 +46,7 @@ extensions = [
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
     'sphinx_gallery.gen_gallery',
+    'sphinx_autodoc_annotation'
     'sphinx.ext.githubpages'
 ]
 
