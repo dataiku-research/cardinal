@@ -50,7 +50,7 @@ class TwoStepKMeansSampler(BaseQuerySampler):
         """
         selected = self.sampler_list[0].select_samples(X)
         new_selected = self.sampler_list[1].select_samples(
-            X[selected], sample_weight=sample_weight)
+            X[selected], sample_weight=sample_weight[selected])
         selected = selected[new_selected]
         
         return selected
