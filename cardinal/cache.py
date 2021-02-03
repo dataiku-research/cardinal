@@ -55,7 +55,7 @@ class ShelveStore(ValueStore):
         import shelve
         if not filename.endswith('.db'):
             raise ValueError('File extension must be .db with shelve backend')
-        self._conn = shelve.open(os.path.splitext(filename)[0], writeback=writeback)
+        self._conn = shelve.open(filename, writeback=writeback)
 
     def _store(self, name, value, **keys):
         keys = HashableDict(keys)
@@ -98,6 +98,9 @@ class SqliteStore(ValueStore):
         if name not in self._conn:
             return pd.DataFrame([])
         return pd.DataFrame(list(self._conn[name].all())).drop('id', axis=1)
+
+    def _sync(self):
+        self._conn.sync()
 
     def close(self):
         self._conn.close()
