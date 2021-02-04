@@ -28,7 +28,7 @@ class SampleSelector():
 
     @property
     def selected(self):
-        v = self._mask.view()
+        v = self._mask.copy().view()
         v.setflags(write=False)
         return v
 
