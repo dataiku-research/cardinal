@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+v0.0.4
+------
+
+Adds:
+
+* Caching system
+
+Fixes:
+
+* Weight handling in zhdanov2019
+
 v0.0.3
 ------
 
