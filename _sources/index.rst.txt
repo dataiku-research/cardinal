@@ -6,7 +6,7 @@ cardinal is a python package that allows simple and scikit-learn compatible acti
 experiments. It provides the building blocks necessary to perform simple or more complex
 query sampling strategies.
 
-The code of the project is on Github: `cardinal <https://github.com/dataiku/cardinal>`_
+The code of the project is on Github: `cardinal <https://github.com/dataiku-research/cardinal>`_
 
 
 .. _install:
@@ -39,7 +39,7 @@ Again, the preferred way is to use pip.
 
 .. code-block:: bash
 
-    $ git clone https://github.com/dataiku/cardinal
+    $ git clone https://github.com/dataiku-research/cardinal
     $ cd cardinal
     $ pip install -e ".[extra]"
 
@@ -63,7 +63,7 @@ Again, the preferred way is to use pip.
 
    reference
    changes
-   Fork cardinal on Github <https://github.com/dataiku/cardinal>
+   Fork cardinal on Github <https://github.com/dataiku-research/cardinal>
 
 
 Indices and tables

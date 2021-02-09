@@ -1,4 +1,4 @@
-.. Please when editing this file make sure to keep it matching the
+﻿.. Please when editing this file make sure to keep it matching the
    docs in ../configuration.rst:reference_to_examples
 
 cardinal.random

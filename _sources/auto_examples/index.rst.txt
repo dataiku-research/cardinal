@@ -19,6 +19,7 @@ custom query samplers and use them in advanced experiments.
 .. only:: html
 
  .. figure:: /auto_examples/images/thumb/sphx_glr_plot_random_vs_confidence_thumb.png
+     :alt: Lowest confidence vs. Random sampling
 
      :ref:`sphx_glr_auto_examples_plot_random_vs_confidence.py`
 
@@ -34,11 +35,54 @@ custom query samplers and use them in advanced experiments.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Active Learning experiments can be long and costly. For this reason, it is useful to be able to...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_resume_experiment_thumb.png
+     :alt: Running and resuming an experiment
+
+     :ref:`sphx_glr_auto_examples_plot_resume_experiment.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_resume_experiment
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In a previous example, we have shown how experiments can be resumed. Cardinal also allows for e...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_replay_experiment_thumb.png
+     :alt: Replay and experiment
+
+     :ref:`sphx_glr_auto_examples_plot_replay_experiment.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_replay_experiment
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="We here compare several clustering-based Active Learning approaches and in particular explore t...">
 
 .. only:: html
 
  .. figure:: /auto_examples/images/thumb/sphx_glr_plot_clustering_thumb.png
+     :alt: Active Learning on Digit Recognition with Clustering-based Sampling
 
      :ref:`sphx_glr_auto_examples_plot_clustering.py`
 
@@ -59,6 +103,7 @@ custom query samplers and use them in advanced experiments.
 .. only:: html
 
  .. figure:: /auto_examples/images/thumb/sphx_glr_plot_confidence_vs_diversity_thumb.png
+     :alt: Lowest confidence vs. KMeans sampling
 
      :ref:`sphx_glr_auto_examples_plot_confidence_vs_diversity.py`
 
@@ -79,6 +124,7 @@ custom query samplers and use them in advanced experiments.
 .. only:: html
 
  .. figure:: /auto_examples/images/thumb/sphx_glr_plot_digits_metrics_thumb.png
+     :alt: Active Learning on Digit Recognition and Metrics
 
      :ref:`sphx_glr_auto_examples_plot_digits_metrics.py`
 
@@ -103,15 +149,15 @@ custom query samplers and use them in advanced experiments.
     :class: sphx-glr-footer-gallery
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
-    :download:`Download all examples in Python source code: auto_examples_python.zip <//Users/aabraham/cardinal/doc/auto_examples/auto_examples_python.zip>`
+    :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip <//Users/aabraham/cardinal/doc/auto_examples/auto_examples_jupyter.zip>`
+    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
 
 
 .. only:: html

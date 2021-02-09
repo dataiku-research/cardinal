@@ -1,43 +1,49 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>cardinal.base &mdash; cardinal 0.0.3-git documentation</title>
+  <title>cardinal.base &mdash; cardinal 0.0.5-git documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
 
   
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   
+
   
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="cardinal.random" href="cardinal.random.html" />
@@ -68,7 +74,7 @@
             
             
               <div class="version">
-                0.0.3
+                0.0.5
               </div>
             
           
@@ -85,6 +91,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
 
@@ -135,7 +142,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../changes.html">Change Log</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku/cardinal">Fork cardinal on Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku-research/cardinal">Fork cardinal on Github</a></li>
 </ul>
 
             
@@ -143,6 +150,7 @@
 
   
         </div>
+        
       </div>
     </nav>
 
@@ -189,9 +197,9 @@
 <span id="cardinal-base"></span><h1>cardinal.base<a class="headerlink" href="#module-cardinal.base" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="cardinal.base.BaseQuerySampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinal.base.</code><code class="sig-name descname">BaseQuerySampler</code><span class="sig-paren">(</span><em class="sig-param">batch_size: int</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/base.html#BaseQuerySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.BaseQuerySampler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">cardinal.base.</code><code class="sig-name descname">BaseQuerySampler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">batch_size</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/base.html#BaseQuerySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.BaseQuerySampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract Base Class for query samplers</p>
 <p>A query sampler is an object that takes as input labeled and/or unlabeled
 samples and use knowledge from them to selected the most informative ones.</p>
@@ -200,9 +208,9 @@ samples and use knowledge from them to selected the most informative ones.</p>
 <dd class="field-odd"><p><strong>batch_size</strong> – Numbers of samples to select.</p>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="cardinal.base.BaseQuerySampler.fit">
-<em class="property">abstract </em><code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.ndarray</em>, <em class="sig-param">y: numpy.ndarray = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/base.html#BaseQuerySampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.BaseQuerySampler.fit" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)">numpy.ndarray</a></span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)">numpy.ndarray</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/base.html#BaseQuerySampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.BaseQuerySampler.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model on labeled samples.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -217,9 +225,9 @@ samples and use knowledge from them to selected the most informative ones.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="cardinal.base.BaseQuerySampler.select_samples">
-<em class="property">abstract </em><code class="sig-name descname">select_samples</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/base.html#BaseQuerySampler.select_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.BaseQuerySampler.select_samples" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">select_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/base.html#BaseQuerySampler.select_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.BaseQuerySampler.select_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects the samples to annotate from unlabeled data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -233,9 +241,9 @@ samples and use knowledge from them to selected the most informative ones.</p>
 
 </dd></dl>
 
-<div class="sphx-glr-clear"></div><dl class="class">
+<div class="sphx-glr-clear"></div><dl class="py class">
 <dt id="cardinal.base.ScoredQuerySampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinal.base.</code><code class="sig-name descname">ScoredQuerySampler</code><span class="sig-paren">(</span><em class="sig-param">batch_size: int</em>, <em class="sig-param">strategy: str = 'top'</em>, <em class="sig-param">random_state: Union[numpy.random.mtrand.RandomState</em>, <em class="sig-param">int</em>, <em class="sig-param">None] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/base.html#ScoredQuerySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ScoredQuerySampler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">cardinal.base.</code><code class="sig-name descname">ScoredQuerySampler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">batch_size</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">strategy</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">'top'</span></em>, <em class="sig-param"><span class="n">random_state</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>numpy.random.mtrand.RandomState<span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/base.html#ScoredQuerySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ScoredQuerySampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract Base Class handling query samplers relying on a total order.
 Query sampling methods often scores all the samples and then pick samples
 using these scores. This base class handles the selection system, only
@@ -250,9 +258,9 @@ a scoring method is then required.</p>
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="cardinal.base.ScoredQuerySampler.score_samples">
-<em class="property">abstract </em><code class="sig-name descname">score_samples</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/base.html#ScoredQuerySampler.score_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ScoredQuerySampler.score_samples" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">score_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/base.html#ScoredQuerySampler.score_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ScoredQuerySampler.score_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Give an informativeness score to unlabeled samples.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -264,9 +272,9 @@ a scoring method is then required.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="cardinal.base.ScoredQuerySampler.select_samples">
-<code class="sig-name descname">select_samples</code><span class="sig-paren">(</span><em class="sig-param">X: numpy.array</em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/base.html#ScoredQuerySampler.select_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ScoredQuerySampler.select_samples" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">select_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/base.html#ScoredQuerySampler.select_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.base.ScoredQuerySampler.select_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects the samples from unlabeled data using the internal scoring.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -292,29 +300,29 @@ linear_choice, or squared_choice.</p></li>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="cardinal.random.html" class="btn btn-neutral float-right" title="cardinal.random" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../reference.html" class="btn btn-neutral float-left" title="cardinal’s API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="cardinal.random.html" class="btn btn-neutral float-right" title="cardinal.random" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../reference.html" class="btn btn-neutral float-left" title="cardinal’s API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019-2020, Dataiku
+        &#169; Copyright 2019-2021, Dataiku.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -322,7 +330,6 @@ linear_choice, or squared_choice.</p></li>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
@@ -341,6 +348,7 @@ linear_choice, or squared_choice.</p></li>
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
     ga('create', 'UA-169600606-1', 'auto');
+    
     ga('send', 'pageview');
     </script>
 
