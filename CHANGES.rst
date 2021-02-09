@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+v0.0.5
+------
+
+Fixes:
+
+* URL for Pypi website
+
 v0.0.4
 ------
 
