@@ -35,9 +35,9 @@ with open('README.md') as fp:
     LONG_DESCRIPTION = fp.read()
 MAINTAINER = 'Alexandre Abraham'
 MAINTAINER_EMAIL = 'alexandre.abraham@dataiku.com'
-URL = 'https://github.com/dataiku/cardinal'
+URL = 'https://github.com/dataiku-research/cardinal'
 LICENSE = 'Apache 2.0'
-DOWNLOAD_URL = 'https://github.com/dataiku/cardinal'
+DOWNLOAD_URL = 'https://github.com/dataiku-research/cardinal'
 VERSION = _VERSION_GLOBALS['__version__']
 
 

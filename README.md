@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/dataiku/cardinal/master/doc/_static/cardinal.png" width="300">
+<img src="doc/_static/cardinal.png" width="300">
 
 ## Introduction
 
@@ -9,10 +9,10 @@ The project is currently maintained by [Dataiku's](https://www.dataiku.com/) res
 
 ## Getting started
 
-Cardinal extensive [documentation](https://dataiku.github.io/cardinal/) features some examples helping you getting started with Active Learning:
-* [Lowest confidence vs. Random sampling](https://dataiku.github.io/cardinal/auto_examples/plot_random_vs_confidence.html) presents a basic active learning pipeline and explains why it is better than random
-* [Lowest confidence vs. KMeans sampling](https://dataiku.github.io/cardinal/auto_examples/plot_confidence_vs_diversity.html) presents more advanced techniques
-* [Active learning on digit recognition and metrics](https://dataiku.github.io/cardinal/auto_examples/plot_digits_metrics.html) presents an experiment on MNIST dataset and proposes some metrics to estimate the accuracy uplift during an experiment
+Cardinal extensive [documentation](https://dataiku-research.github.io/cardinal/) features some examples helping you getting started with Active Learning:
+* [Lowest confidence vs. Random sampling](https://dataiku-research.github.io/cardinal/auto_examples/plot_random_vs_confidence.html) presents a basic active learning pipeline and explains why it is better than random
+* [Lowest confidence vs. KMeans sampling](https://dataiku-research.github.io/cardinal/auto_examples/plot_confidence_vs_diversity.html) presents more advanced techniques
+* [Active learning on digit recognition and metrics](https://dataiku-research.github.io/cardinal/auto_examples/plot_digits_metrics.html) presents an experiment on MNIST dataset and proposes some metrics to estimate the accuracy uplift during an experiment
 
 ## Active Learning
 
