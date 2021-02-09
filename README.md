@@ -1,4 +1,4 @@
-<img src="doc/_static/cardinal.png" width="300">
+<img src="https://raw.githubusercontent.com/dataiku/cardinal/master/doc/_static/cardinal.png" width="300">
 
 ## Introduction
 
@@ -26,7 +26,7 @@ The typical Active Learning workflow is as follows:
 * If the model is considered good enough or if there is no more budget, the model is shipped to production
 * Otherwise, the experimenter uses knowledge about the model to select the next samples to annotate
 
-![Active Learning Workflow](doc/_static/al_flow.png)
+![Active Learning Workflow](https://raw.githubusercontent.com/dataiku/cardinal/master/doc/_static/al_flow.png)
 
 The main challenges in Active Learning are:
 * **Extracting information from the model.** The method can change depending on the model and the use case.
