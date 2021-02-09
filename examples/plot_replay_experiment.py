@@ -66,9 +66,11 @@ value_store = ShelveStore(DATABASE_PATH)
 # several times. We also create a dedicated exception that we will rise to
 # simulate an interruption in the experiment.
 #
-# Note the use of the GrowingIndex utils that facilitate the handing of
+# Note the use of the SampleSelector utils that facilitate the handing of
 # indices in an active learning experiment.
-
+#
+# In the end, all values for all iterations are kept. The cache structure
+# is human readable and can be shared for better reproducibility.
 
 with ReplayCache(CACHE_PATH, value_store, keys=experiment_config) as cache:
 
@@ -88,18 +90,10 @@ with ReplayCache(CACHE_PATH, value_store, keys=experiment_config) as cache:
         selector.set(prev_selector)
         predictions.set(model.predict(X_test))
 
-
-#############################################################################
-# All values for all iterations are kept. The cache structure is human
-# readable and can be shared for better reproducibility.
-
+    # All the values for the experiment are kept
     print_folder_tree('./cache')
 
-
-#############################################################################
-# If we forgot to compute contradictions during the experiment, we can do it
-# now.
-
+    # This code could have been added to the script afterward to computer any metric.
     def compute_contradictions(previous_prediction, current_prediction):
         if previous_prediction is None:
             return 0

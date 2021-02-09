@@ -49,8 +49,11 @@ class TwoStepKMeansSampler(BaseQuerySampler):
             Indices of the selected samples of shape (batch_size).
         """
         selected = self.sampler_list[0].select_samples(X)
+        kwargs = dict()
+        if sample_weight is not None:
+            kwargs['sample_weight'] = sample_weight[selected]
         new_selected = self.sampler_list[1].select_samples(
-            X[selected], sample_weight=sample_weight[selected])
+            X[selected], **kwargs)
         selected = selected[new_selected]
         
         return selected
