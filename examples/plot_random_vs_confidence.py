@@ -16,11 +16,12 @@ to converge faster toward the best result.
 from matplotlib import pyplot as plt
 import numpy as np
 
-from sklearn.datasets.samples_generator import make_blobs
+from sklearn.datasets import make_blobs
 from sklearn.svm import SVC
 
 from cardinal.random import RandomSampler
 from cardinal.uncertainty import ConfidenceSampler
+from cardinal.utils import ActiveLearningSplitter
 
 
 np.random.seed(8)
@@ -51,15 +52,18 @@ model = SVC(kernel='linear', C=1E10, probability=True)
 # are not in the training set are faded. We also plot the linear separation
 # estimated by the SVM.
 
-def plot(a, b, score, selected):
+def plot(a, b, score, splitter):
     plt.xlabel('Accuracy {}%'.format(int(score * 100)), fontsize=10)
+    colors = np.array(['tomato', 'royalblue'])
 
-    # Plot not selected first in low alpha, then selected
-    for l, s in [(0, False), (1, False), (0, True), (1, True)]:
-        alpha = 1. if s else 0.3
-        color = 'tomato' if l == 0 else 'royalblue'
-        mask = np.logical_and(selected == s, l == y)
-        plt.scatter(X[mask, 0], X[mask, 1], c=color, alpha=alpha)
+    # Plot not selected first in low alpha
+    X_non_selected, y_non_selected = splitter.get_non_selected()
+    plt.scatter(X_non_selected[:, 0], X_non_selected[:, 1],
+                c=colors[y_non_selected], alpha=0.3)
+
+    X_selected, y_selected = splitter.get_selected()
+    plt.scatter(X_selected[:, 0], X_selected[:, 1],
+                c=colors[y_selected], alpha=1.)
 
     # Plot the separation margin of the SVM
     x_bounds = np.array([np.min(X[:, 0]), np.max(X[:, 0])])
@@ -83,23 +87,22 @@ samplers = [
 plt.figure(figsize=(10, 4))
 
 for i, (sampler_name, sampler) in enumerate(samplers):
-    # We force having one sample in each class for the init
-    init_idx = [np.where(y == 0)[0][0], np.where(y == 1)[0][0]]
 
-    mask = np.zeros(n, dtype=bool)
-    indices = np.arange(n)
-    mask[init_idx] = True
+    splitter = ActiveLearningSplitter(X, y, test_size=0.)
+
+    # We force having one sample in each class for the init
+    splitter.add_batch(np.unique(y, return_inverse=True)[1])
 
     for j in range(n_iter):
-        model.fit(X[mask], y[mask])
-        sampler.fit(X[mask], y[mask])
+        model.fit(*splitter.get_selected())
+        sampler.fit(*splitter.get_selected())
         w = model.coef_[0]
         
         plt.subplot(len(samplers), n_iter, i * n_iter + j + 1)
-        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), mask.copy())
+        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), splitter)
 
-        selected = sampler.select_samples(X[~mask])
-        mask[indices[~mask][selected]] = True
+        selected = sampler.select_samples(splitter.get_non_selected()[0])
+        splitter.add_batch(selected)
 
         if j == 0:
             plt.ylabel(sampler_name)

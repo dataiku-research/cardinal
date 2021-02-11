@@ -59,15 +59,16 @@ class ActiveLearningSplitter():
     ):
         n_samples = _num_samples(arrays[0])
         self._mask = np.full(n_samples, self.TRAIN_UNSELECTED, dtype=dtype)
-        self.random_state = check_random_state(random_state)
-        _, test = train_test_split(
-            np.arange(n_samples),
-            test_size=test_size,
-            train_size=train_size,
-            random_state=random_state,
-            shuffle=shuffle,
-            stratify=stratify)
-        self._mask[test] = self.TEST
+        if test_size != 0:
+            self.random_state = check_random_state(random_state)
+            _, test = train_test_split(
+                np.arange(n_samples),
+                test_size=test_size,
+                train_size=train_size,
+                random_state=random_state,
+                shuffle=shuffle,
+                stratify=stratify)
+            self._mask[test] = self.TEST
         self.arrays = arrays
         self.current_iter = None
 

@@ -30,7 +30,7 @@ from cardinal.random import RandomSampler
 from cardinal.plotting import plot_confidence_interval
 from cardinal.base import BaseQuerySampler
 from cardinal.zhdanov2019 import TwoStepKMeansSampler
-from cardinal.utils import pad_with_random
+from cardinal.utils import pad_with_random, ActiveLearningSplitter
 
 np.random.seed(7)
 
@@ -115,31 +115,29 @@ for sampler_name, sampler in samplers:
     all_execution_times = []
 
     for k in range(10):
-        X_train, X_test, y_train, y_test = \
-            train_test_split(X, y, test_size=500, random_state=k)
+        splitter = ActiveLearningSplitter(X, y, test_size=500, random_state=k)
+        X_train, y_train = splitter.get_train()
+        X_test, y_test = splitter.get_train()
 
         accuracies = []
         execution_times = []
 
         # For simplicity, we start with one sample of each class
         _, selected = np.unique(y_train, return_index=True)
-
-        # We use binary masks to simplify some operations
-        mask = np.zeros(X_train.shape[0], dtype=bool)
-        indices = np.arange(X_train.shape[0])
-        mask[selected] = True
+        splitter.add_batch(selected)
 
         # The classic active learning loop
         for j in range(n_iter):
-            model.fit(X_train[mask], y_train[mask])
+            X_selected, y_selected = splitter.get_selected()
+            model.fit(X_selected, y_selected)
 
             # Record metrics
             accuracies.append(model.score(X_test, y_test))
 
             t0 = time()
-            sampler.fit(X_train[mask], y_train[mask])
-            selected = sampler.select_samples(X_train[~mask])
-            mask[indices[~mask][selected]] = True
+            sampler.fit(X_selected, y_selected)
+            selected = sampler.select_samples(splitter.get_non_selected()[0])
+            splitter.add_batch(selected)
             execution_times.append(time() - t0)
 
         all_accuracies.append(accuracies)
