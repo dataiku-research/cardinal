@@ -26,7 +26,7 @@ from cardinal.clustering import KMeansSampler
 from cardinal.random import RandomSampler
 from cardinal.plotting import plot_confidence_interval
 from cardinal.base import BaseQuerySampler
-from cardinal.metrics import ContradictionMonitor
+
 
 np.random.seed(7)
 
@@ -59,9 +59,10 @@ model = RandomForestClassifier()
 # want to verify this. Since the number of label prediction changes can be
 # coarse, we use the absolute difference in prediction probabilities.
 
-def compute_contradiction(previous_proba, current_proba):
-    return np.abs(current_proba - previous_proba).mean()
+from cardinal.metrics import ContradictionMetric
 
+
+contradiction = ContradictionMetric()
 
 ##############################################################################
 # We define a second metric based on the distance between already labeled
@@ -70,8 +71,7 @@ def compute_contradiction(previous_proba, current_proba):
 # uncertainty sampling to explore the sample space located *nearby* the
 # decision boundary and show poor exploration property.
 
-def compute_exploration(X_selected, X_test):
-    return pairwise_distances(X_selected, X_test).mean()
+from cardinal.metrics import exploration_score
 
 ##############################################################################
 # A New Custom Sampler
@@ -94,28 +94,36 @@ def compute_exploration(X_selected, X_test):
 
 
 class AdaptiveQuerySampler(BaseQuerySampler):
-    def __init__(self, exploration_sampler, exploitation_sampler,
-                 exploration_budget):
+    def __init__(self, exploration_sampler, exploitation_sampler):
         self.exploration_sampler = exploration_sampler
         self.exploitation_sampler = exploitation_sampler
-        self.exploration_budget = exploration_budget
-        self.sampler = None
+        self.mode = 'exploration'
     
     def fit(self, X_train, y_train):
-        if X_train.shape[0] <= self.exploration_budget:
-            self.sampler = self.exploration_sampler.fit(X_train, y_train)
-        else:
-            self.sampler = self.exploitation_sampler.fit(X_train, y_train)
+        if self.mode == 'exploration':
+            self.exploration_sampler.fit(X_train, y_train)
+            self.X_train = X_train
+        self.exploitation_sampler.fit(X_train, y_train)
         return self
     
-    def select_samples(self, X):
-        return self.sampler.select_samples(X)
-
+    def select_samples(self, X, X_test):
+        exploitation_batch = self.exploitation_sampler.select_samples(X)
+        print(self.mode)
+        if self.mode == 'exploitation':
+            return exploitation_batch
+        exploration_batch = self.exploration_sampler.select_samples(X)
+        score_exploitation = exploration_score(self.X_train, X_test, X_batch=X[exploitation_batch])
+        score_exploration = exploration_score(self.X_train, X_test, X_batch=X[exploration_batch])
+        print(score_exploitation, score_exploration)
+        self.X_train = None
+        if score_exploitation - score_exploration < 0.01 * score_exploitation:
+            self.mode = 'exploitation'
+            return exploitation_batch
+        return exploration_batch
 
 adaptive_sampler = AdaptiveQuerySampler(
     KMeansSampler(batch_size),  # Exploration
     ConfidenceSampler(model, batch_size),  # Exploitation
-    n_classes * 5
 )
 
 ##############################################################################
@@ -147,8 +155,12 @@ for i, (sampler_name, sampler) in enumerate(samplers):
         X_train, X_test, y_train, y_test = \
             train_test_split(X, y, test_size=500, random_state=k)
 
+        print('------')
+        if sampler_name == 'Adaptive':
+            sampler.mode = 'exploration'
+
         accuracies = []
-        contradictions = ContradictionMonitor()
+        contradictions = []
         explorations = []
 
         previous_proba = None
@@ -167,17 +179,20 @@ for i, (sampler_name, sampler) in enumerate(samplers):
 
             # Record metrics
             accuracies.append(model.score(X_test, y_test))
-            explorations.append(compute_exploration(X_train[mask], X_test))
-            contradictions.accumulate(len(selected),
-                                      model.predict_proba(X_test))
+            explorations.append(exploration_score(X_train[mask], X_test))
+            contradiction.update(model.predict_proba(X_test))
+            contradictions.append(contradiction.get())
 
             sampler.fit(X_train[mask], y_train[mask])
-            selected = sampler.select_samples(X_train[~mask])
+            if sampler_name == 'Adaptive':
+                selected = sampler.select_samples(X_train[~mask], X_test)
+            else:
+                selected = sampler.select_samples(X_train[~mask])
             mask[indices[~mask][selected]] = True
 
         all_accuracies.append(accuracies)
         all_explorations.append(explorations)
-        all_contradictions.append(contradictions.get()['contradictions'])
+        all_contradictions.append(contradictions[1:])
     
     x_data = np.arange(10, batch_size * (n_iter - 1) + 11, batch_size)
 

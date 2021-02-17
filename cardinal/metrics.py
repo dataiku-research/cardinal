@@ -17,6 +17,7 @@ class ContradictionMetric():
     def __init__(self, mode='auto'):
         self.mode = mode
         self.reset()
+        self._value = None
 
     """Stores contradiction for a new iteration.
 
@@ -41,7 +42,9 @@ class ContradictionMetric():
 
     """Returns the recorded metrics
     """
-    def get(self):
+    def get(self, default=None):
+        if self._value is None:
+            return default
         return self._value
 
 
@@ -51,16 +54,20 @@ class ContradictionMetric():
         self._cache_probas_test = None
 
 
-def exploration_score(X_selected: np.ndarray, X_test: np.ndarray) -> float:
+def exploration_score(X_selected: np.ndarray, X_test: np.ndarray, X_batch: np.ndarray=None) -> float:
     """Compute the nearest neighbor based exploration score.
 
     Args:
         X_selected: Samples selected so far
         X_test: Left out test data
+        X_batch: optional, Batch to consider selected
 
     Returns:
         Mean distance between test samples and their closest selected neighbor
     """
+    X_train = X_selected
+    if X_batch is not None:
+        X_train = np.vstack([X_train, X_batch])
     nn = NearestNeighbors(n_neighbors=1)
     nn.fit(X_train)
     return nn.kneighbors(X_test, n_neighbors=1)[0].mean()
