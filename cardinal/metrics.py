@@ -2,86 +2,93 @@ import logging
 from abc import ABC, abstractmethod
 
 import numpy as np
-
-
-class BaseMonitor(ABC):
-    """A monitor is a metric and a set of utils to record it and monitor it.
-
-    Args:
-        batch_size: If specified, a warning will be issued if batch_size is not correct
-        tolerance: 
-
-    """
-
-    def __init__(self, batch_size=None, tolerance=None):
-        self.batch_size = batch_size
-        self.tolerance = tolerance
-        self.reset()
-
-    def reset(self):
-        self.n_samples = []
-        self.values = []
-
-    def _append_n_samples(self, n_samples):
-        self.n_samples.append(n_samples)
-        if not self.batch_size or len(self.n_samples) <= 1:
-            return
-        this_batch_size = self.n_samples[-1] - self.n_samples[-2]
-        if this_batch_size != self.batch_size:
-            logging.warn(
-                'Batch size of iteration {} is {} which is different'
-                'from the reference batch size {}'.format(
-                    len(self.n_samples), this_batch_size, self.batch_size
-                )
-            )
-
-    @abstractmethod
-    def accumulate(self, n_samples, value):
-        pass
-
-    @abstractmethod
-    def get(self):
-        pass
-
-    def is_stalled(self, n_iter=1):
-        if len(self.values) < n_iter + 1:
-            return False
-        for prev_v, curr_v in zip(self.values[-n_iter - 1:-1], self.values[-n_iter]):
-            if np.abs(curr_v - prev_v) > self.tolerance:
-                return False
-        return True
+from sklearn.neighbors import NearestNeighbors, KNeighborsClassifier
         
 
-class ContradictionMonitor(BaseMonitor):
-    """Stores the amount of contradictions along an experiment
+class ContradictionMetric():
+    """Computes the contradiction score along an experiment
 
     We call contradiction the difference between predictions of two successive
     models on an isolated test set.
+
+    Args:
+        mode: Computation mode, can be "auto" (default), soft, hard
     """
+    def __init__(self, mode='auto'):
+        self.mode = mode
+        self.reset()
 
     """Stores contradiction for a new iteration.
 
     Args:
-        n_samples : Number of training samples
         probas_test : Predictions of shape (n_samples, n_classes)
     """
-    def accumulate(self, n_samples: int, probas_test: np.array):
-        if self.last_probas_test is not None:
-            self.values.append(
-                np.abs(probas_test - self.last_probas_test).sum())
-            self._append_n_samples(n_samples)
-        self.last_probas_test = probas_test
+    def update(self, probas_test: np.array):
+        prev_probas_test = self._cache_probas_test
+        self._cache_probas_test = probas_test
+
+        if prev_probas_test is None:
+            return
+
+        if self.mode == 'auto':
+            mode = 'soft' if probas_test.shape[0] < 1000 else 'hard'
+
+        if mode == 'soft':
+            self._value = np.abs(prev_probas_test - probas_test).mean()
+        elif mode == 'hard':
+            self._value = (np.argmax(prev_probas_test, axis=1) == np.argmax(probas_test, axis=1)).mean()
+
 
     """Returns the recorded metrics
     """
     def get(self):
-        return {
-            "n_samples": self.n_samples,
-            "contradictions": self.values
-        }
+        return self._value
+
 
     """Reset the metrics for a new experiment
     """
     def reset(self):
-        super().reset()
-        self.last_probas_test = None
+        self._cache_probas_test = None
+
+
+def exploration_score(X_selected: np.ndarray, X_test: np.ndarray) -> float:
+    """Compute the nearest neighbor based exploration score.
+
+    Args:
+        X_selected: Samples selected so far
+        X_test: Left out test data
+
+    Returns:
+        Mean distance between test samples and their closest selected neighbor
+    """
+    nn = NearestNeighbors(n_neighbors=1)
+    nn.fit(X_train)
+    return nn.kneighbors(X_test, n_neighbors=1)[0].mean()
+
+
+def exploration_score_from_knn(
+        knn: KNeighborsClassifier, X_test: np.ndarray) -> float:
+    """Compute the nearest neighbor based exploration score.
+
+    Args:
+        knn: KNearestClassifier trained on samples selected so far
+        X_test: Left out test data
+
+    Returns:
+        Mean distance between test samples and their closest selected neighbor
+    """
+    return knn.kneighbors(X_test, n_neighbors=1)[0].mean()
+
+
+def classifier_agreement(clf_a, clf_b, X_batch: np.ndarray) -> float:
+    """Compute the agreement score (similar prediction ratio)
+
+    Args:
+        clf_a: First classifier, usually task specific
+        clf_b: Second classifier, usually 1-nearest-neighbor
+        X_batch: Set of samples on which agreement is measured
+
+    Returns:
+        Agreement between both classifier on the sample batch.
+    """
+    return (clf_a.predict(X_batch) == clf_b.predict(X_batch)).mean()
