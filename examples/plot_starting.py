@@ -43,7 +43,7 @@ np.random.seed(7)
 # We use the digits dataset and a RandomForestClassifier.
 
 batch_size = 45
-n_iter = 10
+n_iter = 8
 
 X, y = load_digits(return_X_y=True)
 X /= 255.
@@ -76,7 +76,7 @@ for starting_sampler_name, starting_sampler in starting_samplers:
     
         all_accuracies = []
 
-        for k in range(10):
+        for k in range(4):
             X_train, X_test, y_train, y_test = \
                 train_test_split(X, y, test_size=500, random_state=k)
 
