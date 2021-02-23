@@ -134,10 +134,13 @@ adaptive_sampler = AdaptiveQuerySampler(
 # pure exploration, and pure exploitation. We also monitor the metrics
 # defined above.
 
+from cardinal.uncertainty import MarginSampler
+
 samplers = [
-    ('Adaptive', adaptive_sampler),
+    #('Adaptive', adaptive_sampler),
     ('Lowest confidence', ConfidenceSampler(model, batch_size)),
-    ('KMeans', KMeansSampler(batch_size)),
+    ('Margin', MarginSampler(model, batch_size)),
+    #('KMeans', KMeansSampler(batch_size)),
     ('Random', RandomSampler(batch_size)),
 ]
 
