@@ -70,15 +70,14 @@ class ActiveLearningSplitter():
     """
     def __init__(
         self, 
-        *arrays,
+        n_samples: int,
         test_size: Union[float, int]=0,
         train_size: Union[float, int]=None,
         random_state: RandomStateType=None,
-        shuffle: boolean=True,
+        shuffle: bool=True,
         stratify=None,
         dtype=np.int8
     ):
-        n_samples = _num_samples(arrays[0])
         self._mask = np.full(n_samples, self.TRAIN_UNSELECTED, dtype=dtype)
         if test_size != 0:
             self.random_state = check_random_state(random_state)
@@ -90,40 +89,16 @@ class ActiveLearningSplitter():
                 shuffle=shuffle,
                 stratify=stratify)
             self._mask[test] = self.TEST
-        self.arrays = arrays
         self.current_iter = None
 
     TRAIN_UNSELECTED = -1
     TEST = -2
 
-    def add_batch(self, indices):
-        """Add indices of a new batch to selected samples
+    @property
+    def selected(self):
+        return self.selected_at(None)
 
-        Args:
-            indices: Arrays of indices of selected samples
-        """
-        if self.current_iter is None:
-            self.current_iter = -1
-        self.current_iter += 1
-        self._mask[np.where(self._mask == self.TRAIN_UNSELECTED)[0][indices]] = self.current_iter
-
-    def get_batch(self, iter: int=None):
-        """Get indices of the last batch, or from a previous one.
-
-        Args:
-            iter: Iteration of the desired batch. Default (None) returns
-                the last one.
-
-        Returns:
-            Indices of the batch corresponding to the iteration.
-        """
-        if iter is None:
-            iter = self.current_iter
-
-        index = (self._mask == iter)
-        return [_safe_indexing(a, index) for a in self.arrays]
-
-    def get_selected(self, iter: int=None):
+    def selected_at(self, iter: int=None):
         """Get indices of the samples selected so far.
 
         Args:
@@ -136,9 +111,46 @@ class ActiveLearningSplitter():
         index = (self._mask >= 0)  # A bit unsafe but simpler
         if iter is not None:
             index = np.logical_and(index, self._mask <= iter)
-        return [_safe_indexing(a, index) for a in self.arrays]
+        return index
 
-    def get_non_selected(self, iter: int=None):
+    def dereference_batch_indices(self, indices):
+        return np.where(self._mask == self.TRAIN_UNSELECTED)[0][indices]
+
+    def add_batch(self, indices):
+        """Add indices of a new batch to selected samples
+
+        Args:
+            indices: Arrays of indices of selected samples
+        """
+        if self.current_iter is None:
+            self.current_iter = -1
+        self.current_iter += 1
+        self._mask[self.dereference_batch_indices(indices)] = self.current_iter
+
+    @property
+    def batch(self):
+        return self.batch_at(None)
+
+    def batch_at(self, iter: int):
+        """Get indices of the last batch, or from a previous one.
+
+        Args:
+            iter: Iteration of the desired batch. Default (None) returns
+                the last one.
+
+        Returns:
+            Indices of the batch corresponding to the iteration.
+        """
+        if iter is None:
+            iter = self.current_iter
+
+        return (self._mask == iter)
+
+    @property
+    def non_selected(self):
+        return self.non_selected_at(None)
+
+    def non_selected_at(self, iter: int):
         """Get indices of the samples not selected so far.
 
         Args:
@@ -151,22 +163,22 @@ class ActiveLearningSplitter():
         index = (self._mask == self.TRAIN_UNSELECTED)
         if iter is not None:
             index = np.logical_or(index, self._mask > iter)
-        return [_safe_indexing(a, index) for a in self.arrays]
+        return index
 
-    def get_train(self):
+    @property
+    def train(self):
         """Get indices of the train samples.
 
         Returns:
             List of indices selected for train.
         """
-        index = (self._mask != self.TEST)
-        return [_safe_indexing(a, index) for a in self.arrays]
+        return (self._mask != self.TEST)
 
-    def get_test(self):
+    @property
+    def test(self):
         """Get indices of the test samples.
 
         Returns:
             List of indices selected for test.
         """
-        index = (self._mask == self.TEST)
-        return [_safe_indexing(a, index) for a in self.arrays]
+        return (self._mask == self.TEST)
