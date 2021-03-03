@@ -1190,9 +1190,17 @@ class KMeans(TransformerMixin, ClusterMixin, BaseEstimator):
         }
 
 
+def _project_on_fixed_centers(centers, fixed_cluster_centers):
+    # Compute distance between centers and fixed ones
+    dist = euclidean_distances(fixed_cluster_centers, centers)
+    best = linear_sum_assignment(dist)[0]
+    centers[best] = fixed_cluster_centers
+    return best
+
+
 def _mini_batch_step(X, sample_weight, x_squared_norms, centers, weight_sums,
                      old_center_buffer, compute_squared_diff,
-                     distances, fixed_cluster_centers=None,
+                     distances, fixed_cluster_indices=None,
                      random_reassign=False,
                      random_state=None, reassignment_ratio=.01,
                      verbose=False):
@@ -1265,8 +1273,8 @@ def _mini_batch_step(X, sample_weight, x_squared_norms, centers, weight_sums,
         random_state = check_random_state(random_state)
         # Reassign clusters that have very low weight
         to_reassign = weight_sums < reassignment_ratio * weight_sums.max()
-        if fixed_cluster_centers is not None:
-            to_reassign[:fixed_cluster_centers.shape[0]] = False
+        if fixed_cluster_indices is not None:
+            to_reassign[fixed_cluster_indices] = False
         # pick at most .5 * batch_size samples as new centers
         if to_reassign.sum() > .5 * X.shape[0]:
             indices_dont_reassign = \
@@ -1305,9 +1313,11 @@ def _mini_batch_step(X, sample_weight, x_squared_norms, centers, weight_sums,
     k = centers.shape[0]
     squared_diff = 0.0
     start_center = 0
-    if fixed_cluster_centers is not None:
-        start_center = fixed_cluster_centers.shape[0]
     for center_idx in range(start_center, k):
+
+        if fixed_cluster_indices is not None and center_idx in fixed_cluster_indices:
+            continue
+
         # find points from minibatch that are assigned to this center
         center_mask = nearest_center == center_idx
         wsum = sample_weight[center_mask].sum()
@@ -1640,7 +1650,8 @@ class IncrementalMiniBatchKMeans(KMeans):
                 f"reassignment_ratio should be >= 0, got "
                 f"{self.reassignment_ratio} instead.")
 
-    def fit(self, X, y=None, sample_weight=None, fixed_cluster_centers=None):
+    def fit(self, X, y=None, sample_weight=None, fixed_cluster_centers=None,
+            recenter_every=None):
         """Compute the centroids on X by chunking it into mini-batches.
 
         Parameters
@@ -1703,6 +1714,10 @@ class IncrementalMiniBatchKMeans(KMeans):
         sample_weight_valid = sample_weight[validation_indices]
         x_squared_norms_valid = x_squared_norms[validation_indices]
 
+        fixed_cluster_indices = None
+        if fixed_cluster_centers is not None:
+            fixed_cluster_indices = np.arange(fixed_cluster_centers.shape[0])
+
         # perform several inits with random sub-sets
         best_inertia = None
         for init_idx in range(self._n_init):
@@ -1729,7 +1744,7 @@ class IncrementalMiniBatchKMeans(KMeans):
                 X_valid, sample_weight_valid,
                 x_squared_norms[validation_indices], cluster_centers,
                 weight_sums, old_center_buffer, False, distances=None,
-                fixed_cluster_centers=fixed_cluster_centers,
+                fixed_cluster_indices=fixed_cluster_indices,
                 verbose=self.verbose)
 
             # Keep only the best cluster centers across independent inits on
@@ -1761,7 +1776,7 @@ class IncrementalMiniBatchKMeans(KMeans):
                 x_squared_norms[minibatch_indices],
                 self.cluster_centers_, self._counts,
                 old_center_buffer, tol > 0.0, distances=distances,
-                fixed_cluster_centers=fixed_cluster_centers,
+                fixed_cluster_indices=fixed_cluster_indices if recenter_every is None else None,
                 # Here we randomly choose whether to perform
                 # random reassignment: the choice is done as a function
                 # of the iteration index, and the minimum number of
@@ -1772,6 +1787,9 @@ class IncrementalMiniBatchKMeans(KMeans):
                 random_state=random_state,
                 reassignment_ratio=self.reassignment_ratio,
                 verbose=self.verbose)
+            
+            if recenter_every is not None and iteration_idx % recenter_every == 0:
+                fixed_cluster_indices = _project_on_fixed_centers(self.cluster_centers_, fixed_cluster_centers)
 
             # Monitor convergence and do early stopping if necessary
             if _mini_batch_convergence(
