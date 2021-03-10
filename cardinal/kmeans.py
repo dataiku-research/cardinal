@@ -119,11 +119,10 @@ def _k_init(X, n_clusters, x_squared_norms, random_state, n_local_trials=None,
     closest_dist_sq = euclidean_distances(
         centers[:start_centers], X, Y_norm_squared=x_squared_norms,
         squared=True)
-    candidates_pot = closest_dist_sq.sum(axis=1)
-    closest_dist_sq = closest_dist_sq[np.argmin(candidates_pot)]
-    current_pot = closest_dist_sq.sum()
+    candidates_pot = closest_dist_sq.min(axis=0)
+    current_pot = candidates_pot.sum()
 
-    # Pick the remaining n_clusters-1 points
+    # Pick the remaining n_clusters points
     for c in range(start_centers, n_clusters):
         # Choose center candidates by sampling with probability proportional
         # to the squared distance to the closest existing center
