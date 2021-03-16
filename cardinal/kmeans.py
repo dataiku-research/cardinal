@@ -120,7 +120,7 @@ def _k_init(X, n_clusters, x_squared_norms, random_state, n_local_trials=None,
         centers[:start_centers], X, Y_norm_squared=x_squared_norms,
         squared=True)
     candidates_pot = closest_dist_sq.sum(axis=1)
-    closest_dist_sq = closest_dist_sq[np.argmin(candidates_pot)]
+    closest_dist_sq = closest_dist_sq.min(axis=0)
     current_pot = closest_dist_sq.sum()
 
     # Pick the remaining n_clusters-1 points
