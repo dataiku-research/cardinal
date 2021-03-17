@@ -1788,7 +1788,7 @@ class IncrementalMiniBatchKMeans(KMeans):
                 reassignment_ratio=self.reassignment_ratio,
                 verbose=self.verbose)
             
-            if recenter_every is not None and iteration_idx % recenter_every == 0:
+            if fixed_cluster_centers is not None and recenter_every is not None and iteration_idx % recenter_every == 0:
                 fixed_cluster_indices = _project_on_fixed_centers(self.cluster_centers_, fixed_cluster_centers)
 
             # Monitor convergence and do early stopping if necessary
