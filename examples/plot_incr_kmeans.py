@@ -6,8 +6,8 @@ In an active learning setting, the trade-off between exploration and
 exploitation plays a central role. Exploration, or diversity, is
 usually enforced using coresets or, more simply, a KMeans algorithm.
 KMeans is therefore used to select samples that are spread across the
-dataset in each batch. However, as far as we know, maintaining diversity
-through the whole experiment is something that has not been considered.
+dataset in each batch. However, to the best of our knowledge, maintaining diversity
+throughout the whole experiment is something that has not been considered.
 
 By allowing to start the optimization with fixed cluster centers, our
 Incremental KMeans allows for an optimal exploration of the space since
@@ -54,14 +54,14 @@ def plot_clustering(label, y_pred, centers, fixed_centers=[], inertia=None):
     plt.yticks([])
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     if inertia:
-        label = label + ", intertia={}".format(inertia)
+        label = label + ", intertia={0:0.2f}".format(inertia)
     plt.title(label)
     plt.show()
 
 plot_clustering('Ground truth', y, centers)
 
 ##############################################################################
-# We run a regular MiniBatchKMeans. KMeans would be more fitted for this kind
+# We run a regular MiniBatchKMeans. KMeans would be more suited for this kind
 # of small dataset but we are aiming at using Increment KMeans on large
 # datasets so its implementation relies on MiniBatchKMeans.
 
@@ -86,7 +86,7 @@ plot_clustering(
 ##############################################################################
 # In this basic experiment, we see that the clusters fixed in Incremental
 # KMeans have stayed fixed. It does not improve nor degrade the inertia on a
-# very simple problem. We now want to test it in a higher dimension.
+# very simple problem. We now want to test it in higher dimensions.
 #
 # Experiments in higher dimension
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -94,22 +94,20 @@ plot_clustering(
 # We now want to see the effect of some parameters on the inertia. For this
 # purpose, we repeat the same experiment on a larger dataset with higher
 # dimensions. We explore only a few aspects of the algorithm but our general
-# evaluation function can be used to dig deeper in the algo.
+# evaluation function can be used to dig deeper in the algorithm.
 #
-# Notice that we propose to vary several aspects:
-# * `n_samples` is self explanatory
+# The following parameters are accessible:
 # * `n_repeat` is the number of repetition of the experiment (to see the
 #    result variance).
 # * `n_features` is the number of dimensions
 # * `n_blobs` is the number of clusters in the ground truth
 # * `n_clusters` is the number of clusters KMeans is looking for
 # * `n_fixed_clusters` is the number of clusters we keep fixed
-# * `reassignement_ratio` is a parameter of the MiniBatchKMeans. It
-#   indicates the ratio of centers of high inertia reassigned randomly
-# * `recenter_every` is a relaxation of the cluster fixation. In our original
-#   version of incremental KMeans, clusters are stuck and never allowed to
-#   move. The recentering parameter allows to let the move, and fix them back
-#   on fixed positions every $k$ iterations. We expect that in some cases, the
+# * `reassignement_ratio` is a parameter of the MiniBatchKMeans that
+#   controls the ratio of centers of high inertia randomly reassigned
+# * `recenter_every` is a relaxation of the cluster fixation. 
+#   This parameter allows the clusters to move, and fix them back
+#   every $k$ iterations. We expect that in some cases, the
 #   fixed cluster could be detrimental to the optimization and thus relaxing
 #   this constraint could lead to a better minimum.
 
@@ -166,12 +164,12 @@ plot('Number of fixed center clusters /10', 'Mean inertia over 100 runs',
 
 ##############################################################################
 # It may seem surprising that the
-# intertia is proportional to the number of fixed clusters, which means that
-# the intertia of the original centers used to generate the data is higher
+# inertia is proportional to the number of fixed clusters, which means that
+# the inertia of the original centers used to generate the data is higher
 # than the centers after KMeans, but it is logical since KMeans optimizes for
 # it.
 # 
-# # Reassignment ratio
+# Reassignment ratio
 # ==================
 #
 # We expect the fixed clusters to "get in the way" of clusters trying to move
@@ -192,10 +190,10 @@ plot('Reassignment ratio', 'Mean inertia over 100 runs',
      study_value, study_inert)
 
 ##############################################################################
-# In the end, we observe that the resassignment ratio has absolutely no impact
+# In the end, we observe that the reassignment ratio has absolutely no impact
 # on the intertia which is reassuring.
 # 
-# # Recenter every
+# Recenter every
 # ==============
 #
 # The effect of this parameter has already been described above. In its
@@ -225,7 +223,7 @@ plot('Recenter every n iterations', 'Mean inertia over 100 runs', study_value, s
 # One core element of the experiment differs from active learning. In fact,
 # in active learning, we do not expect to select a number of samples equal to
 # the number of real cluster in the data. We also build our clustering over
-# several iterations. We now try to do the same in generated data.
+# several iterations. We now try to do the same on generated data.
 
 study_inert_kmeans = []
 study_inert_ikmeans = []
