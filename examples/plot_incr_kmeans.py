@@ -97,12 +97,6 @@ plot_clustering(
 # evaluation function can be used to dig deeper in the algorithm.
 #
 # The following parameters are accessible:
-# * `n_repeat` is the number of repetition of the experiment (to see the
-#    result variance).
-# * `n_features` is the number of dimensions
-# * `n_blobs` is the number of clusters in the ground truth
-# * `n_clusters` is the number of clusters KMeans is looking for
-# * `n_fixed_clusters` is the number of clusters we keep fixed
 # * `reassignement_ratio` is a parameter of the MiniBatchKMeans that
 #   controls the ratio of centers of high inertia randomly reassigned
 # * `recenter_every` is a relaxation of the cluster fixation. 
