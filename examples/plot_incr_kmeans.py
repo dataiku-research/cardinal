@@ -79,9 +79,9 @@ ikmeans = IncrementalMiniBatchKMeans(n_clusters=8, random_state=2)
 ikmeans.fit(X, fixed_cluster_centers=centers[:n_fixed_clusters])
 plot_clustering(
     'Incremental KMeans', ikmeans.predict(X),
-    kmeans.cluster_centers_[n_fixed_clusters:],
-    fixed_centers=kmeans.cluster_centers_[:n_fixed_clusters],
-    inertia=kmeans.inertia_)
+    centers[n_fixed_clusters:],
+    fixed_centers=centers[:n_fixed_clusters],
+    inertia=ikmeans.inertia_)
 
 ##############################################################################
 # In this basic experiment, we see that the clusters fixed in Incremental
