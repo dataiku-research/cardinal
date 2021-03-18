@@ -4,7 +4,7 @@ Incremental KMeans
 
 In an active learning setting, the trade-off between exploration and
 exploitation plays a central role. Exploration, or diversity, is
-usually enforced using coresets or, more simply, a KMeans algorithm.
+usually enforced using coresets or, more simply, a clustering algorithm.
 KMeans is therefore used to select samples that are spread across the
 dataset in each batch. However, to the best of our knowledge, maintaining diversity
 throughout the whole experiment is something that has not been considered.
