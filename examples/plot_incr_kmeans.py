@@ -143,7 +143,7 @@ def plot(xlabel, ylabel, values, inertiae):
 # ===============================
 #
 # In this experiment, we generate data from 10 clusters and see how the number
-# of fixed cluster influence the intertia.
+# of fixed cluster impacts the inerta.
 
 study_value = []
 study_inert = []
