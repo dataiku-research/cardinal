@@ -119,7 +119,6 @@ def _k_init(X, n_clusters, x_squared_norms, random_state, n_local_trials=None,
     closest_dist_sq = euclidean_distances(
         centers[:start_centers], X, Y_norm_squared=x_squared_norms,
         squared=True)
-    candidates_pot = closest_dist_sq.sum(axis=1)
     closest_dist_sq = closest_dist_sq.min(axis=0)
     current_pot = closest_dist_sq.sum()
 
