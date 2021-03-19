@@ -20,11 +20,93 @@ a small benchmark on generated data.
 
 from sklearn.cluster import MiniBatchKMeans
 from sklearn.metrics import pairwise_distances_argmin_min
+from sklearn.ensemble import RandomForestClassifier
 from cardinal.kmeans import IncrementalMiniBatchKMeans
 from sklearn.datasets import make_blobs
 from matplotlib import pyplot as plt
 from scipy.stats import ttest_rel
 import numpy as np
+
+# Inertia
+# ^^^^^^^
+#
+# We will be talking a  lot about inertia in this notebook which is the
+# euclidean distance from the points in a dataset to their closest center.
+# We define a function to measure it.
+
+
+def inertia(data, centers):
+    return pairwise_distances_argmin_min(data, centers)[1].sum()
+
+
+
+# Active learning like-experiment
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#
+# One core element of the experiment differs from active learning. In fact,
+# in active learning, we do not expect to select a number of samples equal to
+# the number of real cluster in the data. We also build our clustering over
+# several iterations. We now try to do the same on generated data.
+
+study_inert_kmeans = []
+study_inert_ikmeans = []
+study_inert_ikmeans_recenter = []
+
+X, y, centers = make_blobs(n_samples=10000, centers=10, return_centers=True,
+                           n_features=512, random_state=2)
+
+kmeans_centers = None
+ikmeans_centers = None
+ikmeans_recenter_centers = None
+
+classifier = RandomForestClassifier()
+
+for i in range(10):
+    kmeans = MiniBatchKMeans(n_clusters=10, random_state=i)
+    ikmeans = IncrementalMiniBatchKMeans(n_clusters=10 * (i + 1), random_state=i)
+    ikmeans_recenter = IncrementalMiniBatchKMeans(n_clusters=10 * (i + 1), random_state=i)
+
+    ikmeans.fit(X[fold == i], fixed_cluster_centers=ikmeans_centers)
+    ikmeans_centers = ikmeans.cluster_centers_
+
+    ikmeans_recenter.fit(X[fold == i], fixed_cluster_centers=ikmeans_recenter_centers, recenter_every=100)
+    ikmeans_recenter_centers = ikmeans_recenter.cluster_centers_
+
+    kmeans.fit(X[fold == i])
+    if kmeans_centers is None:
+        kmeans_centers = kmeans.cluster_centers_
+    else:
+        kmeans_centers = np.vstack([kmeans_centers, kmeans.cluster_centers_])
+
+    study_inert_kmeans.append(pairwise_distances_argmin_min(kmeans_centers, X)[1].mean())
+    study_inert_ikmeans.append(pairwise_distances_argmin_min(ikmeans_centers, X)[1].mean())
+    study_inert_ikmeans_recenter.append(pairwise_distances_argmin_min(ikmeans_recenter_centers, X)[1].mean())
+
+plt.plot(range(10), study_inert_kmeans, label='KMeans inertia')
+plt.plot(range(10), study_inert_ikmeans, label='Inceremental KMeans inertia')
+plt.plot(range(10), study_inert_ikmeans_recenter, label='Inceremental KMeans R inertia')
+plt.legend()
+plt.xlabel('Iteration')
+plt.ylabel('Inertia')
+plt.show()
+
+##############################################################################
+# To conclude, we observe that in an active-learning like settings, the best
+# strategy in term of inertia consists in maintaining the clusters fixed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ##############################################################################
 # Let us first define the parameters of our experiment. We will generate a
@@ -85,8 +167,9 @@ plot_clustering(
 
 ##############################################################################
 # In this basic experiment, we see that the clusters fixed in Incremental
-# KMeans have stayed fixed. It does not improve nor degrade the inertia on a
-# very simple problem. We now want to test it in higher dimensions.
+# KMeans have stayed fixed. We see that the inertia is a little bit lower but
+# this is an effect dependant on the seed. Overall there is no significant
+# difference between the two methods on this toy example.
 #
 # Experiments in higher dimension
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -143,7 +226,7 @@ def plot(xlabel, ylabel, values, inertiae):
 # ===============================
 #
 # In this experiment, we generate data from 10 clusters and see how the number
-# of fixed cluster impacts the inerta.
+# of fixed cluster impacts the inertia.
 
 study_value = []
 study_inert = []
@@ -210,57 +293,3 @@ plot('Recenter every n iterations', 'Mean inertia over 100 runs', study_value, s
 # Surprisingly, this setting seems to give the best result. This result is a
 # bit more surprising but a better inertia does not necessarily means a result
 # closer to the data.
-#
-# Active learning like-experiment
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#
-# One core element of the experiment differs from active learning. In fact,
-# in active learning, we do not expect to select a number of samples equal to
-# the number of real cluster in the data. We also build our clustering over
-# several iterations. We now try to do the same on generated data.
-
-study_inert_kmeans = []
-study_inert_ikmeans = []
-study_inert_ikmeans_recenter = []
-
-X, y, centers = make_blobs(n_samples=10000, centers=10, return_centers=True,
-                           n_features=512, random_state=2)
-
-fold = np.random.randint(0, 10, size=10000)
-
-kmeans_centers = None
-ikmeans_centers = None
-ikmeans_recenter_centers = None
-
-for i in range(10):
-    kmeans = MiniBatchKMeans(n_clusters=10, random_state=i)
-    ikmeans = IncrementalMiniBatchKMeans(n_clusters=10 * (i + 1), random_state=i)
-    ikmeans_recenter = IncrementalMiniBatchKMeans(n_clusters=10 * (i + 1), random_state=i)
-
-    ikmeans.fit(X[fold == i], fixed_cluster_centers=ikmeans_centers)
-    ikmeans_centers = ikmeans.cluster_centers_
-
-    ikmeans_recenter.fit(X[fold == i], fixed_cluster_centers=ikmeans_recenter_centers, recenter_every=100)
-    ikmeans_recenter_centers = ikmeans_recenter.cluster_centers_
-
-    kmeans.fit(X[fold == i])
-    if kmeans_centers is None:
-        kmeans_centers = kmeans.cluster_centers_
-    else:
-        kmeans_centers = np.vstack([kmeans_centers, kmeans.cluster_centers_])
-
-    study_inert_kmeans.append(pairwise_distances_argmin_min(kmeans_centers, X)[1].mean())
-    study_inert_ikmeans.append(pairwise_distances_argmin_min(ikmeans_centers, X)[1].mean())
-    study_inert_ikmeans_recenter.append(pairwise_distances_argmin_min(ikmeans_recenter_centers, X)[1].mean())
-
-plt.plot(range(10), study_inert_kmeans, label='KMeans inertia')
-plt.plot(range(10), study_inert_ikmeans, label='Inceremental KMeans inertia')
-plt.plot(range(10), study_inert_ikmeans_recenter, label='Inceremental KMeans R inertia')
-plt.legend()
-plt.xlabel('Iteration')
-plt.ylabel('Inertia')
-plt.show()
-
-##############################################################################
-# To conclude, we observe that in an active-learning like settings, the best
-# strategy in term of inertia consists in maintaining the clusters fixed.
