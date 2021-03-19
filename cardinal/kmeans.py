@@ -1798,6 +1798,11 @@ class IncrementalMiniBatchKMeans(KMeans):
                 break
 
         self.n_iter_ = iteration_idx + 1
+            
+        if fixed_cluster_centers is not None and recenter_every is not None:
+            fixed_cluster_indices = _project_on_fixed_centers(self.cluster_centers_, fixed_cluster_centers)
+            non_fixed_clusters = np.setdiff1d(np.arange(self.n_clusters), fixed_cluster_indices, assume_unique=True)
+            self.cluster_centers_ = self.cluster_centers_[np.hstack([fixed_cluster_indices, non_fixed_clusters])]
 
         if self.compute_labels:
             self.labels_, self.inertia_ = \

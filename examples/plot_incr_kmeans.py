@@ -21,10 +21,13 @@ a small benchmark on generated data.
 from sklearn.cluster import MiniBatchKMeans
 from sklearn.metrics import pairwise_distances_argmin_min
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
 from cardinal.kmeans import IncrementalMiniBatchKMeans
+from cardinal.clustering import MiniBatchKMeansSampler, IncrementalMiniBatchKMeansSampler
 from sklearn.datasets import make_blobs
 from matplotlib import pyplot as plt
 from scipy.stats import ttest_rel
+from cardinal.utils import ActiveLearningSplitter
 import numpy as np
 
 # Inertia
@@ -36,7 +39,7 @@ import numpy as np
 
 
 def inertia(data, centers):
-    return pairwise_distances_argmin_min(data, centers)[1].sum()
+    return (pairwise_distances_argmin_min(data, centers)[1] ** 2).sum()
 
 
 
@@ -48,67 +51,88 @@ def inertia(data, centers):
 # the number of real cluster in the data. We also build our clustering over
 # several iterations. We now try to do the same on generated data.
 
-study_inert_kmeans = []
-study_inert_ikmeans = []
-study_inert_ikmeans_recenter = []
-
-X, y, centers = make_blobs(n_samples=10000, centers=10, return_centers=True,
+X, y, centers = make_blobs(n_samples=10000, centers=100, return_centers=True,
                            n_features=512, random_state=2)
 
-kmeans_centers = None
-ikmeans_centers = None
-ikmeans_recenter_centers = None
+clf = RandomForestClassifier()
 
-classifier = RandomForestClassifier()
+kmeans_inertia = []
+kmeans_accuracy = []
+sampler = MiniBatchKMeansSampler(10)
+
+idx = ActiveLearningSplitter(10000, test_size=.2, random_state=0)
+idx.add_batch(np.arange(10))
 
 for i in range(10):
-    kmeans = MiniBatchKMeans(n_clusters=10, random_state=i)
-    ikmeans = IncrementalMiniBatchKMeans(n_clusters=10 * (i + 1), random_state=i)
-    ikmeans_recenter = IncrementalMiniBatchKMeans(n_clusters=10 * (i + 1), random_state=i)
+    selected = sampler.fit(X[idx.selected]).select_samples(X[idx.non_selected])
+    idx.add_batch(selected)
+    kmeans_inertia.append(inertia(X[idx.test], X[idx.selected]))
 
-    ikmeans.fit(X[fold == i], fixed_cluster_centers=ikmeans_centers)
-    ikmeans_centers = ikmeans.cluster_centers_
+    clf.fit(X[idx.selected], y[idx.selected])
+    kmeans_accuracy.append(clf.score(X[idx.test], y[idx.test]))
+    
 
-    ikmeans_recenter.fit(X[fold == i], fixed_cluster_centers=ikmeans_recenter_centers, recenter_every=100)
-    ikmeans_recenter_centers = ikmeans_recenter.cluster_centers_
+ikmeans_inertia = []
+ikmeans_accuracy = []
+sampler = IncrementalMiniBatchKMeansSampler(10, random_state=0)
 
-    kmeans.fit(X[fold == i])
-    if kmeans_centers is None:
-        kmeans_centers = kmeans.cluster_centers_
-    else:
-        kmeans_centers = np.vstack([kmeans_centers, kmeans.cluster_centers_])
+idx = ActiveLearningSplitter(10000, test_size=.2, random_state=0)
+idx.add_batch(np.arange(10))
 
-    study_inert_kmeans.append(pairwise_distances_argmin_min(kmeans_centers, X)[1].mean())
-    study_inert_ikmeans.append(pairwise_distances_argmin_min(ikmeans_centers, X)[1].mean())
-    study_inert_ikmeans_recenter.append(pairwise_distances_argmin_min(ikmeans_recenter_centers, X)[1].mean())
+for i in range(10):
 
-plt.plot(range(10), study_inert_kmeans, label='KMeans inertia')
-plt.plot(range(10), study_inert_ikmeans, label='Inceremental KMeans inertia')
-plt.plot(range(10), study_inert_ikmeans_recenter, label='Inceremental KMeans R inertia')
-plt.legend()
+    selected = sampler.fit(X[idx.selected]).select_samples(X[idx.non_selected], fixed_cluster_centers=X[idx.selected])
+
+    idx.add_batch(selected)
+    ikmeans_inertia.append(inertia(X[idx.test], X[idx.selected]))
+
+    clf.fit(X[idx.selected], y[idx.selected])
+    ikmeans_accuracy.append(clf.score(X[idx.test], y[idx.test]))
+
+
+
+irkmeans_inertia = []
+irkmeans_accuracy = []
+sampler = IncrementalMiniBatchKMeansSampler(10, random_state=0)
+
+idx = ActiveLearningSplitter(10000, test_size=.2, random_state=0)
+idx.add_batch(np.arange(10))
+
+for i in range(10):
+
+    selected = sampler.fit(X[idx.selected]).select_samples(X[idx.non_selected], fixed_cluster_centers=X[idx.selected], recenter_every=100)
+
+    idx.add_batch(selected)
+    irkmeans_inertia.append(inertia(X[idx.test], X[idx.selected]))
+
+    clf.fit(X[idx.selected], y[idx.selected])
+    irkmeans_accuracy.append(clf.score(X[idx.test], y[idx.test]))
+
+plt.plot(range(10), kmeans_accuracy, label='KMeans')
+plt.plot(range(10), ikmeans_accuracy, label='Incr. KMeans')
+plt.plot(range(10), irkmeans_accuracy, label='Incr. KMeans R')
+plt.ylabel('Accuracy ────')
+plt.legend(loc=6)
 plt.xlabel('Iteration')
-plt.ylabel('Inertia')
+
+plt.gca().twinx()
+plt.gca().set_prop_cycle(None)
+plt.plot(range(10), kmeans_inertia, '--')
+plt.plot(range(10), ikmeans_inertia, '--')
+plt.plot(range(10), irkmeans_inertia, '--')
+plt.ylabel('Inertia ╶╶╶╶')
+
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 plt.show()
 
 ##############################################################################
-# To conclude, we observe that in an active-learning like settings, the best
-# strategy in term of inertia consists in maintaining the clusters fixed.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##############################################################################
+# In this simple exemple, we see that Incremental KMeans has a decisive
+# advantage on KMeans because it is able to gradually explore the space of
+# samples.
+#
+# Understanding better the Incremental KMeans
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#
 # Let us first define the parameters of our experiment. We will generate a
 # dataset from 8 clusters and we will try to keep 4 clusters fixed. We do
 # this example in 2 dimensions for visualization purposes.
@@ -136,11 +160,11 @@ def plot_clustering(label, y_pred, centers, fixed_centers=[], inertia=None):
     plt.yticks([])
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     if inertia:
-        label = label + ", intertia={0:0.2f}".format(inertia)
+        label = label + ", inertia={0:0.2f}".format(inertia)
     plt.title(label)
     plt.show()
 
-plot_clustering('Ground truth', y, centers)
+plot_clustering('Ground truth', y, centers, inertia=inertia(X, centers))
 
 ##############################################################################
 # We run a regular MiniBatchKMeans. KMeans would be more suited for this kind
@@ -151,6 +175,7 @@ kmeans = MiniBatchKMeans(n_clusters=8, random_state=2)
 kmeans.fit(X)
 plot_clustering('KMeans', kmeans.predict(X), kmeans.cluster_centers_,
                 inertia=kmeans.inertia_)
+print(kmeans.inertia_, inertia(X, kmeans.cluster_centers_))
 
 
 ##############################################################################
@@ -240,11 +265,9 @@ plot('Number of fixed center clusters /10', 'Mean inertia over 100 runs',
      study_value, study_inert)
 
 ##############################################################################
-# It may seem surprising that the
-# inertia is proportional to the number of fixed clusters, which means that
-# the inertia of the original centers used to generate the data is higher
-# than the centers after KMeans, but it is logical since KMeans optimizes for
-# it.
+# We observe that inertia is proportional to the number of fixed clusters.
+# This happens because fixed clusters are not in a minimum inertia position
+# to start with, so fixing them prevents inertia to be optimized.
 # 
 # Reassignment ratio
 # ==================
@@ -290,6 +313,7 @@ plot('Recenter every n iterations', 'Mean inertia over 100 runs', study_value, s
 
 
 ##############################################################################
-# Surprisingly, this setting seems to give the best result. This result is a
-# bit more surprising but a better inertia does not necessarily means a result
-# closer to the data.
+# In this toy use case, we see that recentering gives a better result in term
+# of inertia. However, as seen in the active learning example at the
+# beginning, this is not guaranteed and it is very likely that this depends on
+# the topology of the data.
