@@ -33,9 +33,8 @@ import numpy as np
 # Inertia
 # ^^^^^^^
 #
-# We will be talking a  lot about inertia in this notebook which is the
-# euclidean distance from the points in a dataset to their closest center.
-# We define a function to measure it.
+# Throughout this notebook, we will use the inertia metric, it is the
+# euclidean distance from a set of points to a set of center points.
 
 
 def inertia(data, centers):
