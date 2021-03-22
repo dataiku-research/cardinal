@@ -45,10 +45,8 @@ def inertia(data, centers):
 # Active learning like-experiment
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# One core element of the experiment differs from active learning. In fact,
-# in active learning, we do not expect to select a number of samples equal to
-# the number of real cluster in the data. We also build our clustering over
-# several iterations. We now try to do the same on generated data.
+# Before digging into the behaviors proper to incremental KMeans, we test
+# it in an active learning experiment on simulated data.
 
 X, y, centers = make_blobs(n_samples=10000, centers=100, return_centers=True,
                            n_features=512, random_state=2)
@@ -89,27 +87,8 @@ for i in range(10):
     ikmeans_accuracy.append(clf.score(X[idx.test], y[idx.test]))
 
 
-
-irkmeans_inertia = []
-irkmeans_accuracy = []
-sampler = IncrementalMiniBatchKMeansSampler(10, random_state=0)
-
-idx = ActiveLearningSplitter(10000, test_size=.2, random_state=0)
-idx.add_batch(np.arange(10))
-
-for i in range(10):
-
-    selected = sampler.fit(X[idx.selected]).select_samples(X[idx.non_selected], fixed_cluster_centers=X[idx.selected], recenter_every=100)
-
-    idx.add_batch(selected)
-    irkmeans_inertia.append(inertia(X[idx.test], X[idx.selected]))
-
-    clf.fit(X[idx.selected], y[idx.selected])
-    irkmeans_accuracy.append(clf.score(X[idx.test], y[idx.test]))
-
 plt.plot(range(10), kmeans_accuracy, label='KMeans')
 plt.plot(range(10), ikmeans_accuracy, label='Incr. KMeans')
-plt.plot(range(10), irkmeans_accuracy, label='Incr. KMeans R')
 plt.ylabel('Accuracy ────')
 plt.legend(loc=6)
 plt.xlabel('Iteration')
@@ -118,7 +97,6 @@ plt.gca().twinx()
 plt.gca().set_prop_cycle(None)
 plt.plot(range(10), kmeans_inertia, '--')
 plt.plot(range(10), ikmeans_inertia, '--')
-plt.plot(range(10), irkmeans_inertia, '--')
 plt.ylabel('Inertia ╶╶╶╶')
 
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])
