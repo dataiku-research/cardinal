@@ -152,7 +152,6 @@ kmeans = MiniBatchKMeans(n_clusters=8, random_state=2)
 kmeans.fit(X)
 plot_clustering('KMeans', kmeans.predict(X), kmeans.cluster_centers_,
                 inertia=kmeans.inertia_)
-print(kmeans.inertia_, inertia(X, kmeans.cluster_centers_))
 
 
 ##############################################################################
@@ -201,7 +200,6 @@ def evaluate(n_samples, n_repeat, n_features, n_blobs, n_clusters,
         kwargs['fixed_cluster_centers'] = None
         if n_fixed_clusters > 0:
             kwargs['fixed_cluster_centers'] = centers[:n_fixed_clusters]
-        kwargs['recenter_every'] = recenter_every
         clus.fit(X, **kwargs)
         inertiae.append(clus.inertia_)
     return inertiae
@@ -210,7 +208,7 @@ def evaluate(n_samples, n_repeat, n_features, n_blobs, n_clusters,
 def plot(xlabel, ylabel, values, inertiae):
     arr = np.asarray(inertiae)
     for i in range(arr.shape[1]):
-        plt.scatter(values, arr[:, i], alpha=.2, c='gray')
+        plt.scatter(values, arr[:, i], alpha=.4, c='gray')
     plt.plot(values, np.mean(arr, axis=1), c='r')
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
@@ -229,7 +227,7 @@ study_inert = []
 
 for i in range(10):
     study_value.append(i)
-    inert = evaluate(5000, 100, 20, 10, 10, i, 0.01)
+    inert = evaluate(5000, 20, 20, 10, 10, i, 0.01)
     study_inert.append(inert)
     
 plot('Number of fixed center clusters /10', 'Mean inertia over 100 runs',
@@ -254,7 +252,7 @@ study_inert = []
 
 for i in [0., 0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]:
     study_value.append(i)
-    inert = evaluate(5000, 100, 20, 10, 10, 5, i)
+    inert = evaluate(5000, 20, 20, 10, 10, 5, i)
     study_inert.append(inert)
     
 plot('Reassignment ratio', 'Mean inertia over 100 runs',
