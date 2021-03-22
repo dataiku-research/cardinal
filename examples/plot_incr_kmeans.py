@@ -104,10 +104,10 @@ plt.show()
 
 ##############################################################################
 # In this simple exemple, we see that Incremental KMeans has a decisive
-# advantage on KMeans because it is able to gradually explore the space of
+# advantage over KMeans because it is able to gradually explore the space of
 # samples.
 #
-# Understanding better the Incremental KMeans
+# Analysis of Incremental KMeans
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
 # Let us first define the parameters of our experiment. We will generate a
@@ -170,7 +170,7 @@ plot_clustering(
 ##############################################################################
 # In this basic experiment, we see that the clusters fixed in Incremental
 # KMeans have stayed fixed. We see that the inertia is a little bit lower but
-# this is an effect dependant on the seed. Overall there is no significant
+# this is an effect dependent on the seed. Overall there is no significant
 # difference between the two methods on this toy example.
 #
 # Experiments in higher dimension
@@ -222,7 +222,7 @@ def plot(xlabel, ylabel, values, inertiae):
 # ===============================
 #
 # In this experiment, we generate data from 10 clusters and see how the number
-# of fixed cluster impacts the inertia.
+# of fixed clusters impacts the inertia.
 
 study_value = []
 study_inert = []
