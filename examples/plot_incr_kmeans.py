@@ -181,17 +181,11 @@ plot_clustering(
 # dimensions. We explore only a few aspects of the algorithm but our general
 # evaluation function can be used to dig deeper in the algorithm.
 #
-# The following parameters are accessible:
-# * `reassignement_ratio` is a parameter of the MiniBatchKMeans that
-#   controls the ratio of centers of high inertia randomly reassigned
-# * `recenter_every` is a relaxation of the cluster fixation. 
-#   This parameter allows the clusters to move, and fix them back
-#   every $k$ iterations. We expect that in some cases, the
-#   fixed cluster could be detrimental to the optimization and thus relaxing
-#   this constraint could lead to a better minimum.
+# The parameter `reassignement_ratio` is a parameter of the MiniBatchKMeans
+# that controls the ratio of centers of high inertia randomly reassigned
 
 def evaluate(n_samples, n_repeat, n_features, n_blobs, n_clusters,
-             n_fixed_clusters, reassignment_ratio, recenter_every):
+             n_fixed_clusters, reassignment_ratio):
     inertiae = []
     for i in range(n_repeat):
         X, y, centers = make_blobs(
@@ -235,7 +229,7 @@ study_inert = []
 
 for i in range(10):
     study_value.append(i)
-    inert = evaluate(5000, 100, 20, 10, 10, i, 0.01, None)
+    inert = evaluate(5000, 100, 20, 10, 10, i, 0.01)
     study_inert.append(inert)
     
 plot('Number of fixed center clusters /10', 'Mean inertia over 100 runs',
@@ -260,7 +254,7 @@ study_inert = []
 
 for i in [0., 0.01, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5]:
     study_value.append(i)
-    inert = evaluate(5000, 100, 20, 10, 10, 5, i, None)
+    inert = evaluate(5000, 100, 20, 10, 10, 5, i)
     study_inert.append(inert)
     
 plot('Reassignment ratio', 'Mean inertia over 100 runs',
@@ -269,28 +263,3 @@ plot('Reassignment ratio', 'Mean inertia over 100 runs',
 ##############################################################################
 # In the end, we observe that the reassignment ratio has absolutely no impact
 # on the intertia which is reassuring.
-# 
-# Recenter every
-# ==============
-#
-# The effect of this parameter has already been described above. In its
-# highest value, this parameter leads to the following behavior: it initialize
-# centers on the fixed center positions, let the KMeans run, and in the end
-# move the centers closest to the fixed position on the fixed spots.
-
-study_value = []
-study_inert = []
-
-for i in [None, 1, 2, 3, 5, 10, 20, 50, 100]:
-    study_value.append(i if i is not None else 0)
-    inert = evaluate(5000, 100, 20, 10, 10, 5, 0.1, i)
-    study_inert.append(inert)
-    
-plot('Recenter every n iterations', 'Mean inertia over 100 runs', study_value, study_inert)
-
-
-##############################################################################
-# In this toy use case, we see that recentering gives a better result in term
-# of inertia. However, as seen in the active learning example at the
-# beginning, this is not guaranteed and it is very likely that this depends on
-# the topology of the data.
