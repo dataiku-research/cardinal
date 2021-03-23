@@ -28,7 +28,7 @@ DEPENDENCIES_METADATA = (
     ('numpy', {'min_version': '1.11'}),
     ('scipy', {'min_version': '0.19'}),
     ('scikit-learn', {
-        'min_version': '0.19',
+        'min_version': '0.23',
         'extra_options': ['sklearn', 'examples', 'submodular', 'doc']}),
     ('apricot-select', {
         'min_version': '0.5.0', 'extra_options': ['submodular', 'doc']}),
