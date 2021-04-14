@@ -12,7 +12,7 @@ explore the dataset well enough through diversity or representativity
 sampling.
 """
 
-from copy import copy
+from copy import deepcopy
 
 import numpy as np
 from sklearn.datasets import make_blobs
@@ -41,7 +41,7 @@ clf = LogisticRegression()
 # first two blobs. This simulates an unlucky initialization where no data
 # from the isolated cluster is selected.
 
-init_spl = ActiveLearningSplitter(X.shape[0], test_size=0.2, stratify=blob)
+init_spl = ActiveLearningSplitter(X.shape[0], test_size=0.2, stratify=blob, random_state=0)
 init_spl.add_batch(np.hstack([
     np.where(blob[init_spl.train] == 0)[0][:batch_size],
     np.where(blob[init_spl.train] == 1)[0][:batch_size]
@@ -58,26 +58,13 @@ plt.text(4, 3.2, 'Isolated cluster', ha='center', c='r')
 plt.legend()
 plt.axis('off')
 
-##############################################################################
-# We create figure to track both the global accuracy and the accuracy on the
-# isolated cluster only.
-
-plt.figure()
-g_ax = plt.gca()
-plt.ylabel('Global accuracy')
-plt.xlabel('Iteration')
-
-plt.figure()
-ic_ax = plt.gca()
-plt.ylabel('Isolated cluster accuracy')
-plt.xlabel('Iteration')
-
+plt.show()
 
 ##############################################################################
-# This function runs the experiment? It is a class active learning setting.
+# This function runs the experiment. It is a class active learning setting.
 
-def evaluate(name, sampler):
-    spl = copy(init_spl)
+def evaluate(name, sampler, g_ax, ic_ax):
+    spl = deepcopy(init_spl)
     g_acc = []
     ic_acc = []
 
@@ -91,7 +78,6 @@ def evaluate(name, sampler):
     g_ax.plot(np.arange(10), g_acc, label=name)
     ic_ax.plot(np.arange(10), ic_acc, label=name)
 
-
 ##############################################################################
 # We now display the results for 3 very common samplers. You may observe that
 # the confidence sampling completely ignores the isolated cluster since it
@@ -99,11 +85,23 @@ def evaluate(name, sampler):
 # a 15% chance of picking a sample in this cluster during the experiment. By
 # design, KMeans sampling will always select samples in the isolated cluster!
 
-evaluate('Confidence Sampler', ConfidenceSampler(clf, batch_size=batch_size, assume_fitted=True))
-evaluate('Random Sampler', RandomSampler(batch_size=batch_size, random_state=0))
-evaluate('KMeans Sampler', KMeansSampler(batch_size=batch_size))
+plt.figure()
+global_ax = plt.gca()
+plt.ylabel('Global accuracy')
+plt.xlabel('Iteration')
 
-g_ax.legend()
-smooth_lines(axis=g_ax, k=2)
-ic_ax.legend()
-smooth_lines(axis=ic_ax, k=2)
+plt.figure()
+isolated_cluster_ax = plt.gca()
+plt.ylabel('Isolated cluster accuracy')
+plt.xlabel('Iteration')
+
+evaluate('Confidence Sampler', ConfidenceSampler(clf, batch_size=batch_size, assume_fitted=True), global_ax, isolated_cluster_ax)
+evaluate('Random Sampler', RandomSampler(batch_size=batch_size, random_state=0), global_ax, isolated_cluster_ax)
+evaluate('KMeans Sampler', KMeansSampler(batch_size=batch_size), global_ax, isolated_cluster_ax)
+
+global_ax.legend()
+smooth_lines(axis=global_ax, k=2)
+isolated_cluster_ax.legend()
+smooth_lines(axis=isolated_cluster_ax, k=2)
+
+plt.show()
