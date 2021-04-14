@@ -39,3 +39,20 @@ def plot_confidence_interval(*args, label=None, q_inf=0.1, q_sup=0.9, alpha=.3, 
         plt.scatter(x_data, avg, c=color)
 
     plt.fill_between(x_plot, q90_plot, q10_plot, color=color, alpha=alpha)
+
+
+def smooth_line(line, smoothing=10, k=2):
+    x = line.get_xdata()
+    y = line.get_ydata()
+    x_plot = np.linspace(x.min(), x.max(), x.shape[0] * smoothing) 
+    y_plot = make_interp_spline(x, y, k=k)(x_plot)
+    line.set_xdata(x_plot)
+    line.set_ydata(y_plot)
+
+
+def smooth_lines(axis=None, smoothing=10, k=2):
+    if axis is None:
+        axis = plt.gca()
+    
+    for line in axis.lines:
+        smooth_line(line, smoothing=smoothing, k=k)
