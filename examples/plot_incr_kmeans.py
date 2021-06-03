@@ -78,7 +78,7 @@ idx.add_batch(np.arange(10))
 
 for i in range(10):
 
-    selected = sampler.fit(X[idx.selected]).select_samples(X[idx.non_selected], fixed_cluster_centers=X[idx.selected])
+    selected = sampler.fit(X[idx.selected]).select_samples(X[idx.non_selected])
 
     idx.add_batch(selected)
     ikmeans_inertia.append(inertia(X[idx.test], X[idx.selected]))
