@@ -194,21 +194,18 @@ for i, (sampler_name, sampler) in enumerate(samplers):
 plt.figure(figure_accuracies)
 plt.xlabel('Labeled samples')
 plt.ylabel('Accuracy')
-plt.gca().axvline(50, color='r')
 plt.legend()
 plt.tight_layout()
 
 plt.figure(figure_contradictions)
 plt.xlabel('Labeled samples')
 plt.ylabel('Contradictions')
-plt.gca().axvline(50, color='r')
 plt.legend()
 plt.tight_layout()
 
 plt.figure(figure_explorations)
 plt.xlabel('Labeled samples')
 plt.ylabel('Exploration score')
-plt.gca().axvline(50, color='r')
 plt.legend()
 plt.tight_layout()
 

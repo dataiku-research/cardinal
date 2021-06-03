@@ -50,15 +50,6 @@ see how the ReplayCache allows it.
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /usr/lib64/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 192 from C header, got 216 from PyObject
-      return f(*args, **kwds)
-
 
 
 
@@ -138,7 +129,7 @@ indices in an active learning experiment.
 In the end, all values for all iterations are kept. The cache structure
 is human readable and can be shared for better reproducibility.
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-118
+.. GENERATED FROM PYTHON SOURCE LINES 74-117
 
 .. code-block:: python3
 
@@ -182,12 +173,15 @@ is human readable and can be shared for better reproducibility.
         plt.ylabel('Contradictions')
         plt.title('Evolution of Contradictions during active learning experiment on Iris dataset')
         plt.show()
-        plt.close()
 
     value_store.close()
 
 
 
+
+.. image:: /auto_examples/images/sphx_glr_plot_replay_experiment_001.png
+    :alt: Evolution of Contradictions during active learning experiment on Iris dataset
+    :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -196,6 +190,16 @@ is human readable and can be shared for better reproducibility.
 
  .. code-block:: none
 
+    Computing iteration 0
+    Computing iteration 1
+    Computing iteration 2
+    Computing iteration 3
+    Computing iteration 4
+    Computing iteration 5
+    Computing iteration 6
+    Computing iteration 7
+    Computing iteration 8
+    Computing iteration 9
     cache/
         sampler/
             margin/
@@ -234,11 +238,11 @@ is human readable and can be shared for better reproducibility.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-120
+.. GENERATED FROM PYTHON SOURCE LINES 118-119
 
 We clean all the cache folder.
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-123
+.. GENERATED FROM PYTHON SOURCE LINES 119-122
 
 .. code-block:: python3
 
@@ -255,9 +259,9 @@ We clean all the cache folder.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.853 seconds)
+   **Total running time of the script:** ( 0 minutes  1.262 seconds)
 
-**Estimated memory usage:**  49 MB
+**Estimated memory usage:**  9 MB
 
 
 .. _sphx_glr_download_auto_examples_plot_replay_experiment.py:

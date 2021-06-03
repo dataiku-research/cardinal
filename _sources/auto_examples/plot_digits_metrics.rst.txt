@@ -209,7 +209,7 @@ We now perform the experiment. We compare our adaptive model to random,
 pure exploration, and pure exploitation. We also monitor the metrics
 defined above.
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-217
+.. GENERATED FROM PYTHON SOURCE LINES 128-214
 
 .. code-block:: python3
 
@@ -282,21 +282,18 @@ defined above.
     plt.figure(figure_accuracies)
     plt.xlabel('Labeled samples')
     plt.ylabel('Accuracy')
-    plt.gca().axvline(50, color='r')
     plt.legend()
     plt.tight_layout()
 
     plt.figure(figure_contradictions)
     plt.xlabel('Labeled samples')
     plt.ylabel('Contradictions')
-    plt.gca().axvline(50, color='r')
     plt.legend()
     plt.tight_layout()
 
     plt.figure(figure_explorations)
     plt.xlabel('Labeled samples')
     plt.ylabel('Exploration score')
-    plt.gca().axvline(50, color='r')
     plt.legend()
     plt.tight_layout()
 
@@ -330,7 +327,7 @@ defined above.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 218-264
+.. GENERATED FROM PYTHON SOURCE LINES 215-261
 
 Discussion
 ----------
@@ -382,9 +379,9 @@ This exploration metric can be used to decide when to change method.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 11 minutes  51.880 seconds)
+   **Total running time of the script:** ( 12 minutes  53.231 seconds)
 
-**Estimated memory usage:**  12 MB
+**Estimated memory usage:**  27 MB
 
 
 .. _sphx_glr_download_auto_examples_plot_digits_metrics.py:

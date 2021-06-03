@@ -71,8 +71,6 @@ Those are the necessary imports and initializations
       return f(*args, **kwds)
     /usr/lib64/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 192 from C header, got 216 from PyObject
       return f(*args, **kwds)
-    /usr/lib64/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 192 from C header, got 216 from PyObject
-      return f(*args, **kwds)
 
 
 
@@ -299,9 +297,9 @@ consider using mini-batch KMeans from scikit-learn that is faster.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 13 minutes  11.728 seconds)
+   **Total running time of the script:** ( 18 minutes  49.975 seconds)
 
-**Estimated memory usage:**  36 MB
+**Estimated memory usage:**  27 MB
 
 
 .. _sphx_glr_download_auto_examples_plot_clustering.py:

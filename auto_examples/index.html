@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Examples &mdash; cardinal 0.0.5-git documentation</title>
+  <title>Examples &mdash; cardinal 0.0.6-dev-git documentation</title>
   
 
   
@@ -74,7 +74,7 @@
             
             
               <div class="version">
-                0.0.5
+                0.0.6-dev
               </div>
             
           
@@ -98,7 +98,7 @@
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
       <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Versions</span>
-        v: stable
+        v: dev
         <span class="fa fa-caret-down"></span>
       </span>
       <div class="rst-other-versions">
@@ -128,11 +128,16 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="plot_random_vs_confidence.html">Lowest confidence vs. Random sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_starting.html">Starting an Active Learning experiment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_resume_experiment.html">Running and resuming an experiment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_replay_experiment.html">Replay and experiment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_clustering.html">Active Learning on Digit Recognition with Clustering-based Sampling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_digits_metrics.html">Active Learning on Digit Recognition and Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_incr_kmeans.html">Incremental KMeans</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_incr_kmeans.html#number-of-fixed-cluster-centers">Number of fixed cluster centers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_incr_kmeans.html#reassignment-ratio">Reassignment ratio</a></li>
+<li class="toctree-l2"><a class="reference internal" href="properties/plot_isolated_cluster.html">Isolated cluster and bad init</a></li>
+<li class="toctree-l2"><a class="reference internal" href="properties/plot_noisy_boundary.html">Noisy boundary</a></li>
 </ul>
 </li>
 </ul>
@@ -199,33 +204,53 @@ custom query samplers and use them in advanced experiments.</p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Active Learning experiments can be long and costly. For this reason, it is useful to be able to..."><div class="figure align-default" id="id2">
+<div class="sphx-glr-thumbcontainer" tooltip="Each active learning experiment starts with zero labeled samples. In that case, no supervised q..."><div class="figure align-default" id="id2">
+<img alt="Starting an Active Learning experiment" src="../_images/sphx_glr_plot_starting_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_starting.html#sphx-glr-auto-examples-plot-starting-py"><span class="std std-ref">Starting an Active Learning experiment</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Active Learning experiments can be long and costly. For this reason, it is useful to be able to..."><div class="figure align-default" id="id3">
 <img alt="Running and resuming an experiment" src="../_images/sphx_glr_plot_resume_experiment_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_resume_experiment.html#sphx-glr-auto-examples-plot-resume-experiment-py"><span class="std std-ref">Running and resuming an experiment</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_resume_experiment.html#sphx-glr-auto-examples-plot-resume-experiment-py"><span class="std std-ref">Running and resuming an experiment</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="In a previous example, we have shown how experiments can be resumed. Cardinal also allows for e..."><div class="figure align-default" id="id3">
+<div class="sphx-glr-thumbcontainer" tooltip="In a previous example, we have shown how experiments can be resumed. Cardinal also allows for e..."><div class="figure align-default" id="id4">
 <img alt="Replay and experiment" src="../_images/sphx_glr_plot_replay_experiment_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_replay_experiment.html#sphx-glr-auto-examples-plot-replay-experiment-py"><span class="std std-ref">Replay and experiment</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_replay_experiment.html#sphx-glr-auto-examples-plot-replay-experiment-py"><span class="std std-ref">Replay and experiment</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="We here compare several clustering-based Active Learning approaches and in particular explore t..."><div class="figure align-default" id="id4">
+<div class="sphx-glr-thumbcontainer" tooltip="We here compare several clustering-based Active Learning approaches and in particular explore t..."><div class="figure align-default" id="id5">
 <img alt="Active Learning on Digit Recognition with Clustering-based Sampling" src="../_images/sphx_glr_plot_clustering_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_clustering.html#sphx-glr-auto-examples-plot-clustering-py"><span class="std std-ref">Active Learning on Digit Recognition with Clustering-based Sampling</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_clustering.html#sphx-glr-auto-examples-plot-clustering-py"><span class="std std-ref">Active Learning on Digit Recognition with Clustering-based Sampling</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="This example shows the importance of diversity-based approaches using a toy example where a ver..."><div class="figure align-default" id="id5">
+<div class="sphx-glr-thumbcontainer" tooltip="This example shows the importance of diversity-based approaches using a toy example where a ver..."><div class="figure align-default" id="id6">
 <img alt="Lowest confidence vs. KMeans sampling" src="../_images/sphx_glr_plot_confidence_vs_diversity_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_confidence_vs_diversity.html#sphx-glr-auto-examples-plot-confidence-vs-diversity-py"><span class="std std-ref">Lowest confidence vs. KMeans sampling</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_confidence_vs_diversity.html#sphx-glr-auto-examples-plot-confidence-vs-diversity-py"><span class="std std-ref">Lowest confidence vs. KMeans sampling</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="In this example, we run an experiment on real data and show how active learning can be monitore..."><div class="figure align-default" id="id6">
-<img alt="Active Learning on Digit Recognition and Metrics" src="../_images/sphx_glr_plot_digits_metrics_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_digits_metrics.html#sphx-glr-auto-examples-plot-digits-metrics-py"><span class="std std-ref">Active Learning on Digit Recognition and Metrics</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<div class="sphx-glr-thumbcontainer" tooltip="In an active learning setting, the trade-off between exploration and exploitation plays a centr..."><div class="figure align-default" id="id7">
+<img alt="Incremental KMeans" src="../_images/sphx_glr_plot_incr_kmeans_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_incr_kmeans.html#sphx-glr-auto-examples-plot-incr-kmeans-py"><span class="std std-ref">Incremental KMeans</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div><p id="sphx-glr-auto-examples-properties"># Properties</p>
+<p>These examples test the behavior of samplers in peculiar synthetic settings.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="The iterative process of Active Learning may induce corner cases that are proper to Active Lear..."><div class="figure align-default" id="id8">
+<img alt="Isolated cluster and bad init" src="../_images/sphx_glr_plot_isolated_cluster_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="properties/plot_isolated_cluster.html#sphx-glr-auto-examples-properties-plot-isolated-cluster-py"><span class="std std-ref">Isolated cluster and bad init</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Can a noisy boundary tamper with an active learning process? For this test, we select a very si..."><div class="figure align-default" id="id9">
+<img alt="Noisy boundary" src="../_images/sphx_glr_plot_noisy_boundary_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="properties/plot_noisy_boundary.html#sphx-glr-auto-examples-properties-plot-noisy-boundary-py"><span class="std std-ref">Noisy boundary</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>

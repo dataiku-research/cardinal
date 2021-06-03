@@ -200,7 +200,9 @@ on which its confidence is the lowest. This is done through cardinal samplers.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.638 seconds)
+   **Total running time of the script:** ( 0 minutes  2.518 seconds)
+
+**Estimated memory usage:**  22 MB
 
 
 .. _sphx_glr_download_auto_examples_plot_random_vs_confidence.py:

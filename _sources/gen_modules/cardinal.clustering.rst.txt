@@ -17,6 +17,14 @@ cardinal.clustering
    -------
 
    
+   .. autoclass:: IncrementalMiniBatchKMeansSampler
+      :members:
+
+   .. include:: backreferences/cardinal.clustering.IncrementalMiniBatchKMeansSampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
    .. autoclass:: KCentroidSampler
       :members:
 

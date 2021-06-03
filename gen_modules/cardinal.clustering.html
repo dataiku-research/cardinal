@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>cardinal.clustering &mdash; cardinal 0.0.5-git documentation</title>
+  <title>cardinal.clustering &mdash; cardinal 0.0.6-dev-git documentation</title>
   
 
   
@@ -74,7 +74,7 @@
             
             
               <div class="version">
-                0.0.5
+                0.0.6-dev
               </div>
             
           
@@ -98,7 +98,7 @@
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
       <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Versions</span>
-        v: stable
+        v: dev
         <span class="fa fa-caret-down"></span>
       </span>
       <div class="rst-other-versions">
@@ -198,6 +198,35 @@
 <div class="section" id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
+<dt id="cardinal.clustering.IncrementalMiniBatchKMeansSampler">
+<em class="property">class </em><code class="sig-prename descclassname">cardinal.clustering.</code><code class="sig-name descname">IncrementalMiniBatchKMeansSampler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">batch_size</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kmeans_args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#IncrementalMiniBatchKMeansSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.clustering.IncrementalMiniBatchKMeansSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select samples as closest sample to MiniBatchKMeans centroids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>batch_size</strong> – Number of samples to draw when predicting.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="cardinal.clustering.IncrementalMiniBatchKMeansSampler.select_samples">
+<code class="sig-name descname">select_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>numpy.array<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fixed_cluster_centers</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>numpy.array<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">recenter_every</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/clustering.html#IncrementalMiniBatchKMeansSampler.select_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.clustering.IncrementalMiniBatchKMeansSampler.select_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clusters the samples and select the ones closest to centroids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – Pool of unlabeled samples of shape (n_samples, n_features).</p></li>
+<li><p><strong>sample_weight</strong> – Weight of the samples of shape (n_samples),
+optional.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Indices of the selected samples of shape (batch_size).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="sphx-glr-clear"></div><dl class="py class">
 <dt id="cardinal.clustering.KCentroidSampler">
 <em class="property">class </em><code class="sig-prename descclassname">cardinal.clustering.</code><code class="sig-name descname">KCentroidSampler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">clustering</span></em>, <em class="sig-param"><span class="n">batch_size</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCentroidSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.clustering.KCentroidSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>KCentroid based query sampler.

@@ -111,7 +111,6 @@ with ReplayCache(CACHE_PATH, value_store, keys=experiment_config) as cache:
     plt.ylabel('Contradictions')
     plt.title('Evolution of Contradictions during active learning experiment on Iris dataset')
     plt.show()
-    plt.close()
 
 value_store.close()
 

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>cardinal.clustering &mdash; cardinal 0.0.5-git documentation</title>
+  <title>cardinal.clustering &mdash; cardinal 0.0.6-dev-git documentation</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.0.5
+                0.0.6-dev
               </div>
             
           
@@ -96,7 +96,7 @@
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
       <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Versions</span>
-        v: stable
+        v: dev
         <span class="fa fa-caret-down"></span>
       </span>
       <div class="rst-other-versions">
@@ -187,6 +187,7 @@
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">BaseQuerySampler</span>
 <span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">check_modules</span>
+<span class="kn">from</span> <span class="nn">.kmeans</span> <span class="kn">import</span> <span class="n">IncrementalMiniBatchKMeans</span>
 
 
 <div class="viewcode-block" id="KCentroidSampler"><a class="viewcode-back" href="../../gen_modules/cardinal.clustering.html#cardinal.clustering.KCentroidSampler">[docs]</a><span class="k">class</span> <span class="nc">KCentroidSampler</span><span class="p">(</span><span class="n">BaseQuerySampler</span><span class="p">):</span>
@@ -279,6 +280,57 @@
                 <span class="s1">&#39;batch_size.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kmeans_args</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">]))</span>
         <span class="n">kmeans_args</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch_size</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">MiniBatchKMeans</span><span class="p">(</span><span class="o">**</span><span class="n">kmeans_args</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IncrementalMiniBatchKMeansSampler"><a class="viewcode-back" href="../../gen_modules/cardinal.clustering.html#cardinal.clustering.IncrementalMiniBatchKMeansSampler">[docs]</a><span class="k">class</span> <span class="nc">IncrementalMiniBatchKMeansSampler</span><span class="p">(</span><span class="n">KCentroidSampler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Select samples as closest sample to MiniBatchKMeans centroids.</span>
+
+<span class="sd">Args:</span>
+<span class="sd">        batch_size: Number of samples to draw when predicting.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="o">**</span><span class="n">kmeans_args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;n_clusters&#39;</span> <span class="ow">in</span> <span class="n">kmeans_args</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;You have specified n_clusters=</span><span class="si">{}</span><span class="s1"> when creating &#39;</span>
+                <span class="s1">&#39;MiniBatchKMeansSampler. This is not supported since&#39;</span>
+                <span class="s1">&#39;n_clusters is overridden using &#39;</span>
+                <span class="s1">&#39;batch_size.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kmeans_args</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">]))</span>
+        <span class="n">kmeans_args</span><span class="p">[</span><span class="s1">&#39;n_clusters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">IncrementalMiniBatchKMeans</span><span class="p">(</span><span class="o">**</span><span class="n">kmeans_args</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IncrementalMiniBatchKMeansSampler.select_samples"><a class="viewcode-back" href="../../gen_modules/cardinal.clustering.html#cardinal.clustering.IncrementalMiniBatchKMeansSampler.select_samples">[docs]</a>    <span class="k">def</span> <span class="nf">select_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
+                       <span class="n">sample_weight</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                       <span class="n">fixed_cluster_centers</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">recenter_every</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Clusters the samples and select the ones closest to centroids.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            X: Pool of unlabeled samples of shape (n_samples, n_features).</span>
+<span class="sd">            sample_weight: Weight of the samples of shape (n_samples),</span>
+<span class="sd">                optional.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Indices of the selected samples of shape (batch_size).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_not_enough_samples</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">n_fixed_clusters</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">sample_weight</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;sample_weight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_weight</span>
+        <span class="k">if</span> <span class="n">fixed_cluster_centers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;fixed_cluster_centers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fixed_cluster_centers</span>
+            <span class="n">n_fixed_clusters</span> <span class="o">=</span> <span class="n">fixed_cluster_centers</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">recenter_every</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;recenter_every&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">recenter_every</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clustering_</span><span class="o">.</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">+</span> <span class="n">n_fixed_clusters</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clustering_</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)[:,</span> <span class="n">n_fixed_clusters</span><span class="p">:]</span>
+
+        <span class="c1"># Sometimes, one sample can be the closest to two centroids. In that</span>
+        <span class="c1"># case, we want to take the second closest one, etc.</span>
+        <span class="c1"># linear_sum_assignemnt solves this problem.</span>
+        <span class="k">return</span> <span class="n">linear_sum_assignment</span><span class="p">(</span><span class="n">distances</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div></div>
 </pre></div>
 
            </div>
