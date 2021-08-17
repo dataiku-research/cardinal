@@ -51,25 +51,18 @@ class ActiveLearningSplitter():
     which makes indexing difficult. This class allows easy indxing.
 
     Args:
-        arrays: Allowed inputs are lists, numpy arrays, scipy-sparse matrices
-            or pandas dataframes.
-        test_size: If float, should be between 0.0 and 1.0 and represent the proportion
-            of the dataset to include in the test split. If int, represents the
-            absolute number of test samples. If not specified, it is set to 0 (no test
-            set).
-        train_size: If float, should be between 0.0 and 1.0 and represent the
-            proportion of the dataset to include in the train split. If
-            int, represents the absolute number of train samples. If None,
-            the value is automatically set to the complement of the test size.
-        random_state: Controls the shuffling applied to the data before applying the split.
-            Pass an int for reproducible output across multiple function calls.
-        shuffle: Whether or not to shuffle the data before splitting. If shuffle=False
-            then stratify must be None.
-        stratify: If not None, data is split in a stratified fashion, using this as
-            the class labels.
+        n_samples: Number of samples in total
+        test_index: Index of test samples if any
     """
-    def __init__(
-        self, 
+
+    def __init__(self, n_samples, test_index=None, dtype=np.int8):
+        self._mask = np.full(n_samples, self.TRAIN_UNSELECTED, dtype=dtype)
+        self.current_iter = None
+        if test_index is not None:
+            self._mask[test_index] = self.TEST
+
+    @classmethod
+    def train_test_split(
         n_samples: int,
         test_size: Union[float, int]=0,
         train_size: Union[float, int]=None,
@@ -78,18 +71,35 @@ class ActiveLearningSplitter():
         stratify=None,
         dtype=np.int8
     ):
-        self._mask = np.full(n_samples, self.TRAIN_UNSELECTED, dtype=dtype)
+        """Create an indexer from train_test_split
+
+        Args:
+            test_size: If float, should be between 0.0 and 1.0 and represent the proportion
+                of the dataset to include in the test split. If int, represents the
+                absolute number of test samples. If not specified, it is set to 0 (no test
+                set).
+            train_size: If float, should be between 0.0 and 1.0 and represent the
+                proportion of the dataset to include in the train split. If
+                int, represents the absolute number of train samples. If None,
+                the value is automatically set to the complement of the test size.
+            random_state: Controls the shuffling applied to the data before applying the split.
+                Pass an int for reproducible output across multiple function calls.
+            shuffle: Whether or not to shuffle the data before splitting. If shuffle=False
+                then stratify must be None.
+            stratify: If not None, data is split in a stratified fashion, using this as
+                the class labels.
+        """
+        test_index = None
         if test_size != 0:
-            self.random_state = check_random_state(random_state)
-            _, test = train_test_split(
+            random_state = check_random_state(random_state)
+            _, test_index = train_test_split(
                 np.arange(n_samples),
                 test_size=test_size,
                 train_size=train_size,
                 random_state=random_state,
                 shuffle=shuffle,
                 stratify=stratify)
-            self._mask[test] = self.TEST
-        self.current_iter = None
+        return ActiveLearningSplitter(n_samples, test_index=test_index, dtype=dtype)
 
     TRAIN_UNSELECTED = -1
     TEST = -2
