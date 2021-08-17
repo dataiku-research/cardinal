@@ -274,7 +274,6 @@ class KCenterGreedy(BaseQuerySampler):
 
 
         for _ in range(self.batch_size):
-            print(distances)
 
             # Select the point furthest from already selected
             selected.append(np.argmax(distances))

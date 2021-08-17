@@ -63,6 +63,7 @@ class ActiveLearningSplitter():
 
     @classmethod
     def train_test_split(
+        cls,
         n_samples: int,
         test_size: Union[float, int]=0,
         train_size: Union[float, int]=None,
@@ -99,7 +100,7 @@ class ActiveLearningSplitter():
                 random_state=random_state,
                 shuffle=shuffle,
                 stratify=stratify)
-        return ActiveLearningSplitter(n_samples, test_index=test_index, dtype=dtype)
+        return cls(n_samples, test_index=test_index, dtype=dtype)
 
     TRAIN_UNSELECTED = -1
     TEST = -2
