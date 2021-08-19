@@ -235,8 +235,9 @@ class KCenterGreedy(BaseQuerySampler):
     Args:
         batch_size: Number of samples to draw when predicting.
     """
-    def __init__(self, batch_size, metric='euclidean'):
+    def __init__(self, embedding_fun, batch_size, metric='euclidean'):
         super().__init__(batch_size)
+        self._embedding_fun = embedding_fun
         self.metric = metric
 
     def fit(self, X, y=None) -> 'KCenterGreedy':
@@ -249,7 +250,7 @@ class KCenterGreedy(BaseQuerySampler):
         Returns:
             The object itself
         """
-        self._X = X
+        self._X_centers = self._embedding_fun(X)
         return self
 
     def select_samples(self, X: np.array,
@@ -268,9 +269,9 @@ class KCenterGreedy(BaseQuerySampler):
             return np.arange(X.shape[0])
 
         selected = []
+        X = self._embedding_fun(X)
 
-
-        _, distances = pairwise_distances_argmin_min(X, self._X, metric=self.metric)
+        _, distances = pairwise_distances_argmin_min(X, self._X_centers, metric=self.metric)
 
 
         for _ in range(self.batch_size):

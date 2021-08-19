@@ -20,7 +20,7 @@ def test_k_center_greedy():
     # Let us consider the first sample selected, and select the other by batch of 2
     selected = np.zeros(X.shape[0], dtype=bool)
     selected[0] = True
-    sampler = KCenterGreedy(2)
+    sampler = KCenterGreedy(lambda x:x, 2)
 
     for i in range((X.shape[0] - 1) // 2):
         sampler.fit(X[selected], None)
