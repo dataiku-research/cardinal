@@ -121,21 +121,24 @@ class ActiveLearningSplitter():
         """
         index = (self._mask >= 0)  # A bit unsafe but simpler
         if iter is not None:
-            index = np.logical_and(index, self._mask <= iter)
+            index = np.logical_and(index, self._mask < iter)
         return index
 
     def dereference_batch_indices(self, indices):
         return np.where(self._mask == self.TRAIN_UNSELECTED)[0][indices]
 
-    def add_batch(self, indices):
+    def add_batch(self, indices, partial=False):
         """Add indices of a new batch to selected samples
 
         Args:
             indices: Arrays of indices of selected samples
+            partial: If True, indices are added to current iter, a new one is not started
         """
         if self.current_iter is None:
-            self.current_iter = -1
-        self.current_iter += 1
+            self.current_iter = 0
+        else:
+            if not partial:
+                self.current_iter += 1
         self._mask[self.dereference_batch_indices(indices)] = self.current_iter
 
     @property
@@ -173,7 +176,7 @@ class ActiveLearningSplitter():
         """
         index = (self._mask == self.TRAIN_UNSELECTED)
         if iter is not None:
-            index = np.logical_or(index, self._mask > iter)
+            index = np.logical_or(index, self._mask >= iter)
         return index
 
     @property
