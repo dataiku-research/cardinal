@@ -42,7 +42,7 @@ y = np.hstack([y_noisy, y_large])
 # We now create the active learning experiment. We use cardinal's splitter
 # to handles indices. For the initialisation, We sample data in all blobs.
 
-init_spl = ActiveLearningSplitter(X.shape[0], test_size=0.2, shuffle=True, stratify=y, random_state=seed)
+init_spl = ActiveLearningSplitter.train_test_split(X.shape[0], test_size=0.2, shuffle=True, stratify=y, random_state=seed)
 
 init_random_spl = deepcopy(init_spl)
 np.random.seed(seed)

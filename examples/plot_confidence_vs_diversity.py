@@ -16,7 +16,7 @@ from matplotlib import pyplot as plt
 from matplotlib.patches import Polygon
 import numpy as np
 
-from sklearn.datasets.samples_generator import make_blobs
+from sklearn.datasets import make_blobs
 from sklearn.svm import SVC
 
 from cardinal.uncertainty import ConfidenceSampler
