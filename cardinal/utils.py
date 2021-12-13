@@ -102,6 +102,30 @@ class ActiveLearningSplitter():
                 stratify=stratify)
         return cls(n_samples, test_index=test_index, dtype=dtype)
 
+    @classmethod
+    def from_mask(
+        cls,
+        mask
+    ):
+        """Create an indexer from train_test_split
+
+        Args:
+            mask: numpy int array
+                A valid mask for active learning splitter.
+        """
+        max_iter = np.max(mask)
+
+        assert(np.all(mask >= -2))
+        assert(np.unique(mask).shape[0] == max_iter + 3)
+
+        splitter = cls(mask.shape[0])
+        splitter._mask = mask
+
+        splitter.current_iter = max_iter
+
+        return splitter
+
+
     TRAIN_UNSELECTED = -1
     TEST = -2
 
