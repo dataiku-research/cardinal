@@ -41,7 +41,7 @@ clf = LogisticRegression()
 # first two blobs. This simulates an unlucky initialization where no data
 # from the isolated cluster is selected.
 
-init_spl = ActiveLearningSplitter(X.shape[0], test_size=0.2, stratify=blob, random_state=0)
+init_spl = ActiveLearningSplitter.train_test_split(X.shape[0], test_size=0.2, stratify=blob, random_state=0)
 init_spl.add_batch(np.hstack([
     np.where(blob[init_spl.train] == 0)[0][:batch_size],
     np.where(blob[init_spl.train] == 1)[0][:batch_size]

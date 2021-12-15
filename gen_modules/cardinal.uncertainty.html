@@ -13,6 +13,9 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
@@ -36,10 +39,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -119,16 +122,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">Active learning</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Active learning</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to Active Learning</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../uncertainty.html">Uncertainty-based Query Sampling</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Example galleries</span></p>
+<p class="caption" role="heading"><span class="caption-text">Example galleries</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Examples</a></li>
 </ul>
-<p class="caption"><span class="caption-text">API and developer reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">API and developer reference</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../reference.html">cardinal’s API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cardinal.base.html">cardinal.base</a></li>
@@ -199,8 +202,8 @@
 <div class="section" id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="cardinal.uncertainty.confidence_score">
-<code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">confidence_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classifier</span></em>, <em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)">numpy.ndarray</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)">numpy.ndarray</a><a class="reference internal" href="../_modules/cardinal/uncertainty.html#confidence_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.confidence_score" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.confidence_score">
+<span class="sig-prename descclassname"><span class="pre">cardinal.uncertainty.</span></span><span class="sig-name descname"><span class="pre">confidence_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a></span></span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#confidence_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.uncertainty.confidence_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Measure the confidence score of a model for a set of samples.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -216,8 +219,8 @@
 </dd></dl>
 
 <div class="sphx-glr-clear"></div><dl class="py function">
-<dt id="cardinal.uncertainty.entropy_score">
-<code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">entropy_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classifier</span></em>, <em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)">numpy.ndarray</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)">numpy.ndarray</a><a class="reference internal" href="../_modules/cardinal/uncertainty.html#entropy_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.entropy_score" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.entropy_score">
+<span class="sig-prename descclassname"><span class="pre">cardinal.uncertainty.</span></span><span class="sig-name descname"><span class="pre">entropy_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a></span></span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#entropy_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.uncertainty.entropy_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Entropy sampling query strategy, uses entropy of all probabilities as score.</p>
 <p>This strategy selects the samples with the highest entropy in their prediction
 probabilities.</p>
@@ -236,8 +239,8 @@ probabilities.</p>
 </dd></dl>
 
 <div class="sphx-glr-clear"></div><dl class="py function">
-<dt id="cardinal.uncertainty.margin_score">
-<code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">margin_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classifier</span></em>, <em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)">numpy.ndarray</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)">numpy.ndarray</a><a class="reference internal" href="../_modules/cardinal/uncertainty.html#margin_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.margin_score" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.margin_score">
+<span class="sig-prename descclassname"><span class="pre">cardinal.uncertainty.</span></span><span class="sig-name descname"><span class="pre">margin_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a></span></span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#margin_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.uncertainty.margin_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the difference between the two top probability classes for each sample.</p>
 <p>This strategy takes the probabilities of top two classes and uses their
 difference as a score for selection.</p>
@@ -258,8 +261,8 @@ difference as a score for selection.</p>
 <div class="section" id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="cardinal.uncertainty.ConfidenceSampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">ConfidenceSampler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classifier</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">strategy</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">'top'</span></em>, <em class="sig-param"><span class="n">assume_fitted</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#ConfidenceSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.ConfidenceSampler" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.ConfidenceSampler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cardinal.uncertainty.</span></span><span class="sig-name descname"><span class="pre">ConfidenceSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'top'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assume_fitted</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#ConfidenceSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.uncertainty.ConfidenceSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects samples with lowest prediction confidence.</p>
 <p>Lowest confidence sampling looks at the probability of the class predicted by
 the classifier and selects the samples where this probability is the lowest.</p>
@@ -276,14 +279,14 @@ The object must comply with scikit-learn interface and expose a
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="cardinal.uncertainty.ConfidenceSampler.classifier_">
-<code class="sig-name descname">classifier_</code><a class="headerlink" href="#cardinal.uncertainty.ConfidenceSampler.classifier_" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.ConfidenceSampler.classifier_">
+<span class="sig-name descname"><span class="pre">classifier_</span></span><a class="headerlink" href="#cardinal.uncertainty.ConfidenceSampler.classifier_" title="Permalink to this definition">¶</a></dt>
 <dd><p>The fitted classifier.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="cardinal.uncertainty.ConfidenceSampler.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#cardinal.uncertainty.ConfidenceSampler" title="cardinal.uncertainty.ConfidenceSampler">cardinal.uncertainty.ConfidenceSampler</a><a class="reference internal" href="../_modules/cardinal/uncertainty.html#ConfidenceSampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.ConfidenceSampler.fit" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.ConfidenceSampler.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cardinal.uncertainty.ConfidenceSampler" title="cardinal.uncertainty.ConfidenceSampler"><span class="pre">cardinal.uncertainty.ConfidenceSampler</span></a></span></span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#ConfidenceSampler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.uncertainty.ConfidenceSampler.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the estimator on labeled samples.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -299,8 +302,8 @@ The object must comply with scikit-learn interface and expose a
 </dd></dl>
 
 <dl class="py method">
-<dt id="cardinal.uncertainty.ConfidenceSampler.score_samples">
-<code class="sig-name descname">score_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/uncertainty.html#ConfidenceSampler.score_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.ConfidenceSampler.score_samples" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.ConfidenceSampler.score_samples">
+<span class="sig-name descname"><span class="pre">score_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#ConfidenceSampler.score_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.uncertainty.ConfidenceSampler.score_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects the samples to annotate from unlabeled data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -315,8 +318,8 @@ The object must comply with scikit-learn interface and expose a
 </dd></dl>
 
 <div class="sphx-glr-clear"></div><dl class="py class">
-<dt id="cardinal.uncertainty.EntropySampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">EntropySampler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classifier</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">strategy</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">'top'</span></em>, <em class="sig-param"><span class="n">assume_fitted</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#EntropySampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.EntropySampler" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.EntropySampler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cardinal.uncertainty.</span></span><span class="sig-name descname"><span class="pre">EntropySampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'top'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assume_fitted</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#EntropySampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.uncertainty.EntropySampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects samples with greatest entropy among all class probabilities.</p>
 <p>Greatest entropy sampling measures the uncertainty of the model over all
 classes through the entropy of the probabilites of all classes. Highest
@@ -335,14 +338,14 @@ comply with scikit-learn interface and expose a
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="cardinal.uncertainty.EntropySampler.classifier_">
-<code class="sig-name descname">classifier_</code><a class="headerlink" href="#cardinal.uncertainty.EntropySampler.classifier_" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.EntropySampler.classifier_">
+<span class="sig-name descname"><span class="pre">classifier_</span></span><a class="headerlink" href="#cardinal.uncertainty.EntropySampler.classifier_" title="Permalink to this definition">¶</a></dt>
 <dd><p>The fitted classifier.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="cardinal.uncertainty.EntropySampler.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#cardinal.uncertainty.EntropySampler" title="cardinal.uncertainty.EntropySampler">cardinal.uncertainty.EntropySampler</a><a class="reference internal" href="../_modules/cardinal/uncertainty.html#EntropySampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.EntropySampler.fit" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.EntropySampler.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cardinal.uncertainty.EntropySampler" title="cardinal.uncertainty.EntropySampler"><span class="pre">cardinal.uncertainty.EntropySampler</span></a></span></span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#EntropySampler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.uncertainty.EntropySampler.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the estimator on labeled samples.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -358,8 +361,8 @@ comply with scikit-learn interface and expose a
 </dd></dl>
 
 <dl class="py method">
-<dt id="cardinal.uncertainty.EntropySampler.score_samples">
-<code class="sig-name descname">score_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/uncertainty.html#EntropySampler.score_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.EntropySampler.score_samples" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.EntropySampler.score_samples">
+<span class="sig-name descname"><span class="pre">score_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#EntropySampler.score_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.uncertainty.EntropySampler.score_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects the samples to annotate from unlabeled data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -374,8 +377,8 @@ comply with scikit-learn interface and expose a
 </dd></dl>
 
 <div class="sphx-glr-clear"></div><dl class="py class">
-<dt id="cardinal.uncertainty.MarginSampler">
-<em class="property">class </em><code class="sig-prename descclassname">cardinal.uncertainty.</code><code class="sig-name descname">MarginSampler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">classifier</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span></em>, <em class="sig-param"><span class="n">strategy</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span> <span class="o">=</span> <span class="default_value">'top'</span></em>, <em class="sig-param"><span class="n">assume_fitted</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#MarginSampler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.MarginSampler" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.MarginSampler">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cardinal.uncertainty.</span></span><span class="sig-name descname"><span class="pre">MarginSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">classifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">strategy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'top'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assume_fitted</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#MarginSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.uncertainty.MarginSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects samples with greatest confusion between the top two classes.</p>
 <p>Smallest margin sampling uses the difference of predicted probability between
 the top two classes to select the samples on which the model is hesitating
@@ -394,14 +397,14 @@ comply with scikit-learn interface and expose a
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="cardinal.uncertainty.MarginSampler.classifier_">
-<code class="sig-name descname">classifier_</code><a class="headerlink" href="#cardinal.uncertainty.MarginSampler.classifier_" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.MarginSampler.classifier_">
+<span class="sig-name descname"><span class="pre">classifier_</span></span><a class="headerlink" href="#cardinal.uncertainty.MarginSampler.classifier_" title="Permalink to this definition">¶</a></dt>
 <dd><p>The fitted classifier.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="cardinal.uncertainty.MarginSampler.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#cardinal.uncertainty.MarginSampler" title="cardinal.uncertainty.MarginSampler">cardinal.uncertainty.MarginSampler</a><a class="reference internal" href="../_modules/cardinal/uncertainty.html#MarginSampler.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.MarginSampler.fit" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.MarginSampler.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cardinal.uncertainty.MarginSampler" title="cardinal.uncertainty.MarginSampler"><span class="pre">cardinal.uncertainty.MarginSampler</span></a></span></span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#MarginSampler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.uncertainty.MarginSampler.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the estimator on labeled samples.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -417,8 +420,8 @@ comply with scikit-learn interface and expose a
 </dd></dl>
 
 <dl class="py method">
-<dt id="cardinal.uncertainty.MarginSampler.score_samples">
-<code class="sig-name descname">score_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span><span class="p">:</span> <span class="n">numpy.array</span></em><span class="sig-paren">)</span> &#x2192; numpy.array<a class="reference internal" href="../_modules/cardinal/uncertainty.html#MarginSampler.score_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cardinal.uncertainty.MarginSampler.score_samples" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.uncertainty.MarginSampler.score_samples">
+<span class="sig-name descname"><span class="pre">score_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="../_modules/cardinal/uncertainty.html#MarginSampler.score_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.uncertainty.MarginSampler.score_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects the samples to annotate from unlabeled data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

@@ -140,6 +140,27 @@ custom query samplers and use them in advanced experiments.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we run an experiment on real data and show how active learning can be monitore...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_digits_metrics_thumb.png
+     :alt: Active Learning on Digit Recognition and Metrics
+
+     :ref:`sphx_glr_auto_examples_plot_digits_metrics.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_digits_metrics
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="In an active learning setting, the trade-off between exploration and exploitation plays a centr...">
 
 .. only:: html

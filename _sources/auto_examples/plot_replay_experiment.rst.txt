@@ -204,36 +204,36 @@ is human readable and can be shared for better reproducibility.
         sampler/
             margin/
                 progress.json
-                0/
-                    selector
-                    prediction
-                1/
-                    selector
-                    prediction
-                2/
-                    selector
-                    prediction
                 3/
-                    selector
                     prediction
+                    selector
                 4/
-                    selector
                     prediction
-                5/
                     selector
-                    prediction
-                6/
-                    selector
-                    prediction
-                7/
-                    selector
-                    prediction
                 8/
-                    selector
                     prediction
+                    selector
+                1/
+                    prediction
+                    selector
+                0/
+                    prediction
+                    selector
+                2/
+                    prediction
+                    selector
+                6/
+                    prediction
+                    selector
                 9/
-                    selector
                     prediction
+                    selector
+                5/
+                    prediction
+                    selector
+                7/
+                    prediction
+                    selector
 
 
 
@@ -259,9 +259,7 @@ We clean all the cache folder.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.262 seconds)
-
-**Estimated memory usage:**  9 MB
+   **Total running time of the script:** ( 0 minutes  0.056 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_replay_experiment.py:

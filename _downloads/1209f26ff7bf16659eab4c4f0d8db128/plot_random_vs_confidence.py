@@ -16,7 +16,7 @@ to converge faster toward the best result.
 from matplotlib import pyplot as plt
 import numpy as np
 
-from sklearn.datasets.samples_generator import make_blobs
+from sklearn.datasets import make_blobs
 from sklearn.svm import SVC
 
 from cardinal.random import RandomSampler

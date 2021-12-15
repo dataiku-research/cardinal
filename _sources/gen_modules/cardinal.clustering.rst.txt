@@ -25,6 +25,14 @@ cardinal.clustering
    .. raw:: html
 
 	       <div class="sphx-glr-clear"></div>
+   .. autoclass:: KCenterGreedy
+      :members:
+
+   .. include:: backreferences/cardinal.clustering.KCenterGreedy.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
    .. autoclass:: KCentroidSampler
       :members:
 
@@ -45,6 +53,22 @@ cardinal.clustering
       :members:
 
    .. include:: backreferences/cardinal.clustering.MiniBatchKMeansSampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   .. autoclass:: TwoStepIWKMeansSampler
+      :members:
+
+   .. include:: backreferences/cardinal.clustering.TwoStepIWKMeansSampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   .. autoclass:: TwoStepKCentroidSampler
+      :members:
+
+   .. include:: backreferences/cardinal.clustering.TwoStepKCentroidSampler.examples
 
    .. raw:: html
 

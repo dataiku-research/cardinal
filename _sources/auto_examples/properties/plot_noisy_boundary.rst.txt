@@ -90,7 +90,7 @@ to handles indices. For the initialisation, We sample data in all blobs.
 .. code-block:: python3
 
 
-    init_spl = ActiveLearningSplitter(X.shape[0], test_size=0.2, shuffle=True, stratify=y, random_state=seed)
+    init_spl = ActiveLearningSplitter.train_test_split(X.shape[0], test_size=0.2, shuffle=True, stratify=y, random_state=seed)
 
     init_random_spl = deepcopy(init_spl)
     np.random.seed(seed)
@@ -214,9 +214,7 @@ initialization and display the results for 3 very common samplers.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.746 seconds)
-
-**Estimated memory usage:**  8 MB
+   **Total running time of the script:** ( 0 minutes  0.788 seconds)
 
 
 .. _sphx_glr_download_auto_examples_properties_plot_noisy_boundary.py:

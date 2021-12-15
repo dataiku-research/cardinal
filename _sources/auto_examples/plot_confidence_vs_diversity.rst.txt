@@ -25,7 +25,6 @@ This example shows the importance of diversity-based approaches using a
 toy example where a very unlucky initialization makes lowest confidence
 approach underperform.
 
-
 .. GENERATED FROM PYTHON SOURCE LINES 13-14
 
 Those are the necessary imports and initializations
@@ -39,7 +38,7 @@ Those are the necessary imports and initializations
     from matplotlib.patches import Polygon
     import numpy as np
 
-    from sklearn.datasets.samples_generator import make_blobs
+    from sklearn.datasets import make_blobs
     from sklearn.svm import SVC
 
     from cardinal.uncertainty import ConfidenceSampler
@@ -244,9 +243,7 @@ properties.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.954 seconds)
-
-**Estimated memory usage:**  18 MB
+   **Total running time of the script:** ( 0 minutes  0.728 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_confidence_vs_diversity.py:

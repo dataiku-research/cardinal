@@ -26,7 +26,6 @@ works is to first test it on simulated data. In this example, we will
 generate a simple classification task and see how active learning allows
 to converge faster toward the best result.
 
-
 .. GENERATED FROM PYTHON SOURCE LINES 14-15
 
 Those are the necessary imports and initializations
@@ -39,7 +38,7 @@ Those are the necessary imports and initializations
     from matplotlib import pyplot as plt
     import numpy as np
 
-    from sklearn.datasets.samples_generator import make_blobs
+    from sklearn.datasets import make_blobs
     from sklearn.svm import SVC
 
     from cardinal.random import RandomSampler
@@ -51,17 +50,6 @@ Those are the necessary imports and initializations
 
 
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /usr/lib64/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 192 from C header, got 216 from PyObject
-      return f(*args, **kwds)
-    /home/aabraham/py36/lib64/python3.6/site-packages/sklearn/utils/deprecation.py:143: FutureWarning: The sklearn.datasets.samples_generator module is  deprecated in version 0.22 and will be removed in version 0.24. The corresponding classes / functions should instead be imported from sklearn.datasets. Anything that cannot be imported from sklearn.datasets is now part of the private API.
-      warnings.warn(message, FutureWarning)
 
 
 
@@ -200,9 +188,7 @@ on which its confidence is the lowest. This is done through cardinal samplers.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.518 seconds)
-
-**Estimated memory usage:**  22 MB
+   **Total running time of the script:** ( 0 minutes  0.337 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_random_vs_confidence.py:

@@ -57,7 +57,7 @@ kmeans_inertia = []
 kmeans_accuracy = []
 sampler = MiniBatchKMeansSampler(10)
 
-idx = ActiveLearningSplitter(10000, test_size=.2, random_state=0)
+idx = ActiveLearningSplitter.train_test_split(10000, test_size=.2, random_state=0)
 idx.add_batch(np.arange(10))
 
 for i in range(10):
@@ -73,7 +73,7 @@ ikmeans_inertia = []
 ikmeans_accuracy = []
 sampler = IncrementalMiniBatchKMeansSampler(10, random_state=0)
 
-idx = ActiveLearningSplitter(10000, test_size=.2, random_state=0)
+idx = ActiveLearningSplitter.train_test_split(10000, test_size=.2, random_state=0)
 idx.add_batch(np.arange(10))
 
 for i in range(10):

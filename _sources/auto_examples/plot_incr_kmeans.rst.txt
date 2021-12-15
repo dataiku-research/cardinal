@@ -35,7 +35,6 @@ samples are less likely to be selected nearby an already selected sample.
 This notebook introduces the principle behind Incremental KMeans and runs
 a small benchmark on generated data.
 
-
 .. GENERATED FROM PYTHON SOURCE LINES 20-105
 
 .. code-block:: python3
@@ -80,7 +79,7 @@ a small benchmark on generated data.
     kmeans_accuracy = []
     sampler = MiniBatchKMeansSampler(10)
 
-    idx = ActiveLearningSplitter(10000, test_size=.2, random_state=0)
+    idx = ActiveLearningSplitter.train_test_split(10000, test_size=.2, random_state=0)
     idx.add_batch(np.arange(10))
 
     for i in range(10):
@@ -96,12 +95,12 @@ a small benchmark on generated data.
     ikmeans_accuracy = []
     sampler = IncrementalMiniBatchKMeansSampler(10, random_state=0)
 
-    idx = ActiveLearningSplitter(10000, test_size=.2, random_state=0)
+    idx = ActiveLearningSplitter.train_test_split(10000, test_size=.2, random_state=0)
     idx.add_batch(np.arange(10))
 
     for i in range(10):
 
-        selected = sampler.fit(X[idx.selected]).select_samples(X[idx.non_selected], fixed_cluster_centers=X[idx.selected])
+        selected = sampler.fit(X[idx.selected]).select_samples(X[idx.non_selected])
 
         idx.add_batch(selected)
         ikmeans_inertia.append(inertia(X[idx.test], X[idx.selected]))
@@ -411,9 +410,7 @@ on the intertia which is reassuring.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  43.851 seconds)
-
-**Estimated memory usage:**  148 MB
+   **Total running time of the script:** ( 0 minutes  13.838 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_incr_kmeans.py:
