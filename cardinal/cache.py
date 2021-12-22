@@ -55,6 +55,7 @@ class ShelveStore(ValueStore):
         import shelve
         if not filename.endswith('.db'):
             raise ValueError('File extension must be .db with shelve backend')
+        filename = filename[:-3]  # Shelve adds a .db extension automatically
         self._conn = shelve.open(filename, writeback=writeback)
 
     def _store(self, name, value, **keys):

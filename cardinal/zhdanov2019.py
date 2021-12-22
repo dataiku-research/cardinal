@@ -33,7 +33,8 @@ class TwoStepKMeansSampler(BaseQuerySampler):
         Returns:
             The object itself
         """
-        self.sampler_list[0].fit(X, y)
+        for sampler in self.sampler_list:
+            sampler.fit(X, y)
         return self
 
     def select_samples(self, X: np.array,
