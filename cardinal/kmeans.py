@@ -38,9 +38,12 @@ from sklearn.utils import deprecated
 from sklearn.utils.validation import check_is_fitted, _check_sample_weight
 from sklearn.utils._openmp_helpers import _openmp_effective_n_threads
 from sklearn.exceptions import ConvergenceWarning
-from sklearn.cluster._k_means_fast import _inertia_dense
-from sklearn.cluster._k_means_fast import _inertia_sparse
-from sklearn.cluster._k_means_fast import _mini_batch_update_csr
+try:
+    from sklearn.cluster._k_means_fast import _inertia_dense
+    from sklearn.cluster._k_means_fast import _inertia_sparse
+except ImportError:
+    from sklearn.cluster._k_means import _inertia_dense
+    from sklearn.cluster._k_means import _inertia_sparse
 from sklearn.cluster._k_means_lloyd import lloyd_iter_chunked_dense
 from sklearn.cluster._k_means_lloyd import lloyd_iter_chunked_sparse
 from sklearn.cluster._k_means_elkan import init_bounds_dense
