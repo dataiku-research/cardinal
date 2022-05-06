@@ -39,8 +39,15 @@ from sklearn.utils.validation import check_is_fitted, _check_sample_weight
 from sklearn.utils._openmp_helpers import _openmp_effective_n_threads
 from sklearn.exceptions import ConvergenceWarning
 try:
-    from sklearn.cluster._k_means_fast import _inertia_dense
-    from sklearn.cluster._k_means_fast import _inertia_sparse
+    from sklearn.cluster._k_means_fast import _inertia_dense as _inertia_dense_
+    from sklearn.cluster._k_means_fast import _inertia_sparse as _inertia_sparse_
+
+    def _inertia_dense(X, sample_weight, centers, labels, n_threads):
+        return _inertia_dense_(X, sample_weight, centers, labels)
+    def _inertia_sparse(X, sample_weight, centers, labels, n_threads):
+        return _inertia_sparse_(X, sample_weight, centers, labels)
+
+
 except ImportError:
     from sklearn.cluster._kmeans import _inertia_dense
     from sklearn.cluster._kmeans import _inertia_sparse
@@ -612,7 +619,7 @@ def _labels_inertia(X, sample_weight, x_squared_norms, centers,
             weight_in_clusters, labels, center_shift, n_threads,
             update_centers=False)
 
-    inertia = _inertia(X, sample_weight, centers, labels)
+    inertia = _inertia(X, sample_weight, centers, labels, n_threads)
 
     return labels, inertia
 
