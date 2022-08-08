@@ -173,7 +173,8 @@ class TwoStepKCentroidSampler(BaseQuerySampler):
 
     def __init__(self, kcentroid_sampler, beta: int, classifier, batch_size: int,
                  assume_fitted: bool = False, verbose: int = 0, **kmeans_args):
-        
+        super().__init__(batch_size)
+
         self.sampler_list = [
             MarginSampler(classifier, beta * batch_size, strategy='top',
                           assume_fitted=assume_fitted, verbose=verbose),

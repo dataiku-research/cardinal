@@ -1,6 +1,7 @@
 import os
 from cardinal import cache
 from tempfile import NamedTemporaryFile
+from glob import glob
 
 
 def _test_backend(backend_class, suffix=''):
@@ -14,7 +15,8 @@ def _test_backend(backend_class, suffix=''):
     be = backend_class(filename)
     assert be.get('test').to_dict() == {'key': {0: 'example'}, 'value': {0: 37}}
     be.close()
-    os.unlink(filename)
+    for f in glob(filename + '*'):
+        os.unlink(f)
 
 
 def test_backends():
