@@ -142,7 +142,7 @@ class ActiveLearningSplitter():
         """Initialize a splitter with random samples.
         
         Args:
-            n_init_smaples: Number of samples in the first selection
+            n_init_samples: Number of samples in the first selection
             at_least_one_of_each_class: If specified, first iteration contains at least
                                         one sample from each class.
         """
@@ -166,6 +166,18 @@ class ActiveLearningSplitter():
         indices = random_state.choice(np.where(self.train)[0], replace=False, size=n_init_samples)
         self._mask[indices] = 0
         self.current_iter = 0
+
+
+    def initialize_with_indices(self, indices):
+        """Initialize a splitter with a given list of indices.
+        
+        Args:
+            indices: List of indices for the initialization
+        """
+        indices = self.dereference_batch_indices(indices)
+        self._mask[indices] = 0
+        self.current_iter = 0
+
 
     # Accessors
     ###########

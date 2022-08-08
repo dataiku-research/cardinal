@@ -16,3 +16,8 @@ def test_active_learning_splitter():
     splitter.add_batch([3, 5, 7])
     assert(splitter.current_iter == 1)
     
+    # Test initialization with indices
+    splitter = ActiveLearningSplitter(100)
+    splitter.initialize_with_indices([0, 13, 42])
+    assert(splitter.selected.sum() == 3)
+    assert(np.in1d([0, 13, 42], np.where(splitter.selected)[0]).all())
