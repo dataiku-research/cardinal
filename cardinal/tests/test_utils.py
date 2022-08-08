@@ -11,3 +11,8 @@ def test_active_learning_splitter():
 
     splitter.initialize_with_random(4, at_least_one_of_each_class=y)
     assert(np.in1d([1, 2], np.where(splitter.selected)).all())
+
+    assert(splitter.current_iter == 0)
+    splitter.add_batch([3, 5, 7])
+    assert(splitter.current_iter == 1)
+    
