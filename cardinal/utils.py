@@ -204,7 +204,7 @@ class ActiveLearningSplitter():
         self._check_init()
         index = (self._mask >= 0)  # A bit unsafe but simpler
         if iter is not None:
-            index = np.logical_and(index, self._mask < iter)
+            index = np.logical_and(index, self._mask <= iter)
         return index
 
     def dereference_batch_indices(self, indices):
@@ -260,7 +260,7 @@ class ActiveLearningSplitter():
         self._check_init()
         index = (self._mask == self.TRAIN_UNSELECTED)
         if iter is not None:
-            index = np.logical_or(index, self._mask >= iter)
+            index = np.logical_or(index, self._mask > iter)
         return index
 
     @property

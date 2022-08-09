@@ -1,5 +1,6 @@
 import numpy as np
 from cardinal.utils import ActiveLearningSplitter
+from pytest import raises
 
 
 def test_active_learning_splitter():
@@ -21,3 +22,13 @@ def test_active_learning_splitter():
     splitter.initialize_with_indices([0, 13, 42])
     assert(splitter.selected.sum() == 3)
     assert(np.in1d([0, 13, 42], np.where(splitter.selected)[0]).all())
+
+    # Full test using _at functions
+    splitter = ActiveLearningSplitter(100)
+    with raises(ValueError):
+        splitter.selected
+    splitter.initialize_with_indices(np.arange(10))
+    assert(splitter.selected.sum() == 10)
+    assert(splitter.selected_at(0).sum() == 10)
+    assert(splitter.current_iter == 0)
+    
