@@ -239,9 +239,9 @@ class ActiveLearningSplitter():
         if iter is None:
             iter = self.current_iter
 
-        batch_mask = (self._mask == iter)
+        batch_mask = (self._mask == (iter + 1))
         if not batch_mask.any():
-            return ValueError('Asking for a batch that has not been computed yet')
+            raise ValueError('Asking for a batch that has not been computed yet')
 
     @property
     def non_selected(self):
