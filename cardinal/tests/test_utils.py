@@ -33,8 +33,6 @@ def test_active_learning_splitter():
     assert(splitter.non_selected_at(0).sum() == 90)
     assert(splitter.current_iter == 0)
     with raises(ValueError):
-        splitter.batch
-    with raises(ValueError):
         splitter.batch_at(0)
     splitter.add_batch(np.arange(10))
     assert(splitter.selected.sum() == 20)
@@ -43,6 +41,7 @@ def test_active_learning_splitter():
     assert(splitter.non_selected_at(0).sum() == 90)
     assert(splitter.non_selected.sum() == 80)
     assert(splitter.current_iter == 1)
+    assert((np.logical_or(splitter.selected_at(0), splitter.batch_at(0)) == splitter.selected_at(1)).all())
 
     y = np.arange(10).repeat(10)
     splitter = ActiveLearningSplitter.train_test_split(100, test_size=.2, stratify=y)
