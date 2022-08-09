@@ -48,10 +48,5 @@ def test_active_learning_splitter():
     splitter = ActiveLearningSplitter.train_test_split(100, test_size=.2, stratify=y)
     splitter.initialize_with_random(n_init_samples=10, at_least_one_of_each_class=y[splitter.train])
   
-    print('0', splitter.selected_at(0).sum(), splitter.selected_at(0))
-    print(splitter.current_iter, splitter.selected.sum(), splitter.selected)
-    print()
     assert(splitter.selected.sum() == 10)
     assert(splitter.current_iter == 0)
-
-    
