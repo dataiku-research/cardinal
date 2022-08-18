@@ -49,3 +49,16 @@ def test_active_learning_splitter():
   
     assert(splitter.selected.sum() == 10)
     assert(splitter.current_iter == 0)
+
+
+def test_active_learning_splitter_random_init():
+
+    n_samples = 10000
+    n_test = 1000
+    n_classes = 50
+    for i in range(10):
+        test_indices = np.random.choice(10000, replace=False, size=n_test)
+        splitter = ActiveLearningSplitter(n_samples, test_index=test_indices)
+        classes = np.random.choice(n_classes, replace=True, size=n_samples)
+        splitter.initialize_with_random(n_classes, classes[splitter.train])
+        assert(np.unique(classes[splitter.selected]).shape[0] == n_classes)

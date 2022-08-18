@@ -155,12 +155,14 @@ class ActiveLearningSplitter():
             if at_least_one_of_each_class.shape[0] != self.train.sum():
                 raise ValueError('Labels provided must have the same shape as train')
             # We chose at least one index per class
-            inverse_table = np.unique(at_least_one_of_each_class, return_inverse=True)[1]
+            classes, inverse_table = np.unique(at_least_one_of_each_class, return_inverse=True)
+            n_classes = classes.shape[0]
             shuffled_index = np.arange(inverse_table.shape[0])
             random_state.shuffle(shuffled_index)
             one_per_class = np.unique(inverse_table[shuffled_index], return_index=True)[1]
             one_per_class = shuffled_index[one_per_class]
-            self._mask[one_per_class] = 0
+            self._mask[np.where(self.train)[0][one_per_class]] = 0
+            # assert(np.unique(at_least_one_of_each_class[np.where(self._mask[self._mask > self.TEST] == 0)[0]]).shape[0] == n_classes)
             n_init_samples -= one_per_class.shape[0]
 
         indices = random_state.choice(np.where(self.train)[0], replace=False, size=n_init_samples)
