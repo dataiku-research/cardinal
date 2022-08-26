@@ -283,6 +283,14 @@ class KCenterGreedy(BaseQuerySampler):
             # Consider this point added to label by updating distances
             distances_to_new = pairwise_distances(X, X[selected[-1], None], metric=self.metric)[:, 0]
             distances = np.min([distances, distances_to_new], axis=0)
+            if np.allclose(distances, 0.):
+                # Distances have collapsed, we select randomly the rest of the samples
+                p = np.ones(X.shape[0])
+                selected = np.asarray(selected)
+                p[selected] = 0.
+                p /= p.sum()
+                selected = np.concatenate([selected, np.random.choice(X.shape[0], size=self.batch_size - selected.shape[0], replace=False, p=p)])
+                break
 
         # Return numpy array, not a list.
         return np.asarray(selected)
