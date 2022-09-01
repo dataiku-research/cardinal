@@ -20,10 +20,13 @@ def _get_probability_classes(
     if classifier == 'precomputed':
         return X
     check_proba_estimator(classifier)
-    if classifier.__class__.__module__.split('.')[0] == 'keras':  # Keras models have no predict_proba
+    if classifier.__class__.__module__.split('.')[0] in ['keras', 'tensorflow']:  # Keras models have no predict_proba
         classwise_uncertainty = classifier.predict(X)
     else:  # sklearn compatible model
         classwise_uncertainty = classifier.predict_proba(X)
+    if classwise_uncertainty.shape[1] == 1:
+        # It is probably a binary classifier
+        classwise_uncertainty = np.hstack([1. - classwise_uncertainty, classwise_uncertainty])
     return classwise_uncertainty
 
 
