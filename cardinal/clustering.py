@@ -281,13 +281,13 @@ class KCenterGreedy(BaseQuerySampler):
             if furthest_point in selected:
                 raise ValueError('Selection of duplicate index:', furthest_point)
             selected.append(furthest_point)
+            distances[furthest_point] = 0.
 
             # Consider this point added to label by updating distances
             distances_to_new = pairwise_distances(X, X[selected[-1], None], metric=self.metric)[:, 0]
             distances = np.min([distances, distances_to_new], axis=0)
-            tolerance = np.max(distances[selected]) * 1.1
             
-            if np.allclose(distances, 0., atol=tolerance):
+            if np.allclose(distances, 0.):
                 # Distances have collapsed, we select randomly the rest of the samples
                 p = np.ones(X.shape[0])
                 selected = np.asarray(selected)
