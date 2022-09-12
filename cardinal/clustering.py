@@ -274,16 +274,20 @@ class KCenterGreedy(BaseQuerySampler):
 
         _, distances = pairwise_distances_argmin_min(X, self._X_centers, metric=self.metric)
 
-
         for _ in range(self.batch_size):
 
             # Select the point furthest from already selected
-            selected.append(np.argmax(distances))
+            furthest_point = np.argmax(distances)
+            if furthest_point in selected:
+                raise ValueError('Selection of duplicate index:', furthest_point)
+            selected.append(furthest_point)
 
             # Consider this point added to label by updating distances
             distances_to_new = pairwise_distances(X, X[selected[-1], None], metric=self.metric)[:, 0]
             distances = np.min([distances, distances_to_new], axis=0)
-            if np.allclose(distances, 0.):
+            tolerance = np.max(distances[selected]) * 1.1
+            
+            if np.allclose(distances, 0., atol=tolerance):
                 # Distances have collapsed, we select randomly the rest of the samples
                 p = np.ones(X.shape[0])
                 selected = np.asarray(selected)
