@@ -165,7 +165,7 @@ class ActiveLearningSplitter():
             # assert(np.unique(at_least_one_of_each_class[np.where(self._mask[self._mask > self.TEST] == 0)[0]]).shape[0] == n_classes)
             n_init_samples -= one_per_class.shape[0]
 
-        indices = random_state.choice(np.where(self.train)[0], replace=False, size=n_init_samples)
+        indices = random_state.choice(np.where(self._mask == TRAIN_UNSELECTED)[0], replace=False, size=n_init_samples)
         self._mask[indices] = 0
         self.current_iter = 0
 
