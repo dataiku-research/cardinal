@@ -33,6 +33,25 @@ def test_k_center_greedy():
         selected[indices] = True
 
 
+def test_k_center_greedy_duplicates():
+
+    # In case of duplicates KCenter relies on random selection.
+
+    X = np.array([
+        [0, 0],
+        [1, 1],
+        [2, 2],
+        [2, 2],
+        [2, 2],
+        [2, 2],
+    ])
+
+    sampler = KCenterGreedy(lambda x:x, 4)
+
+    sampler.fit(X[[0]], None)
+    indices = sampler.select_samples(X[1:])
+    assert(indices.shape[0] == 4)
+
 
 ###################################################################################
 # THIS IS THE REFERENCE IMPLEMENTATION OF KCENTER GREEDY
