@@ -6,6 +6,7 @@ from .base import BaseQuerySampler
 from .version import check_modules
 from .kmeans import IncrementalMiniBatchKMeans
 from .uncertainty import MarginSampler
+from scipy import linalg
 
 
 class KCentroidSampler(BaseQuerySampler):
@@ -79,6 +80,128 @@ class KMeansSampler(KCentroidSampler):
         kmeans_args['n_clusters'] = batch_size
         super().__init__(KMeans(**kmeans_args), batch_size)
 
+
+class GMMLikelihoodSampler(BaseQuerySampler):
+    """ GM (Gaussian Mixture Models) based query sampler.
+    In order to increase diversity, it is possible to use maximum likelihood to select samples.
+
+    Args:
+        clustering: A clustering algorithm matching the sklearn interface
+        batch_size: Number of samples to draw when predicting.
+
+    Attributes:
+        clustering_ : The fitted clustering estimator.
+    """
+    def __init__(self, clustering, batch_size):
+        super().__init__(batch_size)
+        self.clustering_ = clustering
+
+    def fit(self, X, y=None) -> 'GMMLikelihoodSampler':
+        """Does nothing, this method is unsupervised.
+        
+        Args:
+            X: Labeled samples of shape (n_samples, n_features).
+            y: Labels of shape (n_samples).
+        
+        Returns:
+            The object itself
+        """
+        return self
+
+    def select_samples(self, X: np.array) -> np.array:
+        """Clusters the samples and select the ones with highest likelihood.
+        
+        Args:
+            X: Pool of unlabeled samples of shape (n_samples, n_features).
+            sample_weight: Weight of the samples of shape (n_samples),
+                optional.
+
+        Returns:
+            Indices of the selected samples of shape (batch_size).
+        """
+        from scipy.stats import multivariate_normal
+        if self._not_enough_samples(X):
+            return np.arange(X.shape[0])
+
+        gmm_model = self.clustering_.fit(X)
+        centers= np.empty(shape=(gmm_model.n_components, 1), dtype=int)
+        print(gmm_model.n_components)
+        for i in range(gmm_model.n_components):
+            try:
+                density = multivariate_normal.logpdf(X, cov=gmm_model.covariances_[i]
+                                                , mean=gmm_model.means_[i]
+                                                , allow_singular=True)
+            except linalg.LinAlgError:
+                cov = gmm_model.covariances_[i]
+                approximated_cov = np.linalg.pinv(cov)
+                density = multivariate_normal.logpdf(X, cov=approximated_cov
+                                                , mean=gmm_model.means_[i]
+                                                , allow_singular=True)
+            centers[i, :] = np.argmax(density) 
+        return centers.reshape(gmm_model.n_components,)
+
+class GMMSampler(GMMLikelihoodSampler):
+    """Select samples as highest likelihood to GMM clusters.
+
+    Args:
+        batch_size: Number of samples to draw when predicting.
+    """
+    def __init__(self, batch_size, **gmm_args):
+        check_modules('sklearn', 'clustering.KmeansSampler')
+        from sklearn.mixture import GaussianMixture
+
+        if 'n_clusters' in gmm_args:
+            raise ValueError(
+                'You have specified n_clusters={} when creating KMeansSampler.'
+                ' This is not supported since n_clusters is overridden using '
+                'batch_size.'.format(gmm_args['n_clusters']))
+        gmm_args['n_components'] = batch_size
+        super().__init__(GaussianMixture(**gmm_args), batch_size)
+
+class TwoStepGMMSampler:
+    """GMM sampler using a margin uncertainty sampler as preselector
+
+    """
+    def __init__(self, beta: int, classifier, batch_size: int,
+                 assume_fitted: bool = False, verbose: int = 0, **gmm_args):
+        
+        self.sampler_list = [
+            MarginSampler(classifier, beta * batch_size, strategy='top',
+                          assume_fitted=assume_fitted, verbose=verbose),
+            GMMSampler(batch_size, **gmm_args)
+        ]
+
+    def fit(self, X: np.array, y: np.array = None) -> 'TwoStepGMMSampler':
+        """Fits the first query sampler
+
+        Args:
+            X: Labeled samples of shape [n_samples, n_features].
+            y: Labels of shape [n_samples].
+        
+        Returns:
+            The object itself
+        """
+        for sampler in self.sampler_list:
+            sampler.fit(X, y)
+        return self
+
+    def select_samples(self, X: np.array) -> np.array:
+        """Selects the using uncertainty preselection and KMeans sampler.
+
+        Args:
+            X: Pool of unlabeled samples of shape (n_samples, n_features).
+            sample_weight: Weight of the samples of shape (n_samples),
+                optional.
+
+        Returns:
+            Indices of the selected samples of shape (batch_size).
+        """
+        selected = self.sampler_list[0].select_samples(X)
+        kwargs = dict()
+        new_selected = self.sampler_list[1].select_samples(
+            X[selected], **kwargs)
+        selected = selected[new_selected]
+        return selected
 
 class MiniBatchKMeansSampler(KCentroidSampler):
     """Select samples as closest sample to MiniBatchKMeans centroids.
@@ -165,7 +288,6 @@ Args:
         # linear_sum_assignemnt solves this problem.
         return linear_sum_assignment(distances)[0]
 
-
 class TwoStepKCentroidSampler(BaseQuerySampler):
     """KMeans sampler using a margin uncertainty sampler as preselector
 
@@ -225,7 +347,6 @@ class TwoStepIWKMeansSampler(TwoStepKCentroidSampler):
                           assume_fitted=assume_fitted, verbose=verbose),
             IncrementalMiniBatchKMeansSampler(batch_size, **kmeans_args)
         ]
-
 
 class KCenterGreedy(BaseQuerySampler):
     """ KCenter greedy query sampler.
