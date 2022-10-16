@@ -55,6 +55,9 @@ class ActiveLearningSplitter():
         test_index: Index of test samples if any
     """
 
+    # Constructors
+    ##############
+
     def __init__(self, n_samples, test_index=None, dtype=np.int8):
         self._mask = np.full(n_samples, self.TRAIN_UNSELECTED, dtype=dtype)
         self.current_iter = None
@@ -125,9 +128,66 @@ class ActiveLearningSplitter():
 
         return splitter
 
+    # Constants
+    ###########
 
     TRAIN_UNSELECTED = -1
     TEST = -2
+
+    # Initilization
+    ###############
+
+    def initialize_with_random(self, n_init_samples:int, at_least_one_of_each_class=None,
+                               random_state: RandomStateType=None,):
+        """Initialize a splitter with random samples.
+        
+        Args:
+            n_init_samples: Number of samples in the first selection
+            at_least_one_of_each_class: If specified, first iteration contains at least
+                                        one sample from each class.
+        """
+        random_state = check_random_state(random_state)
+
+        if self.current_iter is not None:
+            raise ValueError('Initilization must be performed after creation of the splitter')
+
+        if at_least_one_of_each_class is not None:
+            if at_least_one_of_each_class.shape[0] != self.train.sum():
+                raise ValueError('Labels provided must have the same shape as train')
+            # We chose at least one index per class
+            classes, inverse_table = np.unique(at_least_one_of_each_class, return_inverse=True)
+            n_classes = classes.shape[0]
+            shuffled_index = np.arange(inverse_table.shape[0])
+            random_state.shuffle(shuffled_index)
+            one_per_class = np.unique(inverse_table[shuffled_index], return_index=True)[1]
+            one_per_class = shuffled_index[one_per_class]
+            self._mask[np.where(self.train)[0][one_per_class]] = 0
+            # assert(np.unique(at_least_one_of_each_class[np.where(self._mask[self._mask > self.TEST] == 0)[0]]).shape[0] == n_classes)
+            n_init_samples -= one_per_class.shape[0]
+
+        indices = random_state.choice(np.where(self._mask == self.TRAIN_UNSELECTED)[0], replace=False, size=n_init_samples)
+        self._mask[indices] = 0
+        self.current_iter = 0
+
+
+    def initialize_with_indices(self, indices):
+        """Initialize a splitter with a given list of indices.
+        
+        Args:
+            indices: List of indices for the initialization
+        """
+        indices = self.dereference_batch_indices(indices)
+        self._mask[indices] = 0
+        self.current_iter = 0
+
+
+    # Accessors
+    ###########
+
+    def _check_init(self):
+        if self.current_iter is None:
+            raise ValueError('Splitter must be initialized before any index is accessed')
+
 
     @property
     def selected(self):
@@ -143,27 +203,25 @@ class ActiveLearningSplitter():
         Returns:
             Indices selected until the given iteration.
         """
+        self._check_init()
         index = (self._mask >= 0)  # A bit unsafe but simpler
         if iter is not None:
-            index = np.logical_and(index, self._mask < iter)
+            index = np.logical_and(index, self._mask <= iter)
         return index
 
     def dereference_batch_indices(self, indices):
         return np.where(self._mask == self.TRAIN_UNSELECTED)[0][indices]
 
-    def add_batch(self, indices, partial=False):
+    def add_batch(self, indices):
         """Add indices of a new batch to selected samples
 
         Args:
             indices: Arrays of indices of selected samples
-            partial: If True, indices are added to current iter, a new one is not started
         """
-        if self.current_iter is None:
-            self.current_iter = 0
-        else:
-            if not partial:
-                self.current_iter += 1
-        self._mask[self.dereference_batch_indices(indices)] = self.current_iter
+        self._check_init()
+        next_iter = self.current_iter + 1
+        self._mask[self.dereference_batch_indices(indices)] = next_iter
+        self.current_iter = next_iter
 
     @property
     def batch(self):
@@ -177,12 +235,16 @@ class ActiveLearningSplitter():
                 the last one.
 
         Returns:
-            Indices of the batch corresponding to the iteration.
+            A binary mask of the batch samples at a given iteration.
         """
+        self._check_init()
         if iter is None:
-            iter = self.current_iter
+            iter = self.current_iter - 1
 
-        return (self._mask == iter)
+        batch_mask = (self._mask == (iter + 1))
+        if not batch_mask.any():
+            raise ValueError('Asking for a batch that has not been computed yet')
+        return batch_mask
 
     @property
     def non_selected(self):
@@ -198,9 +260,10 @@ class ActiveLearningSplitter():
         Returns:
             Indices not selected until the given iteration.
         """
+        self._check_init()
         index = (self._mask == self.TRAIN_UNSELECTED)
         if iter is not None:
-            index = np.logical_or(index, self._mask >= iter)
+            index = np.logical_or(index, self._mask > iter)
         return index
 
     @property
@@ -208,7 +271,7 @@ class ActiveLearningSplitter():
         """Get indices of the train samples.
 
         Returns:
-            List of indices selected for train.
+            A binary mask of the train samples.
         """
         return (self._mask != self.TEST)
 
@@ -217,6 +280,6 @@ class ActiveLearningSplitter():
         """Get indices of the test samples.
 
         Returns:
-            List of indices selected for test.
+            A binary mask of the test samples.
         """
         return (self._mask == self.TEST)

@@ -295,7 +295,8 @@ class TwoStepKCentroidSampler(BaseQuerySampler):
 
     def __init__(self, kcentroid_sampler, beta: int, classifier, batch_size: int,
                  assume_fitted: bool = False, verbose: int = 0, **kmeans_args):
-        
+        super().__init__(batch_size)
+
         self.sampler_list = [
             MarginSampler(classifier, beta * batch_size, strategy='top',
                           assume_fitted=assume_fitted, verbose=verbose),
@@ -394,15 +395,27 @@ class KCenterGreedy(BaseQuerySampler):
 
         _, distances = pairwise_distances_argmin_min(X, self._X_centers, metric=self.metric)
 
-
         for _ in range(self.batch_size):
 
             # Select the point furthest from already selected
-            selected.append(np.argmax(distances))
+            furthest_point = np.argmax(distances)
+            if furthest_point in selected:
+                raise ValueError('Selection of duplicate index:', furthest_point)
+            selected.append(furthest_point)
+            distances[furthest_point] = 0.
 
             # Consider this point added to label by updating distances
             distances_to_new = pairwise_distances(X, X[selected[-1], None], metric=self.metric)[:, 0]
             distances = np.min([distances, distances_to_new], axis=0)
+            
+            if np.allclose(distances, 0.):
+                # Distances have collapsed, we select randomly the rest of the samples
+                p = np.ones(X.shape[0])
+                selected = np.asarray(selected)
+                p[selected] = 0.
+                p /= p.sum()
+                selected = np.concatenate([selected, np.random.choice(X.shape[0], size=self.batch_size - selected.shape[0], replace=False, p=p)])
+                break
 
         # Return numpy array, not a list.
         return np.asarray(selected)
