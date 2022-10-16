@@ -1,12 +1,11 @@
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 from sklearn.metrics import pairwise_distances, pairwise_distances_argmin_min
-
+from scipy import linalg
 from .base import BaseQuerySampler
 from .version import check_modules
 from .kmeans import IncrementalMiniBatchKMeans
 from .uncertainty import MarginSampler
-from scipy import linalg
 
 
 class KCentroidSampler(BaseQuerySampler):
@@ -61,7 +60,6 @@ class KCentroidSampler(BaseQuerySampler):
         # linear_sum_assignemnt solves this problem.
         return linear_sum_assignment(distances)[0]
 
-
 class KMeansSampler(KCentroidSampler):
     """Select samples as closest sample to KMeans centroids.
 
@@ -79,7 +77,6 @@ class KMeansSampler(KCentroidSampler):
                 'batch_size.'.format(kmeans_args['n_clusters']))
         kmeans_args['n_clusters'] = batch_size
         super().__init__(KMeans(**kmeans_args), batch_size)
-
 
 class GMMLikelihoodSampler(BaseQuerySampler):
     """ GM (Gaussian Mixture Models) based query sampler.
