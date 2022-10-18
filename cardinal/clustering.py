@@ -122,7 +122,7 @@ class GMMLikelihoodSampler(BaseQuerySampler):
             return np.arange(X.shape[0])
 
         gmm_model = self.clustering_.fit(X)
-        centers= np.empty(shape=(gmm_model.n_components, 1), dtype=int)
+        centers= np.empty(shape=(gmm_model.n_components,), dtype=int)
         for i in range(gmm_model.n_components):
             try:
                 density = multivariate_normal.logpdf(X, cov=gmm_model.covariances_[i],
@@ -134,7 +134,7 @@ class GMMLikelihoodSampler(BaseQuerySampler):
                 density = multivariate_normal.logpdf(X, cov=approximated_cov,
                                                      mean=gmm_model.means_[i],
                                                      allow_singular=True)
-            centers[i, :] = np.argmax(density) 
+            centers[i] = np.argmax(density) 
         return centers
 
 class GMMSampler(GMMLikelihoodSampler):
