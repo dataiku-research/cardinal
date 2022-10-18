@@ -2,6 +2,7 @@ import numpy as np
 from scipy.optimize import linear_sum_assignment
 from sklearn.metrics import pairwise_distances, pairwise_distances_argmin_min
 from scipy import linalg
+from scipy.stats import multivariate_normal
 from .base import BaseQuerySampler
 from .version import check_modules
 from .kmeans import IncrementalMiniBatchKMeans
@@ -116,26 +117,25 @@ class GMMLikelihoodSampler(BaseQuerySampler):
         Returns:
             Indices of the selected samples of shape (batch_size).
         """
-        from scipy.stats import multivariate_normal
+
         if self._not_enough_samples(X):
             return np.arange(X.shape[0])
 
         gmm_model = self.clustering_.fit(X)
         centers= np.empty(shape=(gmm_model.n_components, 1), dtype=int)
-        print(gmm_model.n_components)
         for i in range(gmm_model.n_components):
             try:
-                density = multivariate_normal.logpdf(X, cov=gmm_model.covariances_[i]
-                                                , mean=gmm_model.means_[i]
-                                                , allow_singular=True)
+                density = multivariate_normal.logpdf(X, cov=gmm_model.covariances_[i],
+                                                     mean=gmm_model.means_[i], 
+                                                     allow_singular=True)
             except linalg.LinAlgError:
                 cov = gmm_model.covariances_[i]
                 approximated_cov = np.linalg.pinv(cov)
-                density = multivariate_normal.logpdf(X, cov=approximated_cov
-                                                , mean=gmm_model.means_[i]
-                                                , allow_singular=True)
+                density = multivariate_normal.logpdf(X, cov=approximated_cov,
+                                                     mean=gmm_model.means_[i],
+                                                     allow_singular=True)
             centers[i, :] = np.argmax(density) 
-        return centers.reshape(gmm_model.n_components,)
+        return centers
 
 class GMMSampler(GMMLikelihoodSampler):
     """Select samples as highest likelihood to GMM clusters.
@@ -144,12 +144,12 @@ class GMMSampler(GMMLikelihoodSampler):
         batch_size: Number of samples to draw when predicting.
     """
     def __init__(self, batch_size, **gmm_args):
-        check_modules('sklearn', 'clustering.KmeansSampler')
+        check_modules('sklearn', 'clustering.GMMSampler')
         from sklearn.mixture import GaussianMixture
 
         if 'n_clusters' in gmm_args:
             raise ValueError(
-                'You have specified n_clusters={} when creating KMeansSampler.'
+                'You have specified n_clusters={} when creating GMMSampler.'
                 ' This is not supported since n_clusters is overridden using '
                 'batch_size.'.format(gmm_args['n_clusters']))
         gmm_args['n_components'] = batch_size
