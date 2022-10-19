@@ -1,88 +1,47 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>cardinal.clustering &mdash; cardinal 0.0.6-dev-git documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
-
-  
-  
+  <title>cardinal.clustering &mdash; cardinal 0.0.9-git documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="cardinal.batch" href="cardinal.batch.html" />
     <link rel="prev" title="cardinal.uncertainty" href="cardinal.uncertainty.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> cardinal
-          
-
-          
-            
             <img src="../_static/cardinal.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                0.0.6-dev
+                0.0.9
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -90,18 +49,12 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
 
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
       <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Versions</span>
-        v: dev
+        v: stable
         <span class="fa fa-caret-down"></span>
       </span>
       <div class="rst-other-versions">
@@ -117,11 +70,6 @@
     </div>
 
     
-            
-            
-              
-            
-            
               <p class="caption" role="heading"><span class="caption-text">Active learning</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to Active Learning</a></li>
@@ -138,7 +86,19 @@
 <li class="toctree-l2"><a class="reference internal" href="cardinal.random.html">cardinal.random</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cardinal.uncertainty.html">cardinal.uncertainty</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">cardinal.clustering</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cardinal.clustering.GMMLikelihoodSampler"><code class="docutils literal notranslate"><span class="pre">GMMLikelihoodSampler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cardinal.clustering.GMMSampler"><code class="docutils literal notranslate"><span class="pre">GMMSampler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cardinal.clustering.IncrementalMiniBatchKMeansSampler"><code class="docutils literal notranslate"><span class="pre">IncrementalMiniBatchKMeansSampler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cardinal.clustering.KCenterGreedy"><code class="docutils literal notranslate"><span class="pre">KCenterGreedy</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cardinal.clustering.KCentroidSampler"><code class="docutils literal notranslate"><span class="pre">KCentroidSampler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cardinal.clustering.KMeansSampler"><code class="docutils literal notranslate"><span class="pre">KMeansSampler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cardinal.clustering.MiniBatchKMeansSampler"><code class="docutils literal notranslate"><span class="pre">MiniBatchKMeansSampler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cardinal.clustering.TwoStepGMMSampler"><code class="docutils literal notranslate"><span class="pre">TwoStepGMMSampler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cardinal.clustering.TwoStepIWKMeansSampler"><code class="docutils literal notranslate"><span class="pre">TwoStepIWKMeansSampler</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cardinal.clustering.TwoStepKCentroidSampler"><code class="docutils literal notranslate"><span class="pre">TwoStepKCentroidSampler</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="cardinal.batch.html">cardinal.batch</a></li>
@@ -148,30 +108,19 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku-research/cardinal">Fork cardinal on Github</a></li>
 </ul>
 
-            
-          
 
   
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">cardinal</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
@@ -195,14 +144,81 @@
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="module-cardinal.clustering">
-<span id="cardinal-clustering"></span><h1>cardinal.clustering<a class="headerlink" href="#module-cardinal.clustering" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+             
+  <section id="module-cardinal.clustering">
+<span id="cardinal-clustering"></span><h1>cardinal.clustering<a class="headerlink" href="#module-cardinal.clustering" title="Permalink to this heading">¶</a></h1>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
+<dt class="sig sig-object py" id="cardinal.clustering.GMMLikelihoodSampler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">GMMLikelihoodSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clustering</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#GMMLikelihoodSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.GMMLikelihoodSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>GM (Gaussian Mixture Models) based query sampler.
+In order to increase diversity, it is possible to use maximum likelihood to select samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clustering</strong> – A clustering algorithm matching the sklearn interface</p></li>
+<li><p><strong>batch_size</strong> – Number of samples to draw when predicting.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cardinal.clustering.GMMLikelihoodSampler.clustering_">
+<span class="sig-name descname"><span class="pre">clustering_</span></span><a class="headerlink" href="#cardinal.clustering.GMMLikelihoodSampler.clustering_" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fitted clustering estimator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cardinal.clustering.GMMLikelihoodSampler.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cardinal.clustering.GMMLikelihoodSampler" title="cardinal.clustering.GMMLikelihoodSampler"><span class="pre">GMMLikelihoodSampler</span></a></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#GMMLikelihoodSampler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.GMMLikelihoodSampler.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Does nothing, this method is unsupervised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – Labeled samples of shape (n_samples, n_features).</p></li>
+<li><p><strong>y</strong> – Labels of shape (n_samples).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The object itself</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cardinal.clustering.GMMLikelihoodSampler.select_samples">
+<span class="sig-name descname"><span class="pre">select_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#GMMLikelihoodSampler.select_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.GMMLikelihoodSampler.select_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clusters the samples and select the ones with highest likelihood.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – Pool of unlabeled samples of shape (n_samples, n_features).</p></li>
+<li><p><strong>sample_weight</strong> – Weight of the samples of shape (n_samples),
+optional.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Indices of the selected samples of shape (batch_size).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="sphx-glr-clear"></div><dl class="py class">
+<dt class="sig sig-object py" id="cardinal.clustering.GMMSampler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">GMMSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">gmm_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#GMMSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.GMMSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select samples as highest likelihood to GMM clusters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>batch_size</strong> – Number of samples to draw when predicting.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="sphx-glr-clear"></div><dl class="py class">
 <dt class="sig sig-object py" id="cardinal.clustering.IncrementalMiniBatchKMeansSampler">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">IncrementalMiniBatchKMeansSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kmeans_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#IncrementalMiniBatchKMeansSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.IncrementalMiniBatchKMeansSampler" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">IncrementalMiniBatchKMeansSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kmeans_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#IncrementalMiniBatchKMeansSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.IncrementalMiniBatchKMeansSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select samples as closest sample to MiniBatchKMeans centroids.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -211,7 +227,7 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="cardinal.clustering.IncrementalMiniBatchKMeansSampler.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cardinal.clustering.KCentroidSampler" title="cardinal.clustering.KCentroidSampler"><span class="pre">cardinal.clustering.KCentroidSampler</span></a></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#IncrementalMiniBatchKMeansSampler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.IncrementalMiniBatchKMeansSampler.fit" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cardinal.clustering.KCentroidSampler" title="cardinal.clustering.KCentroidSampler"><span class="pre">KCentroidSampler</span></a></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#IncrementalMiniBatchKMeansSampler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.IncrementalMiniBatchKMeansSampler.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does nothing, this method is unsupervised.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -228,7 +244,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cardinal.clustering.IncrementalMiniBatchKMeansSampler.select_samples">
-<span class="sig-name descname"><span class="pre">select_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.array</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recenter_every</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#IncrementalMiniBatchKMeansSampler.select_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.IncrementalMiniBatchKMeansSampler.select_samples" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">select_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><span class="pre">array</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recenter_every</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#IncrementalMiniBatchKMeansSampler.select_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.IncrementalMiniBatchKMeansSampler.select_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clusters the samples and select the ones closest to centroids.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -248,7 +264,7 @@ optional.</p></li>
 
 <div class="sphx-glr-clear"></div><dl class="py class">
 <dt class="sig sig-object py" id="cardinal.clustering.KCenterGreedy">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">KCenterGreedy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedding_fun</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCenterGreedy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KCenterGreedy" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">KCenterGreedy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedding_fun</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'euclidean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCenterGreedy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KCenterGreedy" title="Permalink to this definition">¶</a></dt>
 <dd><p>KCenter greedy query sampler.
 Select the furthest sample from already select ones, add it to the
 selected, and repeat until batch_size is reached.</p>
@@ -259,7 +275,7 @@ selected, and repeat until batch_size is reached.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="cardinal.clustering.KCenterGreedy.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cardinal.clustering.KCenterGreedy" title="cardinal.clustering.KCenterGreedy"><span class="pre">cardinal.clustering.KCenterGreedy</span></a></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCenterGreedy.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KCenterGreedy.fit" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cardinal.clustering.KCenterGreedy" title="cardinal.clustering.KCenterGreedy"><span class="pre">KCenterGreedy</span></a></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCenterGreedy.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KCenterGreedy.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does nothing, this method is unsupervised.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -276,7 +292,7 @@ selected, and repeat until batch_size is reached.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cardinal.clustering.KCenterGreedy.select_samples">
-<span class="sig-name descname"><span class="pre">select_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.array</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCenterGreedy.select_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KCenterGreedy.select_samples" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">select_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><span class="pre">array</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCenterGreedy.select_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KCenterGreedy.select_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clusters the samples and select the ones closest to centroids.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -296,7 +312,7 @@ optional.</p></li>
 
 <div class="sphx-glr-clear"></div><dl class="py class">
 <dt class="sig sig-object py" id="cardinal.clustering.KCentroidSampler">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">KCentroidSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clustering</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCentroidSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KCentroidSampler" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">KCentroidSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clustering</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCentroidSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KCentroidSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>KCentroid based query sampler.
 In order to increase diversity, it is possible to use a centroid based
 clustering to select samples.</p>
@@ -316,7 +332,7 @@ clustering to select samples.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cardinal.clustering.KCentroidSampler.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cardinal.clustering.KCentroidSampler" title="cardinal.clustering.KCentroidSampler"><span class="pre">cardinal.clustering.KCentroidSampler</span></a></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCentroidSampler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KCentroidSampler.fit" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cardinal.clustering.KCentroidSampler" title="cardinal.clustering.KCentroidSampler"><span class="pre">KCentroidSampler</span></a></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCentroidSampler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KCentroidSampler.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Does nothing, this method is unsupervised.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -333,7 +349,7 @@ clustering to select samples.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cardinal.clustering.KCentroidSampler.select_samples">
-<span class="sig-name descname"><span class="pre">select_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.array</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCentroidSampler.select_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KCentroidSampler.select_samples" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">select_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><span class="pre">array</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#KCentroidSampler.select_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KCentroidSampler.select_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clusters the samples and select the ones closest to centroids.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -353,7 +369,7 @@ optional.</p></li>
 
 <div class="sphx-glr-clear"></div><dl class="py class">
 <dt class="sig sig-object py" id="cardinal.clustering.KMeansSampler">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">KMeansSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kmeans_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#KMeansSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KMeansSampler" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">KMeansSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kmeans_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#KMeansSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.KMeansSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select samples as closest sample to KMeans centroids.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -364,7 +380,7 @@ optional.</p></li>
 
 <div class="sphx-glr-clear"></div><dl class="py class">
 <dt class="sig sig-object py" id="cardinal.clustering.MiniBatchKMeansSampler">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">MiniBatchKMeansSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kmeans_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#MiniBatchKMeansSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.MiniBatchKMeansSampler" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">MiniBatchKMeansSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kmeans_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#MiniBatchKMeansSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.MiniBatchKMeansSampler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select samples as closest sample to MiniBatchKMeans centroids.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -374,17 +390,12 @@ optional.</p></li>
 </dd></dl>
 
 <div class="sphx-glr-clear"></div><dl class="py class">
-<dt class="sig sig-object py" id="cardinal.clustering.TwoStepIWKMeansSampler">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">TwoStepIWKMeansSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">classifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">assume_fitted</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kmeans_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#TwoStepIWKMeansSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.TwoStepIWKMeansSampler" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<div class="sphx-glr-clear"></div><dl class="py class">
-<dt class="sig sig-object py" id="cardinal.clustering.TwoStepKCentroidSampler">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">TwoStepKCentroidSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kcentroid_sampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">classifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">assume_fitted</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kmeans_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#TwoStepKCentroidSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.TwoStepKCentroidSampler" title="Permalink to this definition">¶</a></dt>
-<dd><p>KMeans sampler using a margin uncertainty sampler as preselector</p>
+<dt class="sig sig-object py" id="cardinal.clustering.TwoStepGMMSampler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">TwoStepGMMSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">classifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">assume_fitted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">gmm_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#TwoStepGMMSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.TwoStepGMMSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>GMM sampler using a margin uncertainty sampler as preselector</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="cardinal.clustering.TwoStepKCentroidSampler.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TwoStepKMeansSampler</span></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#TwoStepKCentroidSampler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.TwoStepKCentroidSampler.fit" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.clustering.TwoStepGMMSampler.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><span class="pre">array</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cardinal.clustering.TwoStepGMMSampler" title="cardinal.clustering.TwoStepGMMSampler"><span class="pre">TwoStepGMMSampler</span></a></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#TwoStepGMMSampler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.TwoStepGMMSampler.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fits the first query sampler</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -400,8 +411,8 @@ optional.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cardinal.clustering.TwoStepKCentroidSampler.select_samples">
-<span class="sig-name descname"><span class="pre">select_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.array</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.array</span></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#TwoStepKCentroidSampler.select_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.TwoStepKCentroidSampler.select_samples" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cardinal.clustering.TwoStepGMMSampler.select_samples">
+<span class="sig-name descname"><span class="pre">select_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#TwoStepGMMSampler.select_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.TwoStepGMMSampler.select_samples" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects the using uncertainty preselection and KMeans sampler.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -419,68 +430,95 @@ optional.</p></li>
 
 </dd></dl>
 
-<div class="sphx-glr-clear"></div></div>
-</div>
+<div class="sphx-glr-clear"></div><dl class="py class">
+<dt class="sig sig-object py" id="cardinal.clustering.TwoStepIWKMeansSampler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">TwoStepIWKMeansSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">classifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">assume_fitted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kmeans_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#TwoStepIWKMeansSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.TwoStepIWKMeansSampler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="sphx-glr-clear"></div><dl class="py class">
+<dt class="sig sig-object py" id="cardinal.clustering.TwoStepKCentroidSampler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cardinal.clustering.</span></span><span class="sig-name descname"><span class="pre">TwoStepKCentroidSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kcentroid_sampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">classifier</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">assume_fitted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kmeans_args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cardinal/clustering.html#TwoStepKCentroidSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.TwoStepKCentroidSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>KMeans sampler using a margin uncertainty sampler as preselector</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cardinal.clustering.TwoStepKCentroidSampler.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TwoStepKMeansSampler</span></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#TwoStepKCentroidSampler.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.TwoStepKCentroidSampler.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits the first query sampler</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – Labeled samples of shape [n_samples, n_features].</p></li>
+<li><p><strong>y</strong> – Labels of shape [n_samples].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The object itself</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cardinal.clustering.TwoStepKCentroidSampler.select_samples">
+<span class="sig-name descname"><span class="pre">select_samples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><span class="pre">array</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">array</span></span></span><a class="reference internal" href="../_modules/cardinal/clustering.html#TwoStepKCentroidSampler.select_samples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cardinal.clustering.TwoStepKCentroidSampler.select_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects the using uncertainty preselection and KMeans sampler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> – Pool of unlabeled samples of shape (n_samples, n_features).</p></li>
+<li><p><strong>sample_weight</strong> – Weight of the samples of shape (n_samples),
+optional.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Indices of the selected samples of shape (batch_size).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="sphx-glr-clear"></div></section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="cardinal.batch.html" class="btn btn-neutral float-right" title="cardinal.batch" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="cardinal.uncertainty.html" class="btn btn-neutral float-left" title="cardinal.uncertainty" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cardinal.batch.html" class="btn btn-neutral float-right" title="cardinal.batch" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019-2021, Dataiku.
-
-    </p>
+    <p>&#169; Copyright 2019-2022, Dataiku.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
-
-  
-  
-    
     <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169600606-1"></script>
     <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-    ga('create', 'UA-169600606-1', 'auto');
-    
-    ga('send', 'pageview');
-    </script>
-
-    
-   
+      gtag('config', 'UA-169600606-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
 
 </body>
 </html>

@@ -84,16 +84,18 @@ to handles indices. For the initialisation, we only sample data from the
 first two blobs. This simulates an unlucky initialization where no data
 from the isolated cluster is selected.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-63
+.. GENERATED FROM PYTHON SOURCE LINES 43-65
 
 .. code-block:: python3
 
 
     init_spl = ActiveLearningSplitter.train_test_split(X.shape[0], test_size=0.2, stratify=blob, random_state=0)
-    init_spl.add_batch(np.hstack([
+    init_idx = np.hstack([
         np.where(blob[init_spl.train] == 0)[0][:batch_size],
         np.where(blob[init_spl.train] == 1)[0][:batch_size]
-    ]))
+    ])
+    init_spl.initialize_with_indices(init_idx)
+
     left_out_y = (blob[init_spl.test] == 2)
     y = blob.copy()
     y[blob == 2] = 1
@@ -111,19 +113,20 @@ from the isolated cluster is selected.
 
 
 
-.. image:: /auto_examples/properties/images/sphx_glr_plot_isolated_cluster_001.png
-    :alt: plot isolated cluster
-    :class: sphx-glr-single-img
+.. image-sg:: /auto_examples/properties/images/sphx_glr_plot_isolated_cluster_001.png
+   :alt: plot isolated cluster
+   :srcset: /auto_examples/properties/images/sphx_glr_plot_isolated_cluster_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-65
+.. GENERATED FROM PYTHON SOURCE LINES 66-67
 
 This function runs the experiment. It is a class active learning setting.
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-81
+.. GENERATED FROM PYTHON SOURCE LINES 67-83
 
 .. code-block:: python3
 
@@ -150,7 +153,7 @@ This function runs the experiment. It is a class active learning setting.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-87
+.. GENERATED FROM PYTHON SOURCE LINES 84-89
 
 We now display the results for 3 very common samplers. You may observe that
 the confidence sampling completely ignores the isolated cluster since it
@@ -158,7 +161,7 @@ is designed to focus on the existing decision boundary. Random sampling has
 a 15% chance of picking a sample in this cluster during the experiment. By
 design, KMeans sampling will always select samples in the isolated cluster!
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-107
+.. GENERATED FROM PYTHON SOURCE LINES 89-109
 
 .. code-block:: python3
 
@@ -178,9 +181,9 @@ design, KMeans sampling will always select samples in the isolated cluster!
     evaluate('KMeans Sampler', KMeansSampler(batch_size=batch_size), global_ax, isolated_cluster_ax)
 
     global_ax.legend()
-    smooth_lines(axis=global_ax, k=2)
+    smooth_lines(axis=global_ax, k=3)
     isolated_cluster_ax.legend()
-    smooth_lines(axis=isolated_cluster_ax, k=2)
+    smooth_lines(axis=isolated_cluster_ax, k=3)
 
     plt.show()
 
@@ -190,15 +193,17 @@ design, KMeans sampling will always select samples in the isolated cluster!
 
     *
 
-      .. image:: /auto_examples/properties/images/sphx_glr_plot_isolated_cluster_002.png
-          :alt: plot isolated cluster
-          :class: sphx-glr-multi-img
+      .. image-sg:: /auto_examples/properties/images/sphx_glr_plot_isolated_cluster_002.png
+         :alt: plot isolated cluster
+         :srcset: /auto_examples/properties/images/sphx_glr_plot_isolated_cluster_002.png
+         :class: sphx-glr-multi-img
 
     *
 
-      .. image:: /auto_examples/properties/images/sphx_glr_plot_isolated_cluster_003.png
-          :alt: plot isolated cluster
-          :class: sphx-glr-multi-img
+      .. image-sg:: /auto_examples/properties/images/sphx_glr_plot_isolated_cluster_003.png
+         :alt: plot isolated cluster
+         :srcset: /auto_examples/properties/images/sphx_glr_plot_isolated_cluster_003.png
+         :class: sphx-glr-multi-img
 
 
 
@@ -207,28 +212,25 @@ design, KMeans sampling will always select samples in the isolated cluster!
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.507 seconds)
+   **Total running time of the script:** ( 0 minutes  4.263 seconds)
+
+**Estimated memory usage:**  9 MB
 
 
 .. _sphx_glr_download_auto_examples_properties_plot_isolated_cluster.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: plot_isolated_cluster.py <plot_isolated_cluster.py>`
 
-     :download:`Download Python source code: plot_isolated_cluster.py <plot_isolated_cluster.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_isolated_cluster.ipynb <plot_isolated_cluster.ipynb>`
+      :download:`Download Jupyter notebook: plot_isolated_cluster.ipynb <plot_isolated_cluster.ipynb>`
 
 
 .. only:: html

@@ -23,6 +23,7 @@ from cardinal.uncertainty import ConfidenceSampler
 from cardinal.clustering import KMeansSampler
 from cardinal.batch import RankedBatchSampler
 from cardinal.random import RandomSampler
+from cardinal.utils import ActiveLearningSplitter
 
 
 np.random.seed(7)
@@ -128,30 +129,25 @@ samplers = [
 plt.figure(figsize=(10, 10))
 
 for i, (sampler_name, sampler) in enumerate(samplers):
-    mask = np.zeros(n, dtype=bool)
-    indices = np.arange(n)
-    mask[init_idx] = True
+    splitter = ActiveLearningSplitter(X.shape[0])
+    splitter.initialize_with_indices(init_idx)
 
     for j in range(n_iter):
-        model.fit(X[mask], y[mask])
-        sampler.fit(X[mask], y[mask])
+        model.fit(X[splitter.selected], y[splitter.selected])
+        sampler.fit(X[splitter.selected], y[splitter.selected])
         w = model.coef_[0]
         
         plt.subplot(len(samplers), n_iter, i * n_iter + j + 1)
 
         if sampler_name == 'Batch':
-            # This is an SSL method that requires 
-            weights = ConfidenceSampler(model, batch_size).score_samples(X)
-            weights[mask] = -1
-            selected = sampler.select_samples(X, samples_weights=weights)
-            mask[selected] = True
+            weights = ConfidenceSampler(model, batch_size).score_samples(X[splitter.non_selected])
+            selected = sampler.select_samples(X[splitter.non_selected], samples_weights=weights)
         elif sampler_name == 'Weighted Kmeans':
-            weights = ConfidenceSampler(model, batch_size).score_samples(X[~mask])
-            selected = sampler.select_samples(X[~mask], samples_weights=weights)
-            mask[indices[~mask][selected]] = True
+            weights = ConfidenceSampler(model, batch_size).score_samples(X[splitter.non_selected])
+            selected = sampler.select_samples(X[splitter.non_selected], samples_weights=weights)
         else:
-            selected = sampler.select_samples(X[~mask])
-            mask[indices[~mask][selected]] = True
+            selected = sampler.select_samples(X[splitter.non_selected])
+        splitter.add_batch(selected)
 
         if j == 0:
             plt.ylabel(sampler_name)
@@ -161,8 +157,7 @@ for i, (sampler_name, sampler) in enumerate(samplers):
         if i == 0:
             plt.gca().set_title('Iteration {}'.format(j), fontsize=10)
 
-        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y),
-             mask.copy())
+        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), splitter.selected.copy())
 
 plt.tight_layout()
 plt.subplots_adjust(top=0.86)

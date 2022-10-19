@@ -85,7 +85,7 @@ classes mix with each other.
 We now create the active learning experiment. We use cardinal's splitter
 to handles indices. For the initialisation, We sample data in all blobs.
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-71
+.. GENERATED FROM PYTHON SOURCE LINES 44-72
 
 .. code-block:: python3
 
@@ -94,17 +94,18 @@ to handles indices. For the initialisation, We sample data in all blobs.
 
     init_random_spl = deepcopy(init_spl)
     np.random.seed(seed)
-    init_random_spl.add_batch(np.hstack([
+    init_idx = np.hstack([
         np.random.choice(np.where(y[init_spl.train] == 0)[0], size=batch_size),
         np.random.choice(np.where(y[init_spl.train] == 1)[0], size=batch_size),
-    ]))
+    ])
+    init_random_spl.initialize_with_indices(init_idx)
 
     init_noisy_spl = deepcopy(init_spl)
-    init_noisy_spl.add_batch(np.hstack([
+    init_idx = np.hstack([
         np.where(y[init_spl.train] == 0)[0][:batch_size],
         np.where(y[init_spl.train] == 1)[0][:batch_size],
-    ]))
-
+    ])
+    init_noisy_spl.initialize_with_indices(init_idx)
 
     plt.scatter(X[:, 0], X[:, 1], c=['C{}'.format(i) for i in y], alpha=.3)
     plt.scatter(X[init_random_spl.selected, 0], X[init_random_spl.selected, 1], facecolors='none', edgecolors='r', linewidth=2, label='Random init batch')
@@ -119,19 +120,20 @@ to handles indices. For the initialisation, We sample data in all blobs.
 
 
 
-.. image:: /auto_examples/properties/images/sphx_glr_plot_noisy_boundary_001.png
-    :alt: plot noisy boundary
-    :class: sphx-glr-single-img
+.. image-sg:: /auto_examples/properties/images/sphx_glr_plot_noisy_boundary_001.png
+   :alt: plot noisy boundary
+   :srcset: /auto_examples/properties/images/sphx_glr_plot_noisy_boundary_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-73
+.. GENERATED FROM PYTHON SOURCE LINES 73-74
 
 This function runs the experiment. It is a class active learning setting.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-86
+.. GENERATED FROM PYTHON SOURCE LINES 74-87
 
 .. code-block:: python3
 
@@ -155,12 +157,12 @@ This function runs the experiment. It is a class active learning setting.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-89
+.. GENERATED FROM PYTHON SOURCE LINES 88-90
 
 We create a figure to track both the global accuracy with random and noisy
 initialization and display the results for 3 very common samplers.
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-114
+.. GENERATED FROM PYTHON SOURCE LINES 90-115
 
 .. code-block:: python3
 
@@ -197,15 +199,17 @@ initialization and display the results for 3 very common samplers.
 
     *
 
-      .. image:: /auto_examples/properties/images/sphx_glr_plot_noisy_boundary_002.png
-          :alt: plot noisy boundary
-          :class: sphx-glr-multi-img
+      .. image-sg:: /auto_examples/properties/images/sphx_glr_plot_noisy_boundary_002.png
+         :alt: plot noisy boundary
+         :srcset: /auto_examples/properties/images/sphx_glr_plot_noisy_boundary_002.png
+         :class: sphx-glr-multi-img
 
     *
 
-      .. image:: /auto_examples/properties/images/sphx_glr_plot_noisy_boundary_003.png
-          :alt: plot noisy boundary
-          :class: sphx-glr-multi-img
+      .. image-sg:: /auto_examples/properties/images/sphx_glr_plot_noisy_boundary_003.png
+         :alt: plot noisy boundary
+         :srcset: /auto_examples/properties/images/sphx_glr_plot_noisy_boundary_003.png
+         :class: sphx-glr-multi-img
 
 
 
@@ -214,28 +218,25 @@ initialization and display the results for 3 very common samplers.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.788 seconds)
+   **Total running time of the script:** ( 0 minutes  6.675 seconds)
+
+**Estimated memory usage:**  11 MB
 
 
 .. _sphx_glr_download_auto_examples_properties_plot_noisy_boundary.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: plot_noisy_boundary.py <plot_noisy_boundary.py>`
 
-     :download:`Download Python source code: plot_noisy_boundary.py <plot_noisy_boundary.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_noisy_boundary.ipynb <plot_noisy_boundary.ipynb>`
+      :download:`Download Jupyter notebook: plot_noisy_boundary.ipynb <plot_noisy_boundary.ipynb>`
 
 
 .. only:: html

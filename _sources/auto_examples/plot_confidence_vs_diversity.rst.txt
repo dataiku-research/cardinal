@@ -29,7 +29,7 @@ approach underperform.
 
 Those are the necessary imports and initializations
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-30
+.. GENERATED FROM PYTHON SOURCE LINES 14-31
 
 .. code-block:: python3
 
@@ -45,6 +45,7 @@ Those are the necessary imports and initializations
     from cardinal.clustering import KMeansSampler
     from cardinal.batch import RankedBatchSampler
     from cardinal.random import RandomSampler
+    from cardinal.utils import ActiveLearningSplitter
 
 
     np.random.seed(7)
@@ -56,7 +57,7 @@ Those are the necessary imports and initializations
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-43
+.. GENERATED FROM PYTHON SOURCE LINES 32-44
 
 We simulate data where samples of one of the class are scattered in 3
 blobs, one of them being far away from the two others. We also select an
@@ -71,7 +72,7 @@ The parameters of this experiment are :
   the training set at each iteration,
 * `n_iter` is the number of iterations in our simulation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-58
+.. GENERATED FROM PYTHON SOURCE LINES 44-59
 
 .. code-block:: python3
 
@@ -97,13 +98,13 @@ The parameters of this experiment are :
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-62
+.. GENERATED FROM PYTHON SOURCE LINES 60-63
 
 This helper function plots our simulated points in red and blue. The one that
 are not in the training set are faded. We also plot the linear separation
 estimated by the SVM.
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-105
+.. GENERATED FROM PYTHON SOURCE LINES 63-106
 
 .. code-block:: python3
 
@@ -157,7 +158,7 @@ estimated by the SVM.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-119
+.. GENERATED FROM PYTHON SOURCE LINES 107-120
 
 Core Active Learning Experiment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -173,7 +174,7 @@ exploratory approach and select items in this cluster right away.
 It is worth noticing that random sampling also have good exploration
 properties.
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-171
+.. GENERATED FROM PYTHON SOURCE LINES 120-166
 
 .. code-block:: python3
 
@@ -189,30 +190,25 @@ properties.
     plt.figure(figsize=(10, 10))
 
     for i, (sampler_name, sampler) in enumerate(samplers):
-        mask = np.zeros(n, dtype=bool)
-        indices = np.arange(n)
-        mask[init_idx] = True
+        splitter = ActiveLearningSplitter(X.shape[0])
+        splitter.initialize_with_indices(init_idx)
 
         for j in range(n_iter):
-            model.fit(X[mask], y[mask])
-            sampler.fit(X[mask], y[mask])
+            model.fit(X[splitter.selected], y[splitter.selected])
+            sampler.fit(X[splitter.selected], y[splitter.selected])
             w = model.coef_[0]
         
             plt.subplot(len(samplers), n_iter, i * n_iter + j + 1)
 
             if sampler_name == 'Batch':
-                # This is an SSL method that requires 
-                weights = ConfidenceSampler(model, batch_size).score_samples(X)
-                weights[mask] = -1
-                selected = sampler.select_samples(X, samples_weights=weights)
-                mask[selected] = True
+                weights = ConfidenceSampler(model, batch_size).score_samples(X[splitter.non_selected])
+                selected = sampler.select_samples(X[splitter.non_selected], samples_weights=weights)
             elif sampler_name == 'Weighted Kmeans':
-                weights = ConfidenceSampler(model, batch_size).score_samples(X[~mask])
-                selected = sampler.select_samples(X[~mask], samples_weights=weights)
-                mask[indices[~mask][selected]] = True
+                weights = ConfidenceSampler(model, batch_size).score_samples(X[splitter.non_selected])
+                selected = sampler.select_samples(X[splitter.non_selected], samples_weights=weights)
             else:
-                selected = sampler.select_samples(X[~mask])
-                mask[indices[~mask][selected]] = True
+                selected = sampler.select_samples(X[splitter.non_selected])
+            splitter.add_batch(selected)
 
             if j == 0:
                 plt.ylabel(sampler_name)
@@ -222,8 +218,7 @@ properties.
             if i == 0:
                 plt.gca().set_title('Iteration {}'.format(j), fontsize=10)
 
-            plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y),
-                 mask.copy())
+            plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), splitter.selected.copy())
 
     plt.tight_layout()
     plt.subplots_adjust(top=0.86)
@@ -232,9 +227,10 @@ properties.
 
 
 
-.. image:: /auto_examples/images/sphx_glr_plot_confidence_vs_diversity_001.png
-    :alt: Classification accuracy of random and uncertainty active learning on simulated data, Iteration 0, Iteration 1, Iteration 2, Iteration 3, Iteration 4
-    :class: sphx-glr-single-img
+.. image-sg:: /auto_examples/images/sphx_glr_plot_confidence_vs_diversity_001.png
+   :alt: Classification accuracy of random and uncertainty active learning on simulated data, Iteration 0, Iteration 1, Iteration 2, Iteration 3, Iteration 4
+   :srcset: /auto_examples/images/sphx_glr_plot_confidence_vs_diversity_001.png
+   :class: sphx-glr-single-img
 
 
 
@@ -243,28 +239,25 @@ properties.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.728 seconds)
+   **Total running time of the script:** ( 0 minutes  4.943 seconds)
+
+**Estimated memory usage:**  20 MB
 
 
 .. _sphx_glr_download_auto_examples_plot_confidence_vs_diversity.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: plot_confidence_vs_diversity.py <plot_confidence_vs_diversity.py>`
 
-     :download:`Download Python source code: plot_confidence_vs_diversity.py <plot_confidence_vs_diversity.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_confidence_vs_diversity.ipynb <plot_confidence_vs_diversity.ipynb>`
+      :download:`Download Jupyter notebook: plot_confidence_vs_diversity.ipynb <plot_confidence_vs_diversity.ipynb>`
 
 
 .. only:: html

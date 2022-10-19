@@ -80,7 +80,7 @@ a small benchmark on generated data.
     sampler = MiniBatchKMeansSampler(10)
 
     idx = ActiveLearningSplitter.train_test_split(10000, test_size=.2, random_state=0)
-    idx.add_batch(np.arange(10))
+    idx.initialize_with_indices(np.arange(10))
 
     for i in range(10):
         selected = sampler.fit(X[idx.selected]).select_samples(X[idx.non_selected])
@@ -96,7 +96,7 @@ a small benchmark on generated data.
     sampler = IncrementalMiniBatchKMeansSampler(10, random_state=0)
 
     idx = ActiveLearningSplitter.train_test_split(10000, test_size=.2, random_state=0)
-    idx.add_batch(np.arange(10))
+    idx.initialize_with_indices(np.arange(10))
 
     for i in range(10):
 
@@ -127,9 +127,10 @@ a small benchmark on generated data.
 
 
 
-.. image:: /auto_examples/images/sphx_glr_plot_incr_kmeans_001.png
-    :alt: plot incr kmeans
-    :class: sphx-glr-single-img
+.. image-sg:: /auto_examples/images/sphx_glr_plot_incr_kmeans_001.png
+   :alt: plot incr kmeans
+   :srcset: /auto_examples/images/sphx_glr_plot_incr_kmeans_001.png
+   :class: sphx-glr-single-img
 
 
 
@@ -198,9 +199,10 @@ centers in blue. We use it to display the ground truth.
 
 
 
-.. image:: /auto_examples/images/sphx_glr_plot_incr_kmeans_002.png
-    :alt: Ground truth, inertia=199.11
-    :class: sphx-glr-single-img
+.. image-sg:: /auto_examples/images/sphx_glr_plot_incr_kmeans_002.png
+   :alt: Ground truth, inertia=199.11
+   :srcset: /auto_examples/images/sphx_glr_plot_incr_kmeans_002.png
+   :class: sphx-glr-single-img
 
 
 
@@ -226,9 +228,10 @@ datasets so its implementation relies on MiniBatchKMeans.
 
 
 
-.. image:: /auto_examples/images/sphx_glr_plot_incr_kmeans_003.png
-    :alt: KMeans, inertia=193.14
-    :class: sphx-glr-single-img
+.. image-sg:: /auto_examples/images/sphx_glr_plot_incr_kmeans_003.png
+   :alt: KMeans, inertia=193.10
+   :srcset: /auto_examples/images/sphx_glr_plot_incr_kmeans_003.png
+   :class: sphx-glr-single-img
 
 
 
@@ -255,9 +258,10 @@ the IncrementalMiniBatchKMeans so that they are strictly enforced.
 
 
 
-.. image:: /auto_examples/images/sphx_glr_plot_incr_kmeans_004.png
-    :alt: Incremental KMeans, inertia=184.45
-    :class: sphx-glr-single-img
+.. image-sg:: /auto_examples/images/sphx_glr_plot_incr_kmeans_004.png
+   :alt: Incremental KMeans, inertia=184.45
+   :srcset: /auto_examples/images/sphx_glr_plot_incr_kmeans_004.png
+   :class: sphx-glr-single-img
 
 
 
@@ -352,9 +356,10 @@ of fixed clusters impacts the inertia.
 
 
 
-.. image:: /auto_examples/images/sphx_glr_plot_incr_kmeans_005.png
-    :alt: plot incr kmeans
-    :class: sphx-glr-single-img
+.. image-sg:: /auto_examples/images/sphx_glr_plot_incr_kmeans_005.png
+   :alt: plot incr kmeans
+   :srcset: /auto_examples/images/sphx_glr_plot_incr_kmeans_005.png
+   :class: sphx-glr-single-img
 
 
 
@@ -394,9 +399,10 @@ areas.
 
 
 
-.. image:: /auto_examples/images/sphx_glr_plot_incr_kmeans_006.png
-    :alt: plot incr kmeans
-    :class: sphx-glr-single-img
+.. image-sg:: /auto_examples/images/sphx_glr_plot_incr_kmeans_006.png
+   :alt: plot incr kmeans
+   :srcset: /auto_examples/images/sphx_glr_plot_incr_kmeans_006.png
+   :class: sphx-glr-single-img
 
 
 
@@ -410,28 +416,25 @@ on the intertia which is reassuring.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  13.838 seconds)
+   **Total running time of the script:** ( 2 minutes  23.812 seconds)
+
+**Estimated memory usage:**  115 MB
 
 
 .. _sphx_glr_download_auto_examples_plot_incr_kmeans.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: plot_incr_kmeans.py <plot_incr_kmeans.py>`
 
-     :download:`Download Python source code: plot_incr_kmeans.py <plot_incr_kmeans.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_incr_kmeans.ipynb <plot_incr_kmeans.ipynb>`
+      :download:`Download Jupyter notebook: plot_incr_kmeans.ipynb <plot_incr_kmeans.ipynb>`
 
 
 .. only:: html

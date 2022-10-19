@@ -31,7 +31,7 @@ a custom query sampler that takes advantage of this.
 
 Those are the necessary imports and initializations
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-33
+.. GENERATED FROM PYTHON SOURCE LINES 15-34
 
 .. code-block:: python3
 
@@ -50,6 +50,7 @@ Those are the necessary imports and initializations
     from cardinal.plotting import plot_confidence_interval
     from cardinal.base import BaseQuerySampler
     from cardinal.metrics import ContradictionMonitor
+    from cardinal.utils import ActiveLearningSplitter
 
     np.random.seed(7)
 
@@ -60,7 +61,7 @@ Those are the necessary imports and initializations
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-41
+.. GENERATED FROM PYTHON SOURCE LINES 35-42
 
 The parameters of this experiment are:  
 
@@ -70,7 +71,7 @@ The parameters of this experiment are:
 
 We use the digits dataset and a RandomForestClassifier as model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-52
+.. GENERATED FROM PYTHON SOURCE LINES 42-54
 
 .. code-block:: python3
 
@@ -81,6 +82,7 @@ We use the digits dataset and a RandomForestClassifier as model.
     X, y = load_digits(return_X_y=True)
     X /= 255.
     n_classes = 10
+    n_samples = X.shape[0]
 
     model = RandomForestClassifier()
 
@@ -92,7 +94,7 @@ We use the digits dataset and a RandomForestClassifier as model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-61
+.. GENERATED FROM PYTHON SOURCE LINES 55-63
 
 Experimental Metrics
 --------------------
@@ -103,7 +105,7 @@ iteration to the other is correlated to the improvement of accuracy. We
 want to verify this. Since the number of label prediction changes can be
 coarse, we use the absolute difference in prediction probabilities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-66
+.. GENERATED FROM PYTHON SOURCE LINES 63-68
 
 .. code-block:: python3
 
@@ -119,7 +121,7 @@ coarse, we use the absolute difference in prediction probabilities.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-72
+.. GENERATED FROM PYTHON SOURCE LINES 69-74
 
 We define a second metric based on the distance between already labeled
 samples and our test set. The goal of this metric is measure how well our
@@ -127,7 +129,7 @@ test set has been explored by our query sampling method so far. We expect
 uncertainty sampling to explore the sample space located *nearby* the
 decision boundary and show poor exploration property.
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-76
+.. GENERATED FROM PYTHON SOURCE LINES 74-78
 
 .. code-block:: python3
 
@@ -142,7 +144,7 @@ decision boundary and show poor exploration property.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-94
+.. GENERATED FROM PYTHON SOURCE LINES 79-96
 
 A New Custom Sampler
 --------------------
@@ -162,7 +164,7 @@ As a heuristic, let us say that 5 samples per class should be enough
 exploration. We set the sampler to explore until it has 50 samples and
 then switch to exploitation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-121
+.. GENERATED FROM PYTHON SOURCE LINES 96-123
 
 .. code-block:: python3
 
@@ -200,7 +202,7 @@ then switch to exploitation.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-128
+.. GENERATED FROM PYTHON SOURCE LINES 124-130
 
 Core Active Learning Experiment
 -------------------------------
@@ -209,7 +211,7 @@ We now perform the experiment. We compare our adaptive model to random,
 pure exploration, and pure exploitation. We also monitor the metrics
 defined above.
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-214
+.. GENERATED FROM PYTHON SOURCE LINES 130-208
 
 .. code-block:: python3
 
@@ -232,8 +234,8 @@ defined above.
         all_explorations = []
 
         for k in range(10):
-            X_train, X_test, y_train, y_test = \
-                train_test_split(X, y, test_size=500, random_state=k)
+            splitter = ActiveLearningSplitter.train_test_split(n_samples, test_size=500, random_state=k)
+            splitter.initialize_with_random(batch_size, at_least_one_of_each_class=y[splitter.train], random_state=k)
 
             accuracies = []
             contradictions = ContradictionMonitor()
@@ -241,27 +243,19 @@ defined above.
 
             previous_proba = None
 
-            # For simplicity, we start with one sample of each class
-            _, selected = np.unique(y_train, return_index=True)
-
-            # We use binary masks to simplify some operations
-            mask = np.zeros(X_train.shape[0], dtype=bool)
-            indices = np.arange(X_train.shape[0])
-            mask[selected] = True
-
             # The classic active learning loop
             for j in range(n_iter):
-                model.fit(X_train[mask], y_train[mask])
+                model.fit(X[splitter.selected], y[splitter.selected])
 
                 # Record metrics
-                accuracies.append(model.score(X_test, y_test))
-                explorations.append(compute_exploration(X_train[mask], X_test))
-                contradictions.accumulate(len(selected),
-                                          model.predict_proba(X_test))
+                accuracies.append(model.score(X[splitter.test], y[splitter.test]))
+                explorations.append(compute_exploration(X[splitter.selected], X[splitter.test]))
+                contradictions.accumulate(splitter.selected.sum(),
+                                          model.predict_proba(X[splitter.test]))
 
-                sampler.fit(X_train[mask], y_train[mask])
-                selected = sampler.select_samples(X_train[~mask])
-                mask[indices[~mask][selected]] = True
+                sampler.fit(X[splitter.selected], y[splitter.selected])
+                selected = sampler.select_samples(X[splitter.non_selected])
+                splitter.add_batch(selected)
 
             all_accuracies.append(accuracies)
             all_explorations.append(explorations)
@@ -307,27 +301,30 @@ defined above.
 
     *
 
-      .. image:: /auto_examples/images/sphx_glr_plot_digits_metrics_001.png
-          :alt: plot digits metrics
-          :class: sphx-glr-multi-img
+      .. image-sg:: /auto_examples/images/sphx_glr_plot_digits_metrics_001.png
+         :alt: plot digits metrics
+         :srcset: /auto_examples/images/sphx_glr_plot_digits_metrics_001.png
+         :class: sphx-glr-multi-img
 
     *
 
-      .. image:: /auto_examples/images/sphx_glr_plot_digits_metrics_002.png
-          :alt: plot digits metrics
-          :class: sphx-glr-multi-img
+      .. image-sg:: /auto_examples/images/sphx_glr_plot_digits_metrics_002.png
+         :alt: plot digits metrics
+         :srcset: /auto_examples/images/sphx_glr_plot_digits_metrics_002.png
+         :class: sphx-glr-multi-img
 
     *
 
-      .. image:: /auto_examples/images/sphx_glr_plot_digits_metrics_003.png
-          :alt: plot digits metrics
-          :class: sphx-glr-multi-img
+      .. image-sg:: /auto_examples/images/sphx_glr_plot_digits_metrics_003.png
+         :alt: plot digits metrics
+         :srcset: /auto_examples/images/sphx_glr_plot_digits_metrics_003.png
+         :class: sphx-glr-multi-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 215-261
+.. GENERATED FROM PYTHON SOURCE LINES 209-255
 
 Discussion
 ----------
@@ -379,28 +376,25 @@ This exploration metric can be used to decide when to change method.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 4 minutes  30.834 seconds)
+   **Total running time of the script:** ( 10 minutes  55.677 seconds)
+
+**Estimated memory usage:**  13 MB
 
 
 .. _sphx_glr_download_auto_examples_plot_digits_metrics.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: plot_digits_metrics.py <plot_digits_metrics.py>`
 
-     :download:`Download Python source code: plot_digits_metrics.py <plot_digits_metrics.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_digits_metrics.ipynb <plot_digits_metrics.ipynb>`
+      :download:`Download Jupyter notebook: plot_digits_metrics.ipynb <plot_digits_metrics.ipynb>`
 
 
 .. only:: html

@@ -179,14 +179,13 @@ is human readable and can be shared for better reproducibility.
 
 
 
-.. image:: /auto_examples/images/sphx_glr_plot_replay_experiment_001.png
-    :alt: Evolution of Contradictions during active learning experiment on Iris dataset
-    :class: sphx-glr-single-img
+.. image-sg:: /auto_examples/images/sphx_glr_plot_replay_experiment_001.png
+   :alt: Evolution of Contradictions during active learning experiment on Iris dataset
+   :srcset: /auto_examples/images/sphx_glr_plot_replay_experiment_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
-
- Out:
 
  .. code-block:: none
 
@@ -204,36 +203,36 @@ is human readable and can be shared for better reproducibility.
         sampler/
             margin/
                 progress.json
-                3/
-                    prediction
-                    selector
-                4/
-                    prediction
-                    selector
-                8/
-                    prediction
-                    selector
-                1/
-                    prediction
-                    selector
                 0/
-                    prediction
                     selector
+                    prediction
+                1/
+                    selector
+                    prediction
                 2/
-                    prediction
                     selector
-                6/
                     prediction
+                3/
                     selector
-                9/
                     prediction
+                4/
                     selector
+                    prediction
                 5/
-                    prediction
                     selector
+                    prediction
+                6/
+                    selector
+                    prediction
                 7/
-                    prediction
                     selector
+                    prediction
+                8/
+                    selector
+                    prediction
+                9/
+                    selector
+                    prediction
 
 
 
@@ -242,13 +241,14 @@ is human readable and can be shared for better reproducibility.
 
 We clean all the cache folder.
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-122
+.. GENERATED FROM PYTHON SOURCE LINES 119-123
 
 .. code-block:: python3
 
 
     shutil.rmtree(CACHE_PATH)
-    os.remove(DATABASE_PATH)
+    if os.path.exists(DATABASE_PATH):
+        os.remove(DATABASE_PATH)
 
 
 
@@ -259,28 +259,25 @@ We clean all the cache folder.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.056 seconds)
+   **Total running time of the script:** ( 0 minutes  1.152 seconds)
+
+**Estimated memory usage:**  11 MB
 
 
 .. _sphx_glr_download_auto_examples_plot_replay_experiment.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: plot_replay_experiment.py <plot_replay_experiment.py>`
 
-     :download:`Download Python source code: plot_replay_experiment.py <plot_replay_experiment.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_replay_experiment.ipynb <plot_replay_experiment.ipynb>`
+      :download:`Download Jupyter notebook: plot_replay_experiment.ipynb <plot_replay_experiment.ipynb>`
 
 
 .. only:: html

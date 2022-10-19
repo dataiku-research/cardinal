@@ -1,9 +1,5 @@
 :orphan:
 
-
-
-.. _sphx_glr_auto_examples:
-
 Examples
 ========
 
@@ -14,14 +10,161 @@ custom query samplers and use them in advanced experiments.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The simplest way to convince ourselves that active learning actually works is to first test it ...">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_random_vs_confidence_thumb.png
-     :alt: Lowest confidence vs. Random sampling
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_random_vs_confidence_thumb.png
+    :alt: Lowest confidence vs. Random sampling
 
-     :ref:`sphx_glr_auto_examples_plot_random_vs_confidence.py`
+  :ref:`sphx_glr_auto_examples_plot_random_vs_confidence.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Lowest confidence vs. Random sampling</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Each active learning experiment starts with zero labeled samples. In that case, no supervised q...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_starting_thumb.png
+    :alt: Starting an Active Learning experiment
+
+  :ref:`sphx_glr_auto_examples_plot_starting.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Starting an Active Learning experiment</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Active Learning experiments can be long and costly. For this reason, it is useful to be able to...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_resume_experiment_thumb.png
+    :alt: Running and resuming an experiment
+
+  :ref:`sphx_glr_auto_examples_plot_resume_experiment.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Running and resuming an experiment</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In a previous example, we have shown how experiments can be resumed. Cardinal also allows for e...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_replay_experiment_thumb.png
+    :alt: Replay and experiment
+
+  :ref:`sphx_glr_auto_examples_plot_replay_experiment.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Replay and experiment</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we run an experiment on real data and try to relate the amount of *hard-to-cla...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_hard_to_classify_thumb.png
+    :alt: Measuring hard to classify samples
+
+  :ref:`sphx_glr_auto_examples_plot_hard_to_classify.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Measuring hard to classify samples</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="We here compare several clustering-based Active Learning approaches and in particular explore t...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_clustering_thumb.png
+    :alt: Active Learning on Digit Recognition with Clustering-based Sampling
+
+  :ref:`sphx_glr_auto_examples_plot_clustering.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Active Learning on Digit Recognition with Clustering-based Sampling</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows the importance of diversity-based approaches using a toy example where a ver...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_confidence_vs_diversity_thumb.png
+    :alt: Lowest confidence vs. KMeans sampling
+
+  :ref:`sphx_glr_auto_examples_plot_confidence_vs_diversity.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Lowest confidence vs. KMeans sampling</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we run an experiment on real data and show how active learning can be monitore...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_digits_metrics_thumb.png
+    :alt: Active Learning on Digit Recognition and Metrics
+
+  :ref:`sphx_glr_auto_examples_plot_digits_metrics.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Active Learning on Digit Recognition and Metrics</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In an active learning setting, the trade-off between exploration and exploitation plays a centr...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_incr_kmeans_thumb.png
+    :alt: Incremental KMeans
+
+  :ref:`sphx_glr_auto_examples_plot_incr_kmeans.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Incremental KMeans</div>
+    </div>
+
 
 .. raw:: html
 
@@ -32,160 +175,14 @@ custom query samplers and use them in advanced experiments.
    :hidden:
 
    /auto_examples/plot_random_vs_confidence
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Each active learning experiment starts with zero labeled samples. In that case, no supervised q...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_starting_thumb.png
-     :alt: Starting an Active Learning experiment
-
-     :ref:`sphx_glr_auto_examples_plot_starting.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_starting
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Active Learning experiments can be long and costly. For this reason, it is useful to be able to...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_resume_experiment_thumb.png
-     :alt: Running and resuming an experiment
-
-     :ref:`sphx_glr_auto_examples_plot_resume_experiment.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_resume_experiment
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="In a previous example, we have shown how experiments can be resumed. Cardinal also allows for e...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_replay_experiment_thumb.png
-     :alt: Replay and experiment
-
-     :ref:`sphx_glr_auto_examples_plot_replay_experiment.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_replay_experiment
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="We here compare several clustering-based Active Learning approaches and in particular explore t...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_clustering_thumb.png
-     :alt: Active Learning on Digit Recognition with Clustering-based Sampling
-
-     :ref:`sphx_glr_auto_examples_plot_clustering.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
+   /auto_examples/plot_hard_to_classify
    /auto_examples/plot_clustering
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows the importance of diversity-based approaches using a toy example where a ver...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_confidence_vs_diversity_thumb.png
-     :alt: Lowest confidence vs. KMeans sampling
-
-     :ref:`sphx_glr_auto_examples_plot_confidence_vs_diversity.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_confidence_vs_diversity
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we run an experiment on real data and show how active learning can be monitore...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_digits_metrics_thumb.png
-     :alt: Active Learning on Digit Recognition and Metrics
-
-     :ref:`sphx_glr_auto_examples_plot_digits_metrics.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_digits_metrics
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="In an active learning setting, the trade-off between exploration and exploitation plays a centr...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_incr_kmeans_thumb.png
-     :alt: Incremental KMeans
-
-     :ref:`sphx_glr_auto_examples_plot_incr_kmeans.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_incr_kmeans
-.. raw:: html
-
-    <div class="sphx-glr-clear"></div>
-
-
-
-.. _sphx_glr_auto_examples_properties:
 
 # Properties
 
@@ -194,24 +191,25 @@ These examples test the behavior of samplers in peculiar synthetic settings.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="The iterative process of Active Learning may induce corner cases that are proper to Active Lear...">
 
 .. only:: html
 
- .. figure:: /auto_examples/properties/images/thumb/sphx_glr_plot_isolated_cluster_thumb.png
-     :alt: Isolated cluster and bad init
+  .. image:: /auto_examples/properties/images/thumb/sphx_glr_plot_isolated_cluster_thumb.png
+    :alt: Isolated cluster and bad init
 
-     :ref:`sphx_glr_auto_examples_properties_plot_isolated_cluster.py`
+  :ref:`sphx_glr_auto_examples_properties_plot_isolated_cluster.py`
 
 .. raw:: html
 
+      <div class="sphx-glr-thumbnail-title">Isolated cluster and bad init</div>
     </div>
 
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/properties/plot_isolated_cluster
 
 .. raw:: html
 
@@ -219,10 +217,33 @@ These examples test the behavior of samplers in peculiar synthetic settings.
 
 .. only:: html
 
- .. figure:: /auto_examples/properties/images/thumb/sphx_glr_plot_noisy_boundary_thumb.png
-     :alt: Noisy boundary
+  .. image:: /auto_examples/properties/images/thumb/sphx_glr_plot_iwkmeans_thumb.png
+    :alt: Noisy boundary 2
 
-     :ref:`sphx_glr_auto_examples_properties_plot_noisy_boundary.py`
+  :ref:`sphx_glr_auto_examples_properties_plot_iwkmeans.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Noisy boundary 2</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Can a noisy boundary tamper with an active learning process? For this test, we select a very si...">
+
+.. only:: html
+
+  .. image:: /auto_examples/properties/images/thumb/sphx_glr_plot_noisy_boundary_thumb.png
+    :alt: Noisy boundary
+
+  :ref:`sphx_glr_auto_examples_properties_plot_noisy_boundary.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Noisy boundary</div>
+    </div>
+
 
 .. raw:: html
 
@@ -231,29 +252,22 @@ These examples test the behavior of samplers in peculiar synthetic settings.
 
 .. toctree::
    :hidden:
+   :includehidden:
 
-   /auto_examples/properties/plot_noisy_boundary
-.. raw:: html
-
-    <div class="sphx-glr-clear"></div>
+   /auto_examples/properties/index.rst
 
 
+.. only:: html
 
-.. only :: html
+  .. container:: sphx-glr-footer sphx-glr-footer-gallery
 
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-gallery
+    .. container:: sphx-glr-download sphx-glr-download-python
 
+      :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-    :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
-
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
+      :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
 
 
 .. only:: html

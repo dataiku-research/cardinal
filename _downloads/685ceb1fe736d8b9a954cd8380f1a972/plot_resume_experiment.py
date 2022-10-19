@@ -144,4 +144,5 @@ plt.show()
 # We clean all the cache folder.
 
 shutil.rmtree(CACHE_PATH)
-os.remove(DATABASE_PATH)
+if os.path.exists(DATABASE_PATH):
+    os.remove(DATABASE_PATH)

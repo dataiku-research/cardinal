@@ -58,7 +58,7 @@ kmeans_accuracy = []
 sampler = MiniBatchKMeansSampler(10)
 
 idx = ActiveLearningSplitter.train_test_split(10000, test_size=.2, random_state=0)
-idx.add_batch(np.arange(10))
+idx.initialize_with_indices(np.arange(10))
 
 for i in range(10):
     selected = sampler.fit(X[idx.selected]).select_samples(X[idx.non_selected])
@@ -74,7 +74,7 @@ ikmeans_accuracy = []
 sampler = IncrementalMiniBatchKMeansSampler(10, random_state=0)
 
 idx = ActiveLearningSplitter.train_test_split(10000, test_size=.2, random_state=0)
-idx.add_batch(np.arange(10))
+idx.initialize_with_indices(np.arange(10))
 
 for i in range(10):
 

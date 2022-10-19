@@ -17,6 +17,22 @@ cardinal.clustering
    -------
 
    
+   .. autoclass:: GMMLikelihoodSampler
+      :members:
+
+   .. include:: backreferences/cardinal.clustering.GMMLikelihoodSampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   .. autoclass:: GMMSampler
+      :members:
+
+   .. include:: backreferences/cardinal.clustering.GMMSampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
    .. autoclass:: IncrementalMiniBatchKMeansSampler
       :members:
 
@@ -53,6 +69,14 @@ cardinal.clustering
       :members:
 
    .. include:: backreferences/cardinal.clustering.MiniBatchKMeansSampler.examples
+
+   .. raw:: html
+
+	       <div class="sphx-glr-clear"></div>
+   .. autoclass:: TwoStepGMMSampler
+      :members:
+
+   .. include:: backreferences/cardinal.clustering.TwoStepGMMSampler.examples
 
    .. raw:: html
 

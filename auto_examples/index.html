@@ -1,88 +1,47 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Examples &mdash; cardinal 0.0.6-dev-git documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
-
-  
-  
+  <title>Examples &mdash; cardinal 0.0.9-git documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Lowest confidence vs. Random sampling" href="plot_random_vs_confidence.html" />
     <link rel="prev" title="Uncertainty-based Query Sampling" href="../uncertainty.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> cardinal
-          
-
-          
-            
             <img src="../_static/cardinal.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                0.0.6-dev
+                0.0.9
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -90,18 +49,12 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
 
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
       <span class="rst-current-version" data-toggle="rst-current-version">
         <span class="fa fa-book"> Versions</span>
-        v: dev
+        v: stable
         <span class="fa fa-caret-down"></span>
       </span>
       <div class="rst-other-versions">
@@ -117,11 +70,6 @@
     </div>
 
     
-            
-            
-              
-            
-            
               <p class="caption" role="heading"><span class="caption-text">Active learning</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to Active Learning</a></li>
@@ -134,6 +82,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_starting.html">Starting an Active Learning experiment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_resume_experiment.html">Running and resuming an experiment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_replay_experiment.html">Replay and experiment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_hard_to_classify.html">Measuring hard to classify samples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_clustering.html">Active Learning on Digit Recognition with Clustering-based Sampling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_confidence_vs_diversity.html">Lowest confidence vs. KMeans sampling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_digits_metrics.html">Active Learning on Digit Recognition and Metrics</a></li>
@@ -141,6 +90,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_incr_kmeans.html#number-of-fixed-cluster-centers">Number of fixed cluster centers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_incr_kmeans.html#reassignment-ratio">Reassignment ratio</a></li>
 <li class="toctree-l2"><a class="reference internal" href="properties/plot_isolated_cluster.html">Isolated cluster and bad init</a></li>
+<li class="toctree-l2"><a class="reference internal" href="properties/plot_iwkmeans.html">Noisy boundary 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="properties/plot_noisy_boundary.html">Noisy boundary</a></li>
 </ul>
 </li>
@@ -152,30 +102,19 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku-research/cardinal">Fork cardinal on Github</a></li>
 </ul>
 
-            
-          
 
   
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">cardinal</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
@@ -197,74 +136,54 @@
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="examples">
-<span id="sphx-glr-auto-examples"></span><h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h1>
 <p>Those examples show basic usage of cardinal as well as how to craft
 custom query samplers and use them in advanced experiments.</p>
-<div class="sphx-glr-thumbcontainer" tooltip="The simplest way to convince ourselves that active learning actually works is to first test it ..."><div class="figure align-default" id="id1">
-<img alt="Lowest confidence vs. Random sampling" src="../_images/sphx_glr_plot_random_vs_confidence_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_random_vs_confidence.html#sphx-glr-auto-examples-plot-random-vs-confidence-py"><span class="std std-ref">Lowest confidence vs. Random sampling</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The simplest way to convince ourselves that active learning actually works is to first test it ..."><img alt="Lowest confidence vs. Random sampling" src="../_images/sphx_glr_plot_random_vs_confidence_thumb.png" />
+<p><a class="reference internal" href="plot_random_vs_confidence.html#sphx-glr-auto-examples-plot-random-vs-confidence-py"><span class="std std-ref">Lowest confidence vs. Random sampling</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Lowest confidence vs. Random sampling</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Each active learning experiment starts with zero labeled samples. In that case, no supervised q..."><img alt="Starting an Active Learning experiment" src="../_images/sphx_glr_plot_starting_thumb.png" />
+<p><a class="reference internal" href="plot_starting.html#sphx-glr-auto-examples-plot-starting-py"><span class="std std-ref">Starting an Active Learning experiment</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Starting an Active Learning experiment</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Active Learning experiments can be long and costly. For this reason, it is useful to be able to..."><img alt="Running and resuming an experiment" src="../_images/sphx_glr_plot_resume_experiment_thumb.png" />
+<p><a class="reference internal" href="plot_resume_experiment.html#sphx-glr-auto-examples-plot-resume-experiment-py"><span class="std std-ref">Running and resuming an experiment</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Running and resuming an experiment</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In a previous example, we have shown how experiments can be resumed. Cardinal also allows for e..."><img alt="Replay and experiment" src="../_images/sphx_glr_plot_replay_experiment_thumb.png" />
+<p><a class="reference internal" href="plot_replay_experiment.html#sphx-glr-auto-examples-plot-replay-experiment-py"><span class="std std-ref">Replay and experiment</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Replay and experiment</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In this example, we run an experiment on real data and try to relate the amount of *hard-to-cla..."><img alt="Measuring hard to classify samples" src="../_images/sphx_glr_plot_hard_to_classify_thumb.png" />
+<p><a class="reference internal" href="plot_hard_to_classify.html#sphx-glr-auto-examples-plot-hard-to-classify-py"><span class="std std-ref">Measuring hard to classify samples</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Measuring hard to classify samples</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We here compare several clustering-based Active Learning approaches and in particular explore t..."><img alt="Active Learning on Digit Recognition with Clustering-based Sampling" src="../_images/sphx_glr_plot_clustering_thumb.png" />
+<p><a class="reference internal" href="plot_clustering.html#sphx-glr-auto-examples-plot-clustering-py"><span class="std std-ref">Active Learning on Digit Recognition with Clustering-based Sampling</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Active Learning on Digit Recognition with Clustering-based Sampling</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows the importance of diversity-based approaches using a toy example where a ver..."><img alt="Lowest confidence vs. KMeans sampling" src="../_images/sphx_glr_plot_confidence_vs_diversity_thumb.png" />
+<p><a class="reference internal" href="plot_confidence_vs_diversity.html#sphx-glr-auto-examples-plot-confidence-vs-diversity-py"><span class="std std-ref">Lowest confidence vs. KMeans sampling</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Lowest confidence vs. KMeans sampling</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In this example, we run an experiment on real data and show how active learning can be monitore..."><img alt="Active Learning on Digit Recognition and Metrics" src="../_images/sphx_glr_plot_digits_metrics_thumb.png" />
+<p><a class="reference internal" href="plot_digits_metrics.html#sphx-glr-auto-examples-plot-digits-metrics-py"><span class="std std-ref">Active Learning on Digit Recognition and Metrics</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Active Learning on Digit Recognition and Metrics</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In an active learning setting, the trade-off between exploration and exploitation plays a centr..."><img alt="Incremental KMeans" src="../_images/sphx_glr_plot_incr_kmeans_thumb.png" />
+<p><a class="reference internal" href="plot_incr_kmeans.html#sphx-glr-auto-examples-plot-incr-kmeans-py"><span class="std std-ref">Incremental KMeans</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Incremental KMeans</div>
+</div></div><div class="toctree-wrapper compound">
 </div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="Each active learning experiment starts with zero labeled samples. In that case, no supervised q..."><div class="figure align-default" id="id2">
-<img alt="Starting an Active Learning experiment" src="../_images/sphx_glr_plot_starting_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_starting.html#sphx-glr-auto-examples-plot-starting-py"><span class="std std-ref">Starting an Active Learning experiment</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="Active Learning experiments can be long and costly. For this reason, it is useful to be able to..."><div class="figure align-default" id="id3">
-<img alt="Running and resuming an experiment" src="../_images/sphx_glr_plot_resume_experiment_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_resume_experiment.html#sphx-glr-auto-examples-plot-resume-experiment-py"><span class="std std-ref">Running and resuming an experiment</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="In a previous example, we have shown how experiments can be resumed. Cardinal also allows for e..."><div class="figure align-default" id="id4">
-<img alt="Replay and experiment" src="../_images/sphx_glr_plot_replay_experiment_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_replay_experiment.html#sphx-glr-auto-examples-plot-replay-experiment-py"><span class="std std-ref">Replay and experiment</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="We here compare several clustering-based Active Learning approaches and in particular explore t..."><div class="figure align-default" id="id5">
-<img alt="Active Learning on Digit Recognition with Clustering-based Sampling" src="../_images/sphx_glr_plot_clustering_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_clustering.html#sphx-glr-auto-examples-plot-clustering-py"><span class="std std-ref">Active Learning on Digit Recognition with Clustering-based Sampling</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="This example shows the importance of diversity-based approaches using a toy example where a ver..."><div class="figure align-default" id="id6">
-<img alt="Lowest confidence vs. KMeans sampling" src="../_images/sphx_glr_plot_confidence_vs_diversity_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_confidence_vs_diversity.html#sphx-glr-auto-examples-plot-confidence-vs-diversity-py"><span class="std std-ref">Lowest confidence vs. KMeans sampling</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="In this example, we run an experiment on real data and show how active learning can be monitore..."><div class="figure align-default" id="id7">
-<img alt="Active Learning on Digit Recognition and Metrics" src="../_images/sphx_glr_plot_digits_metrics_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_digits_metrics.html#sphx-glr-auto-examples-plot-digits-metrics-py"><span class="std std-ref">Active Learning on Digit Recognition and Metrics</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="In an active learning setting, the trade-off between exploration and exploitation plays a centr..."><div class="figure align-default" id="id8">
-<img alt="Incremental KMeans" src="../_images/sphx_glr_plot_incr_kmeans_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_incr_kmeans.html#sphx-glr-auto-examples-plot-incr-kmeans-py"><span class="std std-ref">Incremental KMeans</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-clear"></div><p id="sphx-glr-auto-examples-properties"># Properties</p>
+<p># Properties</p>
 <p>These examples test the behavior of samplers in peculiar synthetic settings.</p>
-<div class="sphx-glr-thumbcontainer" tooltip="The iterative process of Active Learning may induce corner cases that are proper to Active Lear..."><div class="figure align-default" id="id9">
-<img alt="Isolated cluster and bad init" src="../_images/sphx_glr_plot_isolated_cluster_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="properties/plot_isolated_cluster.html#sphx-glr-auto-examples-properties-plot-isolated-cluster-py"><span class="std std-ref">Isolated cluster and bad init</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The iterative process of Active Learning may induce corner cases that are proper to Active Lear..."><img alt="Isolated cluster and bad init" src="../_images/sphx_glr_plot_isolated_cluster_thumb.png" />
+<p><a class="reference internal" href="properties/plot_isolated_cluster.html#sphx-glr-auto-examples-properties-plot-isolated-cluster-py"><span class="std std-ref">Isolated cluster and bad init</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Isolated cluster and bad init</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Can a noisy boundary tamper with an active learning process? For this test, we select a very si..."><img alt="Noisy boundary 2" src="../_images/sphx_glr_plot_iwkmeans_thumb.png" />
+<p><a class="reference internal" href="properties/plot_iwkmeans.html#sphx-glr-auto-examples-properties-plot-iwkmeans-py"><span class="std std-ref">Noisy boundary 2</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Noisy boundary 2</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Can a noisy boundary tamper with an active learning process? For this test, we select a very si..."><img alt="Noisy boundary" src="../_images/sphx_glr_plot_noisy_boundary_thumb.png" />
+<p><a class="reference internal" href="properties/plot_noisy_boundary.html#sphx-glr-auto-examples-properties-plot-noisy-boundary-py"><span class="std std-ref">Noisy boundary</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Noisy boundary</div>
+</div></div><div class="toctree-wrapper compound">
 </div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="Can a noisy boundary tamper with an active learning process? For this test, we select a very si..."><div class="figure align-default" id="id10">
-<img alt="Noisy boundary" src="../_images/sphx_glr_plot_noisy_boundary_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="properties/plot_noisy_boundary.html#sphx-glr-auto-examples-properties-plot-noisy-boundary-py"><span class="std std-ref">Noisy boundary</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-clear"></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-footer sphx-glr-footer-gallery docutils container">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/07fcc19ba03226cd3d83d4e40ec44385/auto_examples_python.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></p>
 </div>
@@ -273,67 +192,48 @@ custom query samplers and use them in advanced experiments.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="plot_random_vs_confidence.html" class="btn btn-neutral float-right" title="Lowest confidence vs. Random sampling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../uncertainty.html" class="btn btn-neutral float-left" title="Uncertainty-based Query Sampling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plot_random_vs_confidence.html" class="btn btn-neutral float-right" title="Lowest confidence vs. Random sampling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2019-2021, Dataiku.
-
-    </p>
+    <p>&#169; Copyright 2019-2022, Dataiku.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
-
-  
-  
-    
     <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169600606-1"></script>
     <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-    ga('create', 'UA-169600606-1', 'auto');
-    
-    ga('send', 'pageview');
-    </script>
-
-    
-   
+      gtag('config', 'UA-169600606-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
 
 </body>
 </html>
