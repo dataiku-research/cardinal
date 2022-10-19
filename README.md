@@ -1,3 +1,4 @@
+
 <img src="https://raw.githubusercontent.com/dataiku-research/cardinal/master/doc/_static/cardinal.png" width="300">
 
 ## Introduction

@@ -46,17 +46,18 @@ init_spl = ActiveLearningSplitter.train_test_split(X.shape[0], test_size=0.2, sh
 
 init_random_spl = deepcopy(init_spl)
 np.random.seed(seed)
-init_random_spl.add_batch(np.hstack([
+init_idx = np.hstack([
     np.random.choice(np.where(y[init_spl.train] == 0)[0], size=batch_size),
     np.random.choice(np.where(y[init_spl.train] == 1)[0], size=batch_size),
-]))
+])
+init_random_spl.initialize_with_indices(init_idx)
 
 init_noisy_spl = deepcopy(init_spl)
-init_noisy_spl.add_batch(np.hstack([
+init_idx = np.hstack([
     np.where(y[init_spl.train] == 0)[0][:batch_size],
     np.where(y[init_spl.train] == 1)[0][:batch_size],
-]))
-
+])
+init_noisy_spl.initialize_with_indices(init_idx)
 
 plt.scatter(X[:, 0], X[:, 1], c=['C{}'.format(i) for i in y], alpha=.3)
 plt.scatter(X[init_random_spl.selected, 0], X[init_random_spl.selected, 1], facecolors='none', edgecolors='r', linewidth=2, label='Random init batch')

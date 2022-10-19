@@ -32,6 +32,7 @@ class RankedBatchSampler(BaseQuerySampler):
         Returns:
             The object itself
         """
+        self.X_selected = X
         return self
 
     def select_samples(self, X: np.array,
@@ -41,7 +42,6 @@ class RankedBatchSampler(BaseQuerySampler):
         Args:
             X: Pool of unlabeled samples of shape (n_samples, n_features).
             sample_weights: Weights of the samples of shape (n_samples).
-                Set labeled samples as -1.
 
         Returns:
             Indices of the selected samples of shape (batch_size).
@@ -49,35 +49,31 @@ class RankedBatchSampler(BaseQuerySampler):
         if self._not_enough_samples(X):
             return np.arange(X.shape[0])
 
-        n_samples = X.shape[0]
-        index = np.arange(n_samples)
-        unlabeled_mask = (samples_weights > -.5)
-        n_unlabeled = unlabeled_mask.sum()
+        n_unlabeled = X.shape[0]
+        n_samples = n_unlabeled + self.X_selected.shape[0]
 
         # We are going to modify this array so we copy it
         samples_weights = samples_weights.copy()
 
         # We compute the distances for labeled data in 2 steps
         _, similarity_scores = pairwise_distances_argmin_min(
-            X[unlabeled_mask], X[np.logical_not(unlabeled_mask)],
-            metric=self.metric)
+            X, self.X_selected, metric=self.metric)
         similarity_scores = 1 / (1 + similarity_scores)
 
         selected_samples = []
 
         for _ in range(self.batch_size):
-
             alpha = n_unlabeled / n_samples
             scores = (alpha * (1 - similarity_scores)
-                      + (1 - alpha) * samples_weights[unlabeled_mask])
+                      + (1 - alpha) * samples_weights)
 
-            idx_furthest = index[unlabeled_mask][np.argmax(scores)]
+            idx_furthest = np.argmax(scores)
             selected_samples.append(idx_furthest)
 
             # Update similarities considering the selected sample as labeled
             # We could remove its value from the array but we avoid realloc
             sim = 1 / (1 + pairwise_distances(
-                X[unlabeled_mask], X[idx_furthest, None],
+                X, X[idx_furthest, None],
                 metric=self.metric)[:, 0])
             similarity_scores = np.max([similarity_scores, sim], axis=0)
             samples_weights[idx_furthest] = 0.

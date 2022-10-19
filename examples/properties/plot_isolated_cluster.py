@@ -42,10 +42,12 @@ clf = LogisticRegression()
 # from the isolated cluster is selected.
 
 init_spl = ActiveLearningSplitter.train_test_split(X.shape[0], test_size=0.2, stratify=blob, random_state=0)
-init_spl.add_batch(np.hstack([
+init_idx = np.hstack([
     np.where(blob[init_spl.train] == 0)[0][:batch_size],
     np.where(blob[init_spl.train] == 1)[0][:batch_size]
-]))
+])
+init_spl.initialize_with_indices(init_idx)
+
 left_out_y = (blob[init_spl.test] == 2)
 y = blob.copy()
 y[blob == 2] = 1
@@ -100,8 +102,8 @@ evaluate('Random Sampler', RandomSampler(batch_size=batch_size, random_state=0),
 evaluate('KMeans Sampler', KMeansSampler(batch_size=batch_size), global_ax, isolated_cluster_ax)
 
 global_ax.legend()
-smooth_lines(axis=global_ax, k=2)
+smooth_lines(axis=global_ax, k=3)
 isolated_cluster_ax.legend()
-smooth_lines(axis=isolated_cluster_ax, k=2)
+smooth_lines(axis=isolated_cluster_ax, k=3)
 
 plt.show()
