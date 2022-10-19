@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Active Learning Splitter &mdash; cardinal 0.0.9-git documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> cardinal
+            <img src="../_static/cardinal.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+      <span class="rst-current-version" data-toggle="rst-current-version">
+        <span class="fa fa-book"> Versions</span>
+        v: stable
+        <span class="fa fa-caret-down"></span>
+      </span>
+      <div class="rst-other-versions">
+        <dl>
+          <dt>Versions</dt>
+          
+            <dd><a href="https://sphinx-gallery.github.io/dev">dev</a></dd>
+          
+            <dd><a href="https://sphinx-gallery.github.io/stable">stable</a></dd>
+          
+        </dl>
+      </div>
+    </div>
+
+    
+              <p class="caption" role="heading"><span class="caption-text">Active learning</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to Active Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../uncertainty.html">Uncertainty-based Query Sampling</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Example galleries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API and developer reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">cardinal’s API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/dataiku-research/cardinal">Fork cardinal on Github</a></li>
+</ul>
+
+
+  
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">cardinal</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Active Learning Splitter</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-splitter-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="active-learning-splitter">
+<span id="sphx-glr-auto-examples-plot-splitter-py"></span><h1>Active Learning Splitter<a class="headerlink" href="#active-learning-splitter" title="Permalink to this heading">¶</a></h1>
+<p>Active learning experiments require heavy manipulation of indices
+for train vs test, train being divided in labeled and unlabeled,
+labeled being divided again in train vs validation… All those
+index manipulation is tedious, error-prone, and can lead to repeated
+unwanted copies of data.</p>
+<p>Cardinal provides a splitter easing all indices manipulation. It
+also comes with handy procedures that make active learning
+experiments easier.</p>
+<section id="train-vs-test-split">
+<h2>Train vs test split<a class="headerlink" href="#train-vs-test-split" title="Permalink to this heading">¶</a></h2>
+<p>The first in an active learning experiment is to split the data
+in train and test. The training split is used to simulate the
+pool of unlabeled data while the testing split is a left-out
+set of samples used to evaluate the sampler. Cardinal offers
+two ways of creating this split in the splitter:
+* <cite>ActiveLearningSplitter(n_samples, test_index=[…])</cite> allows</p>
+<blockquote>
+<div><p>to create a splitter with no test, or by directly specifying
+the indices.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><cite>ActiveLearningSplitter.train_test_split</cite> maps directly
+scikit-learn’s function to create the train/test split inside
+the splitter.</p></li>
+</ul>
+<p>See it in action below!</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cardinal.utils</span> <span class="kn">import</span> <span class="n">ActiveLearningSplitter</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="n">no_test_splitter</span> <span class="o">=</span> <span class="n">ActiveLearningSplitter</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Creating a splitter without test set&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training set size: &#39;</span><span class="p">,</span> <span class="n">no_test_splitter</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Testing set size: &#39;</span><span class="p">,</span> <span class="n">no_test_splitter</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">with_test_splitter</span> <span class="o">=</span> <span class="n">ActiveLearningSplitter</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">test_index</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Creating a splitter with 3 test samples&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training set size: &#39;</span><span class="p">,</span> <span class="n">with_test_splitter</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Testing set size: &#39;</span><span class="p">,</span> <span class="n">with_test_splitter</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test indices: &#39;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.where.html#numpy.where" title="numpy.where" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">(</span><span class="n">with_test_splitter</span><span class="o">.</span><span class="n">test</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">sklearn_test_splitter</span> <span class="o">=</span> <span class="n">ActiveLearningSplitter</span><span class="o">.</span><span class="n">train_test_split</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Creating a splitter with sklearn</span><span class="se">\&#39;</span><span class="s1">s train_test_split&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Training set size: &#39;</span><span class="p">,</span> <span class="n">sklearn_test_splitter</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Testing set size: &#39;</span><span class="p">,</span> <span class="n">sklearn_test_splitter</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="sampling-the-first-batch">
+<h2>Sampling the first batch<a class="headerlink" href="#sampling-the-first-batch" title="Permalink to this heading">¶</a></h2>
+<p>The first batch of an active learning experiment is always special since
+it is not selected through the active learning procedure itself. Most works
+use a random selection of samples for this first batch. Some work used
+an initilization through KMeans. Cardinal allows to use both of those. On
+top of this, cardinal allows to ensure that at least one sample per class
+is selected in the random selection. This is made to prevent label addition
+during the experiment that can be cumbersome to handle.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
+<p><strong>Estimated memory usage:</strong>  0 MB</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-splitter-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/975d6704286a0ef85583e50001a26d24/_plot_splitter.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">_plot_splitter.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/68b4262591911f223891eb081cd9928f/_plot_splitter.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">_plot_splitter.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019-2022, Dataiku.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169600606-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-169600606-1', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

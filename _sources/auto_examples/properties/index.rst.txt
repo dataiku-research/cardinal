@@ -1,0 +1,77 @@
+
+
+.. _sphx_glr_auto_examples_properties:
+
+# Properties
+
+These examples test the behavior of samplers in peculiar synthetic settings.
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The iterative process of Active Learning may induce corner cases that are proper to Active Lear...">
+
+.. only:: html
+
+  .. image:: /auto_examples/properties/images/thumb/sphx_glr_plot_isolated_cluster_thumb.png
+    :alt: Isolated cluster and bad init
+
+  :ref:`sphx_glr_auto_examples_properties_plot_isolated_cluster.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Isolated cluster and bad init</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Can a noisy boundary tamper with an active learning process? For this test, we select a very si...">
+
+.. only:: html
+
+  .. image:: /auto_examples/properties/images/thumb/sphx_glr_plot_iwkmeans_thumb.png
+    :alt: Noisy boundary 2
+
+  :ref:`sphx_glr_auto_examples_properties_plot_iwkmeans.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Noisy boundary 2</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Can a noisy boundary tamper with an active learning process? For this test, we select a very si...">
+
+.. only:: html
+
+  .. image:: /auto_examples/properties/images/thumb/sphx_glr_plot_noisy_boundary_thumb.png
+    :alt: Noisy boundary
+
+  :ref:`sphx_glr_auto_examples_properties_plot_noisy_boundary.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Noisy boundary</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/properties/plot_isolated_cluster
+   /auto_examples/properties/plot_iwkmeans
+   /auto_examples/properties/plot_noisy_boundary
+
