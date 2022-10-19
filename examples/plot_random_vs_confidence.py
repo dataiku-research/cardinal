@@ -21,7 +21,7 @@ from sklearn.svm import SVC
 
 from cardinal.random import RandomSampler
 from cardinal.uncertainty import ConfidenceSampler
-
+from cardinal.utils import ActiveLearningSplitter
 
 np.random.seed(8)
 
@@ -83,23 +83,19 @@ samplers = [
 plt.figure(figsize=(10, 4))
 
 for i, (sampler_name, sampler) in enumerate(samplers):
-    # We force having one sample in each class for the init
-    init_idx = [np.where(y == 0)[0][0], np.where(y == 1)[0][0]]
-
-    mask = np.zeros(n, dtype=bool)
-    indices = np.arange(n)
-    mask[init_idx] = True
+    splitter = ActiveLearningSplitter(X.shape[0])
+    splitter.initialize_with_random(2, at_least_one_of_each_class=y)
 
     for j in range(n_iter):
-        model.fit(X[mask], y[mask])
-        sampler.fit(X[mask], y[mask])
+        model.fit(X[splitter.selected], y[splitter.selected])
+        sampler.fit(X[splitter.selected], y[splitter.selected])
         w = model.coef_[0]
         
         plt.subplot(len(samplers), n_iter, i * n_iter + j + 1)
-        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), mask.copy())
+        plot(-w[0] / w[1], - model.intercept_[0] / w[1], model.score(X, y), splitter.selected.copy())
 
-        selected = sampler.select_samples(X[~mask])
-        mask[indices[~mask][selected]] = True
+        selected = sampler.select_samples(X[splitter.non_selected])
+        splitter.add_batch(selected)
 
         if j == 0:
             plt.ylabel(sampler_name)

@@ -30,7 +30,7 @@ from cardinal.random import RandomSampler
 from cardinal.plotting import plot_confidence_interval
 from cardinal.base import BaseQuerySampler
 from cardinal.zhdanov2019 import TwoStepKMeansSampler
-from cardinal.utils import pad_with_random
+from cardinal.utils import pad_with_random, ActiveLearningSplitter
 
 np.random.seed(7)
 
@@ -48,6 +48,7 @@ n_iter = 10
 
 X, y = load_digits(return_X_y=True)
 X /= 255.
+n_samples = X.shape[0]
 
 model = RandomForestClassifier()
 
@@ -115,31 +116,24 @@ for sampler_name, sampler in samplers:
     all_execution_times = []
 
     for k in range(10):
-        X_train, X_test, y_train, y_test = \
-            train_test_split(X, y, test_size=500, random_state=k)
+        splitter = ActiveLearningSplitter.train_test_split(n_samples, test_size=500, random_state=k)
+        splitter.initialize_with_random(batch_size, at_least_one_of_each_class=y[splitter.train], random_state=k)
 
         accuracies = []
         execution_times = []
 
-        # For simplicity, we start with one sample of each class
-        _, selected = np.unique(y_train, return_index=True)
-
-        # We use binary masks to simplify some operations
-        mask = np.zeros(X_train.shape[0], dtype=bool)
-        indices = np.arange(X_train.shape[0])
-        mask[selected] = True
 
         # The classic active learning loop
         for j in range(n_iter):
-            model.fit(X_train[mask], y_train[mask])
+            model.fit(X[splitter.selected], y[splitter.selected])
 
             # Record metrics
-            accuracies.append(model.score(X_test, y_test))
+            accuracies.append(model.score(X[splitter.test], y[splitter.test]))
 
             t0 = time()
-            sampler.fit(X_train[mask], y_train[mask])
-            selected = sampler.select_samples(X_train[~mask])
-            mask[indices[~mask][selected]] = True
+            sampler.fit(X[splitter.selected], y[splitter.selected])
+            selected = sampler.select_samples(X[splitter.non_selected])
+            splitter.add_batch(selected)
             execution_times.append(time() - t0)
 
         all_accuracies.append(accuracies)
