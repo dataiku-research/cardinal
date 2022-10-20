@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+v0.0.9
+------
+
+Adds:
+
+* Breaking change in ActiveLeanringSplitter that now requires explicit initialization
+* GMM based-sampler
+
+Fixes:
+
+* Use ActiveLearningSplitter in all examples
+
 v0.0.5
 ------
 
